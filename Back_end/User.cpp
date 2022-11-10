@@ -1,5 +1,9 @@
 #include "User.h"
 
+User::User(std::string userName, std::string pass):
+	user_name{userName}, password{pass}
+{}
+
 std::string User::getUserName() const
 {
 	return user_name;
@@ -60,6 +64,32 @@ std::string User::checkStrongPassword()
 	if (!digit)
 	{
 		return "Your password need to have at least a number\n";
+	}
+}
+
+void User::forgotPasswordProtocol(std::ostream& out, std::istream& in)
+{
+	std::string pass;
+again:
+	out << "Type the last password you remember or at least 60% of it: ";
+	in >> pass;
+	while (pass.size() < (int)(password.size() * 3.0 / 5.0))
+	{
+		out << "Sorry, it's too short. Try again: ";
+		in >> pass;
+	}
+
+	if (password.find(pass) != password.npos)
+	{
+		out << "It's enough to believe is you\n";
+		out << "Type a new password: ";
+		in >> pass;
+		changePassword(pass);
+	}
+	else
+	{
+		out << "Sorry, it doesn't mach to your old password\n";
+		goto again;
 	}
 }
 
