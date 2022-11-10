@@ -12,5 +12,6 @@ public:
 	std::string& getPassword();
 	friend std::istream& operator >> (std::istream& in, User& user);
 	void changePassword(const std::string& pass);
+	std::string checkStrongPassword();
 };
 
