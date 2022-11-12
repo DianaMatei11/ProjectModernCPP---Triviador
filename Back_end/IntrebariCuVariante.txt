@@ -10,75 +10,87 @@ Columbia
 Brazilia
 Chile
 2
-Câte continente există pe Pământ? 
-5 continente
-6 continente
-7 continente
-8 Continente
+In ce oras s-a petrecut asasinarea Arhiducelui Franz Ferdinand?
+Viena
+Roma
+Verdun
+Sarajevo
 3
 Cine a realizat prima călătorie în jurul lumii? 
 Cristofor Columb
 Vasco da Gama
 Amerigo Vespucci
 Fernando Magellan
-Fernando Magellan
-Cu cate țări se învecinează România? 
 3
-4
-5
-6
+Care din urmatoarele NU este o compozitie a lui Iannis Xenakis?
+Pithopratka
+Gendy301
+Anabasis
+Achorripsis
 2
-Care este capitala Bruxelului?
-Paris
+Care este capitala Bulgariei?
+Tirana
 Berlin
 Milano
 Sofia
 3
-Spune trei țări prin care trece Ecuatorul? 
-12
-15
-13
-16
-2
+Care este numele protagonistei romanului Mandrie si prejudecata de Jane Austen?
+Elizabeth Bennet
+Anne Elliot
+Marianne Dashwood
+Emma Woodhouse
+0
 Din ce țară izvorăște Dunărea? 
 Italia
 Franta
 Olanda
 Germania
 3
-Câte state are Statele Unite ale Americii? 
-50
-49
-60
-59
-0
+Care a fost primul polonez laureat al Premiului Nobel pentru Literatura?
+Czeslaw Milosz
+Wladyslaw Reymont
+Henryk Sienkiewicz
+Boleslaw Prus
+2
 Care este cel mai estic oraș al României? 
 Sulina
 Tulcea
 Murighiol
-Sf.Georghe
+Sf.Gheorghe
 0
 În ce capitală europeană poți vizita Colosseum?
 Milano
 Paris
 Roma
-Lion
+Lyon
 2
-Ce tip de lac este Lacul lezer? 
+Ce tip de lac este Lacul Iezer din masivul Rodnei? 
 vulcanic
 de calota
 sarat
 glaciar
-5
+3
 Cu ce stat se învecinează Statele Unite ale Americii?
 Mexic
 Alaska
 Brazilia
 Venezuela
-1
-Care este cel mai înalt munte de pe Glob?
+0
+In ce masiv muntos se gaseste cel mai inalt varf de pe Pamant?
 Himalaya
 Everest
-Karakorum
+Karakoram
 Pamir
-2
+0
+Cui ii apartine fraza Epuur si muove?
+Aristotel
+Galileo Galilei
+Pitagora
+Copernic
+1
+Cine a fondat compania Microsoft?
+Bill Gates
+Elon Musk
+Mark Zuckerberg
+Steve Jobs
+0
