@@ -9,7 +9,7 @@ public:
 	bool findName(std::string name);
 	bool findPass(std::string pass);
 	void signIn();
-	//void logIn();
+	void logIn();
 	//void meniu();
 };
 
