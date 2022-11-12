@@ -15,3 +15,20 @@ int IntrebareNumerica::GetRaspuns() const
 {
 	return m_raspuns;
 }
+
+std::istream& operator>>(std::istream& in, IntrebareNumerica& intr)
+{
+	std::getline(in, intr.m_enunt);
+	in >> intr.m_raspuns;
+	return in;
+}
+
+std::ostream& operator<<(std::ostream& out, const IntrebareNumerica& intr)
+{
+	out << intr.m_enunt;
+	out << std::endl;
+	//la afisarea unei intrebari cu raspuns numeric, se asteapta inputul utilizatorului/jucatorului pentru validare
+	//astfel, raspunsul atasat intrebarii nu este afisat pe ecran decat dupa colectarea rapunsurilor tuturor jucatorilor
+	//acest lucru se face intr-o functie ulterioara
+	return out;
+}
