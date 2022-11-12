@@ -10,6 +10,6 @@ public:
 	bool findPass(std::string pass);
 	void signIn();
 	void logIn();
-	//void meniu();
+	void meniu();
 };
 

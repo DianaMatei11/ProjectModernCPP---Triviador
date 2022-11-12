@@ -56,3 +56,18 @@ void Conect::logIn()
 	}
 
 }
+
+void Conect::meniu()
+{
+	std::cout << "Your options are:\n1 for sign in\n2 for login\n0 for exit" << std::endl;
+	int x;
+	std::cin >> x;
+		switch (x)
+		{
+		case 1: signIn();
+			break;
+		case 2: logIn();
+			break;
+		default:std::cout << "Your option is invalid!";
+	    }
+}
