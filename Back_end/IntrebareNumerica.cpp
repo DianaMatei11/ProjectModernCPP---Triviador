@@ -15,11 +15,16 @@ int IntrebareNumerica::GetRaspuns() const
 {
 	return m_raspuns;
 }
-
+int IntrebareNumerica::DiferentaInput(int input)
+{
+	return abs(input - m_raspuns);
+}
 std::istream& operator>>(std::istream& in, IntrebareNumerica& intr)
 {
 	std::getline(in, intr.m_enunt);
-	in >> intr.m_raspuns;
+	std::string aux;
+	std::getline(in, aux);
+	intr.m_raspuns = stoi(aux);
 	return in;
 }
 

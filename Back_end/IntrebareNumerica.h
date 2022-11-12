@@ -14,6 +14,7 @@ public:
 	int GetRaspuns() const;
 	friend std::istream& operator >> (std::istream& in, IntrebareNumerica& int);
 	friend std::ostream& operator <<(std::ostream& out, const IntrebareNumerica& int);
+	int DiferentaInput(int input);
 	~IntrebareNumerica() = default;
 };
 
