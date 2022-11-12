@@ -1,6 +1,8 @@
 #pragma once
 #include "User.h"
 #include <vector>
+#include <iostream>
+#include <regex>
 class Conect
 {
 	std::vector<User> users;

@@ -1,5 +1,5 @@
 #include "Conect.h"
-#include <iostream>
+
 std::vector<User> Conect::getUsers()
 {
 	return users;
@@ -26,12 +26,24 @@ bool Conect::findPass(std::string pass)
 void Conect::signIn()
 {
 	std::string name0, pass0;
+citireUsername:
 	std::cout << "Enter your name: ";
 	std::cin >> name0;
+	std::string usernamePattern = "([a-zA-Z0-9_]){5,15}";
+	std::regex usernameRule(usernamePattern);
+	bool usernameValid = regex_match(name0, usernameRule);
+	if (usernameValid)
+	{
+		std::cout << "[INFO] Username valid!\n";
+	}
+	else {
+		std::cout << "[WARNING] Username-ul trebuie sa contina litere mari, litere mici, cifre, sau '_', si sa aibe intre 5 si 15 caractere!\n\n";
+		goto citireUsername;
+	}
 	while (findName(name0) == true)
 	{
 		std::cout << "This name already exists.Please enter another name: ";
-		std::cin >> name0;
+		goto citireUsername;
 	}
 	std::cout << "Enter your password: ";
 	std::cin >> pass0;
