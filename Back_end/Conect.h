@@ -3,6 +3,8 @@
 #include <vector>
 #include <iostream>
 #include <regex>
+#include <fstream>
+
 class Conect
 {
 	std::vector<User> users;
@@ -13,5 +15,9 @@ public:
 	void signIn();
 	void logIn();
 	void meniu();
+	void readFile();
+	void saveInFile();
+	void schimbareParolaCorecta(User& user);
+
 };
 

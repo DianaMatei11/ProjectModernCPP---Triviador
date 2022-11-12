@@ -1,5 +1,48 @@
 #include "Conect.h"
 
+void Conect::readFile()
+{
+	std::ifstream file{ "users.txt" };
+	if (!file)
+	{
+		std::cerr << "File error\n";
+		exit(0);
+	}
+	{
+		std::string username, password;
+		while (!file.eof())
+		{
+			file >> username >> password;
+			if(!findName(username))
+				users.emplace_back(User(username, password));
+		}
+	}
+}
+
+void Conect::saveInFile()
+{
+	std::ofstream file{ "users.txt" };
+	remove("users.txt");
+	for (auto& user : users)
+	{
+		file << user.getUserName() << ' ' << user.getPassword() << '\n';
+	}
+	file.close();
+}
+
+void Conect::schimbareParolaCorecta(User& user)
+{
+	while (user.checkStrongPassword() != "Strong\n")
+	{
+		std::cout << user.checkStrongPassword();
+		std::cout << "[WARNING] Introduceti o parola care sa respecte regulile: ";
+		std::string parolaNoua;
+		std::cin >> parolaNoua;
+		user.changePassword(parolaNoua);
+	}
+}
+
+
 std::vector<User> Conect::getUsers()
 {
 	return users;
@@ -52,21 +95,13 @@ citireUsername:
 	std::cout << "Enter your password: ";
 	std::cin >> pass0;
 	User x(name0, pass0);
-	while (x.checkStrongPassword() != "Strong\n")
-	{
-		std::cout<<x.checkStrongPassword();
-		std::cout << "[WARNING] Introduceti o parola care sa respecte regulile: ";
-		std::string parolaNoua;
-		std::cin >> parolaNoua;
-		x.changePassword(parolaNoua);
-	}
+	schimbareParolaCorecta(x);
 	std::cout << "[INFO] Username-ul si parola au fost salvate!\n";
 	users.push_back(x);
 }
 void Conect::logIn()
 {
 	std::string name0, pass0;
-	//std::vector<User> users=getUsers();
 	std::cout << "Enter your name: ";
 	std::cin >> name0;
 	if (!findName(name0))
@@ -85,10 +120,8 @@ void Conect::logIn()
 				for (auto& user : users)
 				{
 					if (user.getUserName() == name0) {
-						std::string parolaNoua;
-						std::cout << "Parola noua: ";
-						std::cin >> parolaNoua;
-						user.changePassword(parolaNoua);
+						user.changePassword("0");
+						schimbareParolaCorecta(user);
 						std::cout << "[INFO] Parola a fost schimbata!\n";
 						break;
 					}
@@ -108,6 +141,7 @@ void Conect::logIn()
 void Conect::meniu()
 {
 	int x;
+	readFile();
 	do {
 		std::cout << "Your options are:\n1 for sign in\n2 for login\n0 for exit" << std::endl;
 		std::cout << "Alege o optiune din lista: "; std::cin >> x;
@@ -123,4 +157,5 @@ void Conect::meniu()
 		default:std::cout << "Your option is invalid!\n";
 		}
 	} while (x != 0);
+	saveInFile();
 }
