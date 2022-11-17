@@ -4,6 +4,7 @@
 #include "IntrebareNumerica.h"
 #include <fstream>
 #include<vector>
+#include<random>
 void citire(std::vector<IntrebareNumerica>& intrebari)
 {
 
@@ -16,14 +17,21 @@ void citire(std::vector<IntrebareNumerica>& intrebari)
     }
     f.close();
 }
-//int main()
-//{
+void GenerareRandom(std::vector<IntrebareNumerica>intrebari)
+{
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<int> x(0, intrebari.size() - 1);
+    std::cout << intrebari[x(mt)]<<'\n';
+    std::cout << "Introduceti raspunsul corect: ";
+}
 
-    //std::vector<IntrebareNumerica>intrebari;
-   // citire(intrebari);
-   // for (int i = 0; i < intrebari.size(); i++)
-     //   std::cout << intrebari[i] << " " << intrebari[i].GetRaspuns() << std::endl;
-//}
+int main()
+{
+   std::vector<IntrebareNumerica>intrebari;
+   citire(intrebari);
+   GenerareRandom(intrebari);
+}
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu
