@@ -22,6 +22,8 @@ public:
 	std::array<std::string, 4> GetRaspunsuri();
 	int GetIndex_Rasp_Corect();
 
+	void AfisareAvantaj();
+	
 	friend std::istream& operator>>(std::istream& in, IntrebariGrila& a);
 	friend std::ostream& operator << (std::ostream& out, const IntrebariGrila& a);
 	//~IntrebariGrila();

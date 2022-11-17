@@ -41,6 +41,24 @@ int IntrebariGrila::GetIndex_Rasp_Corect()
 	return index_rasp_corect;
 }
 
+void IntrebariGrila::AfisareAvantaj()
+{
+	srand (time(NULL));
+	int r = rand() % 4;
+	int x = GetIndex_Rasp_Corect();
+	x--;
+	while (r ==x)
+	{
+		r = rand() % 4;
+	}
+
+	std::cout << "Avantajul FIFTY - FIFTY este: " << '\n';
+	std::cout<< raspunsuri[r];
+	std::cout << std::endl;
+	std::cout<< raspunsuri[x];
+
+}
+
 std::istream& operator>>(std::istream& in, IntrebariGrila& intrebari)
 {
 	std::string str;
