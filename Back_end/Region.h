@@ -16,5 +16,7 @@ public:
 	int GetScores();
 	void SetScores(int scores);
 	bool IsBase();
+	void SetBase();
+	friend std::ostream& operator <<(std::ostream& out, const Region& region);
 };
 

@@ -28,3 +28,16 @@ bool Region::IsBase()
 {
 	return m_isBase;
 }
+
+void Region::SetBase()
+{
+	m_isBase = true;
+	m_scores = 300;
+}
+
+std::ostream& operator<<(std::ostream& out, const Region& region)
+{
+	out << region.m_name<<": ";
+	out << region.m_scores;
+	return out;
+}
