@@ -1,6 +1,7 @@
 #pragma once
 #include<string>
 #include <iostream>
+#include<random>
 class IntrebareNumerica
 {
 private:
@@ -12,8 +13,10 @@ public:
 	IntrebareNumerica(std::string enunt, int raspuns);
 	std::string GetEnunt() const;
 	int GetRaspuns() const;
-	friend std::istream& operator >> (std::istream& in, IntrebareNumerica& int);
-	friend std::ostream& operator <<(std::ostream& out, const IntrebareNumerica& int);
+	bool VerificareRaspuns();
+	void AvantajRaspunsCorect();
+	friend std::istream& operator >> (std::istream& in, IntrebareNumerica& intr);
+	friend std::ostream& operator <<(std::ostream& out, const IntrebareNumerica& intr);
 	int DiferentaInput(int input);
 	~IntrebareNumerica() = default;
 };

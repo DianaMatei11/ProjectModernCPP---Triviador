@@ -24,6 +24,7 @@ void GenerareRandom(std::vector<IntrebareNumerica>intrebari)
     std::uniform_int_distribution<int> x(0, intrebari.size() - 1);
     std::cout << intrebari[x(mt)]<<'\n';
     std::cout << "Introduceti raspunsul corect: ";
+
 }
 
 int main()
@@ -31,6 +32,7 @@ int main()
    std::vector<IntrebareNumerica>intrebari;
    citire(intrebari);
    GenerareRandom(intrebari);
+  
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

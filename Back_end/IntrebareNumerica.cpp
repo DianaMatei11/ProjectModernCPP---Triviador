@@ -19,6 +19,28 @@ int IntrebareNumerica::DiferentaInput(int input)
 {
 	return abs(input - m_raspuns);
 }
+
+bool IntrebareNumerica::VerificareRaspuns()
+{
+	if (m_raspuns < 30)
+		return false;
+	return true;
+}
+
+void IntrebareNumerica::AvantajRaspunsCorect()
+{
+	srand(time(NULL));
+	std::random_device rd;
+	std::mt19937 mt(rd());
+	std::uniform_real_distribution<double> distribution(-20.0, 20.0);
+	if (VerificareRaspuns() == true)
+	{
+		std::cout << "Raspunsul corect este apropiat de: ";
+		std::cout << m_raspuns + distribution(mt);
+	}
+}
+
+
 std::istream& operator>>(std::istream& in, IntrebareNumerica& intr)
 {
 	std::getline(in, intr.m_enunt);
