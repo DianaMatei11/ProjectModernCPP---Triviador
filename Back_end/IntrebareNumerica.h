@@ -14,7 +14,9 @@ public:
 	std::string GetEnunt() const;
 	int GetRaspuns() const;
 	bool VerificareRaspuns();
-	void AvantajRaspunsCorect();
+	void AvantajAproximativRaspunsCorect();
+	std::vector<int> Avantaj4Raspunsuri();
+	double GenerareNumarRandom();
 	friend std::istream& operator >> (std::istream& in, IntrebareNumerica& intr);
 	friend std::ostream& operator <<(std::ostream& out, const IntrebareNumerica& intr);
 	int DiferentaInput(int input);

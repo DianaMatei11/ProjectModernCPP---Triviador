@@ -27,18 +27,38 @@ bool IntrebareNumerica::VerificareRaspuns()
 	return true;
 }
 
-void IntrebareNumerica::AvantajRaspunsCorect()
+void IntrebareNumerica::AvantajAproximativRaspunsCorect()
 {
 	srand(time(NULL));
 	std::random_device rd;
 	std::mt19937 mt(rd());
-	std::uniform_real_distribution<double> distribution(-20.0, 20.0);
+	std::uniform_real_distribution<double> distribution(-10.0, 10.0);
 	if (VerificareRaspuns() == true)
 	{
 		std::cout << "Raspunsul corect este apropiat de: ";
 		std::cout << m_raspuns + distribution(mt);
 	}
 }
+double IntrebareNumerica::GenerareNumarRandom()
+{
+	srand(time(NULL));
+	std::random_device rd;
+	std::mt19937 mt(rd());
+	std::uniform_real_distribution<double> distribution(-100.0, 100.0);
+	return distribution(mt);
+}
+std::vector<int>IntrebareNumerica::Avantaj4Raspunsuri()
+{
+	std::vector<int>vect;
+	int x = GenerareNumarRandom();
+	for (int i = 0; i < 4; i++)
+	{
+		vect[i] = x+VerificareRaspuns();
+		x = GenerareNumarRandom();
+	}
+	return vect;
+}
+
 
 
 std::istream& operator>>(std::istream& in, IntrebareNumerica& intr)
