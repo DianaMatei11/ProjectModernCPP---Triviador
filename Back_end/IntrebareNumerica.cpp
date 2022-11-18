@@ -1,5 +1,4 @@
 #include "IntrebareNumerica.h"
-
 IntrebareNumerica::IntrebareNumerica(std::string enunt, int raspuns)
 {
 	m_enunt = enunt;
@@ -39,12 +38,13 @@ void IntrebareNumerica::AvantajAproximativRaspunsCorect()
 		std::cout << m_raspuns + distribution(mt);
 	}
 }
+
 double IntrebareNumerica::GenerareNumarRandom()
 {
 	srand(time(NULL));
 	std::random_device rd;
 	std::mt19937 mt(rd());
-	std::uniform_real_distribution<double> distribution(-100.0, 100.0);
+	std::uniform_real_distribution<double> distribution(-100, 100);
 	return distribution(mt);
 }
 std::vector<int>IntrebareNumerica::Avantaj4Raspunsuri()
@@ -53,8 +53,14 @@ std::vector<int>IntrebareNumerica::Avantaj4Raspunsuri()
 	int x = GenerareNumarRandom();
 	for (int i = 0; i < 4; i++)
 	{
-		vect[i] = x+VerificareRaspuns();
+		vect[i] = x+m_raspuns;
 		x = GenerareNumarRandom();
+	}
+	if (std::find(vect.begin(), vect.end(), m_raspuns) != vect.end())
+	{
+		x = GenerareNumarRandom();
+		x = abs(x) % 3;
+		vect[x] = m_raspuns;
 	}
 	return vect;
 }
