@@ -53,7 +53,7 @@ std::vector<int>IntrebareNumerica::afis4()
 	int x = GenerareNumarRandom();
 	for (int i = 0; i < 4; i++)
 	{
-		if (m_raspuns - x < 5)
+		while(m_raspuns + x <5)
 		{ 
 			x = GenerareNumarRandom();
 		}
@@ -92,6 +92,17 @@ void IntrebareNumerica::Afisare()
 	}
 }
 
+void IntrebareNumerica::VerificareRaspunsDupaAvantaj()
+{
+	int a;
+	std::cout << "Introduceti raspunsul corect:\n";
+	std::cin >> a;
+	if (a == m_raspuns)
+		std::cout << "raspuns corect\n";
+	else
+		std::cout << "raspuns gresit";
+}
+
 
 void IntrebareNumerica::AfisareAvantaje()
 { 
@@ -101,7 +112,10 @@ void IntrebareNumerica::AfisareAvantaje()
 	std::cout << "2.Sugerare raspuns!\n";
 	std::cin >> numar;
 	if (numar == 1)
+	{ 
 		Avantaj4Raspunsuri();
+		VerificareRaspunsDupaAvantaj();
+	}
 	else
 		AvantajAproximativRaspunsCorect();
 }
@@ -114,6 +128,7 @@ void IntrebareNumerica::Avantaj4Raspunsuri()
 	int a = 1;
 	for (int i = 0; i < aux.size(); i++)
 		std::cout <<a++ <<"." << aux[i] << '\n';
+	
 }
 
 
