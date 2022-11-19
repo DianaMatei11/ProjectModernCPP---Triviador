@@ -70,7 +70,28 @@ std::vector<int>IntrebareNumerica::afis4()
 	}
 	return vect;
 }
- 
+void IntrebareNumerica::Afisare()
+{
+	int numar;
+	std::string aux;
+	std::cout << "Aveti nevoie de un avantaj?\n";
+	std::cin >> aux;
+	if (aux == "da" || aux == "Da" || aux == "dA" || aux == "DA")
+	{
+		AfisareAvantaje();
+	}
+	else
+	{
+		std::cout << "Introduceti raspunsul corect: ";
+		std::cin >> numar;
+		//conditie pusa pana cand se vor juca mai multe persoane
+		if (numar == m_raspuns)
+			std::cout << "Raspuns corect";
+		else
+			std::cout << "Raspuns gresit";
+	}
+}
+
 
 void IntrebareNumerica::AfisareAvantaje()
 { 

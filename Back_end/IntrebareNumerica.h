@@ -19,6 +19,7 @@ public:
 	void AfisareAvantaje();
 	void Avantaj4Raspunsuri();
 	double GenerareNumarRandom();
+	void Afisare();
 	friend std::istream& operator >> (std::istream& in, IntrebareNumerica& intr);
 	friend std::ostream& operator <<(std::ostream& out, const IntrebareNumerica& intr);
 	int DiferentaInput(int input);
