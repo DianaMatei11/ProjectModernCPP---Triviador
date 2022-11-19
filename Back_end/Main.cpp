@@ -1,5 +1,6 @@
 #include"IntrebariGrila.h"
 #include "IntrebareNumerica.h"
+#include "Conect.h"
 #include<iostream>
 #include <fstream>
 #include<vector>
@@ -59,6 +60,9 @@ void AlegeIntrebareNumerica(const std::vector<IntrebareNumerica>& vect_intrebari
 
 int main()
 {
+	Conect c;
+	c.meniu();
+
 	std::vector<IntrebariGrila> intrebariVariante;
 	std::ifstream in("IntrebariCuVariante.txt");
 	Read(in, intrebariVariante);

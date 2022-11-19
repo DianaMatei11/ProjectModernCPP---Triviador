@@ -9,7 +9,7 @@ std::string User::getUserName() const
 	return user_name;
 }
 
-std::string& User::getPassword()
+std::string User::getPassword() const
 {
 	return password;
 }
@@ -98,4 +98,10 @@ std::istream& operator>>(std::istream& in, User& user)
 {
 	in >> user.user_name >> user.password;
 	return in;
+}
+
+std::ostream& operator<<(std::ostream& out, User& user)
+{
+	out << user.user_name << ' ' << user.password;
+	return out;
 }

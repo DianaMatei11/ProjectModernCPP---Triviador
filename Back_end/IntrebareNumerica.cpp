@@ -1,4 +1,5 @@
 #include "IntrebareNumerica.h"
+
 IntrebareNumerica::IntrebareNumerica(std::string enunt, int raspuns)
 {
 	m_enunt = enunt;
@@ -47,6 +48,7 @@ double IntrebareNumerica::GenerareNumarRandom()
 	std::uniform_real_distribution<double> distribution(-100, 100);
 	return distribution(mt);
 }
+
 std::vector<int>IntrebareNumerica::Avantaj4Raspunsuri()
 {
 	std::vector<int>vect;

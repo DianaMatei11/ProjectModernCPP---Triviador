@@ -9,9 +9,8 @@ class Conect
 {
 	std::vector<User> users;
 public:
-	std::vector<User> getUsers();
-	bool findName(std::string name);
-	bool findPass(std::string pass);
+	std::vector<User>& getUsers();
+	int findUser(const std::string& name);
 	void signIn();
 	void logIn();
 	void meniu();
