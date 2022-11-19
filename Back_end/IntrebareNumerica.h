@@ -15,7 +15,9 @@ public:
 	int GetRaspuns() const;
 	bool VerificareRaspuns();
 	void AvantajAproximativRaspunsCorect();
-	std::vector<int> Avantaj4Raspunsuri();
+	std::vector<int> afis4();
+	void AfisareAvantaje();
+	void Avantaj4Raspunsuri();
 	double GenerareNumarRandom();
 	friend std::istream& operator >> (std::istream& in, IntrebareNumerica& intr);
 	friend std::ostream& operator <<(std::ostream& out, const IntrebareNumerica& intr);

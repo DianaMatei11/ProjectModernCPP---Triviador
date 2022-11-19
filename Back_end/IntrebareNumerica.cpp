@@ -1,5 +1,4 @@
 #include "IntrebareNumerica.h"
-
 IntrebareNumerica::IntrebareNumerica(std::string enunt, int raspuns)
 {
 	m_enunt = enunt;
@@ -22,7 +21,7 @@ int IntrebareNumerica::DiferentaInput(int input)
 
 bool IntrebareNumerica::VerificareRaspuns()
 {
-	if (m_raspuns < 30)
+	if (m_raspuns < 5)
 		return false;
 	return true;
 }
@@ -32,11 +31,11 @@ void IntrebareNumerica::AvantajAproximativRaspunsCorect()
 	srand(time(NULL));
 	std::random_device rd;
 	std::mt19937 mt(rd());
-	std::uniform_real_distribution<double> distribution(-10.0, 10.0);
+	std::uniform_real_distribution<double> distribution(-10, 10);
 	if (VerificareRaspuns() == true)
 	{
 		std::cout << "Raspunsul corect este apropiat de: ";
-		std::cout << m_raspuns + distribution(mt);
+		std::cout << m_raspuns + round(distribution(mt));
 	}
 }
 
@@ -46,25 +45,54 @@ double IntrebareNumerica::GenerareNumarRandom()
 	std::random_device rd;
 	std::mt19937 mt(rd());
 	std::uniform_real_distribution<double> distribution(-100, 100);
-	return distribution(mt);
+	return round(distribution(mt));
 }
-
-std::vector<int>IntrebareNumerica::Avantaj4Raspunsuri()
+std::vector<int>IntrebareNumerica::afis4()
 {
 	std::vector<int>vect;
 	int x = GenerareNumarRandom();
 	for (int i = 0; i < 4; i++)
 	{
-		vect[i] = x+m_raspuns;
+		if (m_raspuns - x < 5)
+		{ 
+			x = GenerareNumarRandom();
+		}
+		x = x + m_raspuns;
+		vect.push_back( x);
 		x = GenerareNumarRandom();
+		
 	}
-	if (std::find(vect.begin(), vect.end(), m_raspuns) != vect.end())
+	if (std::find(vect.begin(), vect.end(), m_raspuns) == vect.end())
 	{
 		x = GenerareNumarRandom();
 		x = abs(x) % 3;
 		vect[x] = m_raspuns;
 	}
 	return vect;
+}
+ 
+
+void IntrebareNumerica::AfisareAvantaje()
+{ 
+	int numar;
+	std::cout << "Puteti alege unul dintre urmatoarele avantaje: " << '\n';
+	std::cout << "1.Alegere raspuns! \n";
+	std::cout << "2.Sugerare raspuns!\n";
+	std::cin >> numar;
+	if (numar == 1)
+		Avantaj4Raspunsuri();
+	else
+		AvantajAproximativRaspunsCorect();
+}
+
+
+void IntrebareNumerica::Avantaj4Raspunsuri()
+{
+	std::vector<int>aux;
+	aux = afis4();
+	int a = 1;
+	for (int i = 0; i < aux.size(); i++)
+		std::cout <<a++ <<"." << aux[i] << '\n';
 }
 
 
