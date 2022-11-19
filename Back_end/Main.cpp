@@ -16,21 +16,20 @@ void Read(std::istream& in , std::vector<T>& vect_intrebari)
 	}
 }
 
-int Random()
+int GenerareRandom(const int max)
 {
-	srand(time(0));
-	return rand() % 10;
+	std::random_device rd;
+	std::mt19937 mt(rd());
+	std::uniform_int_distribution<int> x(0, max);
+	return x(mt);
 }
 
-void Intrebare(std::vector<IntrebariGrila>& vect_intrebari)
+void ValidareRaspuns(const int& raspunsCorect)
 {
-	int index, no;
-	index = Random();
-	std::cout << vect_intrebari[index];
-	std::cout << "Introduceti indexul raspunsului corect: ";
-	std::cin >> no;
+	int raspunsUser;
+	std::cin >> raspunsUser;
 	std::cout << '\n';
-	if (vect_intrebari[index].GetIndex_Rasp_Corect() == no)
+	if (raspunsCorect == raspunsUser)
 	{
 		std::cout << "Raspuns Corect!" << '\n';
 	}
@@ -40,13 +39,22 @@ void Intrebare(std::vector<IntrebariGrila>& vect_intrebari)
 	}
 }
 
-void GenerareRandom(std::vector<IntrebareNumerica>intrebari)
+void AlegeIntrebareGrila(const std::vector<IntrebariGrila>& vect_intrebari)
 {
-	std::random_device rd;
-	std::mt19937 mt(rd());
-	std::uniform_int_distribution<int> x(0, intrebari.size() - 1);
-	std::cout << intrebari[x(mt)] << '\n';
+	int index;
+	index = GenerareRandom(vect_intrebari.size() - 1);
+	std::cout << vect_intrebari[index];
+	std::cout << "Introduceti indexul raspunsului corect: ";
+	ValidareRaspuns(vect_intrebari[index].GetIndex_Rasp_Corect());
+}
+
+void AlegeIntrebareNumerica(const std::vector<IntrebareNumerica>& vect_intrebari)
+{
+	int index, no;
+	index = GenerareRandom(vect_intrebari.size() - 1);
+	std::cout << vect_intrebari[index];
 	std::cout << "Introduceti raspunsul corect: ";
+	ValidareRaspuns(vect_intrebari[index].GetRaspuns());
 }
 
 int main()
@@ -61,8 +69,8 @@ int main()
 	Read(inN, intrebariRaspunsUnic);
 	inN.close();
 
-	Intrebare(intrebariVariante);
-	GenerareRandom(intrebariRaspunsUnic);
+	AlegeIntrebareGrila(intrebariVariante);
+	AlegeIntrebareNumerica(intrebariRaspunsUnic);
 
 	return 0;
 }

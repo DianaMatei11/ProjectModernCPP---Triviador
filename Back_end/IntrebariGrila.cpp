@@ -27,16 +27,16 @@ void IntrebariGrila::SetIndex_Rasp_Corect(int index_rasp_corect)
 	this->index_rasp_corect = index_rasp_corect;
 }
 
-std::string IntrebariGrila::GetEnunt()
+std::string IntrebariGrila::GetEnunt() const
 {
 	return enunt;
 }
-std::array<std::string, 4> IntrebariGrila::GetRaspunsuri()
+std::array<std::string, 4> IntrebariGrila::GetRaspunsuri() const
 {
 	return raspunsuri;
 }
 
-int IntrebariGrila::GetIndex_Rasp_Corect()
+int IntrebariGrila::GetIndex_Rasp_Corect() const
 {
 	return index_rasp_corect;
 }

@@ -18,9 +18,9 @@ public:
 	void SetRaspunsuri(const std::string& raspunsuri);
 	void SetIndex_Rasp_Corect(int index_rasp_corect);
 
-	std::string GetEnunt();
-	std::array<std::string, 4> GetRaspunsuri();
-	int GetIndex_Rasp_Corect();
+	std::string GetEnunt() const;
+	std::array<std::string, 4> GetRaspunsuri() const;
+	int GetIndex_Rasp_Corect() const;
 
 	void AfisareAvantaj();
 	
