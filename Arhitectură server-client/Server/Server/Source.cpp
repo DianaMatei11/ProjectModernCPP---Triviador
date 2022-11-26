@@ -12,4 +12,14 @@ int main()
 	if (initQuestionsCount == 0)
 		populateNumericalQuestionStorage(numericalQuestDb);
 
+	std::vector<crow::json::wvalue> numericalQuest_json;
+	for (const auto& quest : numericalQuestDb.iterate<NumericalQuestion>())
+	{
+		numericalQuest_json.push_back(crow::json::wvalue{
+			{"id", quest.id},
+			{"question", quest.question},
+			{"answer", quest.answer}
+			});
+	}
+
 }
