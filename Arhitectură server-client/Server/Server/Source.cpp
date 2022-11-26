@@ -22,4 +22,11 @@ int main()
 			});
 	}
 
+	crow::SimpleApp app;
+	CROW_ROUTE(app, "/numericalQuestion")([&numericalQuest_json]() {
+		int index = std::rand() % numericalQuest_json.size();
+		return numericalQuest_json[index];
+		});
+
+	app.port(14040).multithreaded().run();
 }
