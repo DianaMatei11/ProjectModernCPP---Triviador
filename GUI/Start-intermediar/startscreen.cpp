@@ -21,7 +21,13 @@ StartScreen::StartScreen(QWidget *parent)
   // scene->addItem(1, &intscr);
 
 }
+void StartScreen::on_START_clicked()
+{
+    hide();
+    //intscr=new IntermediaryScreen(this);
+    intscr.show();
 
+}
 StartScreen::~StartScreen()
 {
     delete ui;

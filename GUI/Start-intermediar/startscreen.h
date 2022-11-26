@@ -2,6 +2,7 @@
 #define STARTSCREEN_H
 
 #include <QMainWindow>
+#include "intermediaryscreen.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -21,6 +22,7 @@ private slots:
 
 private:
     Ui::StartScreen *ui;
+    IntermediaryScreen intscr;
 
 
 };
