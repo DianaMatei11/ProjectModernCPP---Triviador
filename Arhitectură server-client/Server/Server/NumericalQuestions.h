@@ -12,12 +12,12 @@ struct NumericalQuestion
 {
 	int id;
 	std::string question;
-	int indexCorrectAnswer;
+	int answer;
 };
 
 
 
-inline auto createStorage(const std::string& filename)
+inline auto createNumericalQuestionStorage(const std::string& filename)
 {
 	return sql::make_storage(
 		filename,
@@ -25,13 +25,13 @@ inline auto createStorage(const std::string& filename)
 			"NumericalQuestions",
 			sql::make_column("id", &NumericalQuestion::id, sql::autoincrement(), sql::primary_key()),
 			sql::make_column("question", &NumericalQuestion::question),
-			sql::make_column("intdexCorrectAnswer", &NumericalQuestion::indexCorrectAnswer)
+			sql::make_column("intdexCorrectAnswer", &NumericalQuestion::answer)
 		)
 	);
 }
 
-using Storage = decltype(createStorage(""));
+using NumericalQuestionStorage = decltype(createNumericalQuestionStorage(""));
 
 
-void populateStorage(Storage& storage);
+void populateNumericalQuestionStorage(NumericalQuestionStorage& storage);
 

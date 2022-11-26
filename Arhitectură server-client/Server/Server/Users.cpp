@@ -1,7 +1,7 @@
 #include "Users.h"
 
 
-void populateStorage(Storage& storage)
+void populateUsersStorage(UsersStorage& storage)
 {
 	std::vector<User> users = {
 		User{ -1, "Iosif", "19", 0, 0},

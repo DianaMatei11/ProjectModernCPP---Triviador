@@ -1,7 +1,7 @@
-#include "Quizs.h"
+#include "Quizzes.h"
 
 
-void populateStorage(Storage& storage)
+void populateOptQuestionsStorage(OptQuestionsStorage& storage)
 {
 	std::vector<Quiz> qz = {
 		Quiz{ -1, "Care este cel mai lung fluviu din Europa?", "Dunarea", "Volga","Ron","Nipru", 1},

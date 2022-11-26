@@ -1,7 +1,7 @@
 #include "NumericalQuestions.h"
 
 
-void populateStorage(Storage& storage)
+void populateNumericalQuestionStorage(NumericalQuestionStorage& storage)
 {
 	std::vector<NumericalQuestion> questionsList = {
 		NumericalQuestion{ -1, "Care este lungimea fluviului Volga ?",3530 },

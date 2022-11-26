@@ -21,12 +21,12 @@ struct Quiz
 
 
 
-inline auto createStorage(const std::string& filename)
+inline auto createOptQuestionsStorage(const std::string& filename)
 {
 	return sql::make_storage(
 		filename,
 		sql::make_table(
-			"Products",
+			"Quizzes",
 			sql::make_column("id", &Quiz::id, sql::autoincrement(), sql::primary_key()),
 			sql::make_column("question", &Quiz::question),
 			sql::make_column("possibleAnsewer0", &Quiz::possibleAnswer0),
@@ -38,8 +38,8 @@ inline auto createStorage(const std::string& filename)
 	);
 }
 
-using Storage = decltype(createStorage(""));
+using OptQuestionsStorage = decltype(createOptQuestionsStorage(""));
 
 
-void populateStorage(Storage& storage);
+void populateOptQuestionsStorage(OptQuestionsStorage& storage);
 

@@ -19,12 +19,12 @@ struct User
 
 
 
-inline auto createStorage(const std::string& filename)
+inline auto createUsersStorage(const std::string& filename)
 {
 	return sql::make_storage(
 		filename,
 		sql::make_table(
-			"Products",
+			"Users",
 			sql::make_column("id", &User::id, sql::autoincrement(), sql::primary_key()),
 			sql::make_column("name", &User::name),
 			sql::make_column("pass", &User::pass),
@@ -34,8 +34,8 @@ inline auto createStorage(const std::string& filename)
 	);
 }
 
-using Storage = decltype(createStorage(""));
+using UsersStorage = decltype(createUsersStorage(""));
 
 
-void populateStorage(Storage& storage);
+void populateUsersStorage(UsersStorage& storage);
 
