@@ -26,5 +26,17 @@ public:
 	void forgotPasswordProtocol(std::ostream& out, std::istream& in);
 	~User() = default;
 
+	float getProcentajRaspunsuriCorecte();
+	int getMeciuriJucate();
+	int getScorMinim();
+	int getScorMaxim();
+	int getRaspunsuriCorecte();
+	int getRaspunsuriTotale();
+
+	void updateRaspunsuriCorecte();
+	void updateRaspunsuriTotale();
+	void updateMeciuriJucate();
+	void updateScorMinim(int scor);
+	void updateScorMaxim(int scor);
 };
 
