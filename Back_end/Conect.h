@@ -4,12 +4,13 @@
 #include <iostream>
 #include <regex>
 #include <fstream>
+#include <unordered_map>
 
 class Conect
 {
-	std::vector<User> users;
+	std::unordered_map<std::string, User> users;
 public:
-	std::vector<User>& getUsers();
+	std::unordered_map<std::string, User>& getUsers();
 	int findUser(const std::string& name);
 	void signIn();
 	void logIn();

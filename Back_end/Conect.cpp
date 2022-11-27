@@ -9,11 +9,16 @@ void Conect::readFile()
 		exit(0);
 	}
 	{
-		User user;
+		std::string user_name, password;
+		int raspunsIntrebariCorecte;
+		int raspunsuriTotale;
+		int meciuriJucate;
+		int scorMaxim, scorMinim;
 		while (!file.eof())
 		{
-			file >> user;
-			users.emplace_back(user);
+			file >> user_name >> password >> raspunsIntrebariCorecte >> raspunsuriTotale >> meciuriJucate >> scorMaxim >> scorMinim;
+			User u1(user_name, password, raspunsIntrebariCorecte, raspunsuriTotale, meciuriJucate, scorMaxim, scorMinim);
+			users.insert(std::pair<std::string,User> (user_name, u1));
 		}
 	}
 	file.close();
@@ -23,11 +28,11 @@ void Conect::saveInFile()
 {
 	std::ofstream file{ "users.txt" };
 	remove("users.txt");
-	for (int i = 0; i < users.size() - 1; i++)
+	for (auto& user : users)
 	{
-		file << users[i] << '\n';
+		User u1 = user.second;
+		file << u1.getUserName() << ' ' << u1.getPassword() << ' ' << u1.getRaspunsuriCorecte() << ' ' << u1.getRaspunsuriTotale() << ' ' << u1.getMeciuriJucate() << ' ' << u1.getScorMaxim() << ' ' << u1.getScorMinim() << '\n';
 	}
-	file << users[users.size() - 1];
 	file.close();
 }
 
@@ -43,21 +48,16 @@ void Conect::schimbareParolaCorecta(User& user)
 	}
 }
 
-std::vector<User>& Conect::getUsers()
+std::unordered_map<std::string,User>& Conect::getUsers()
 {
 	return users;
 }
 
 int Conect::findUser(const std::string& name)
 {
-	for (int i = 0; i < users.size(); i++)
-	{
-		if (users[i].getUserName() == name)
-		{
-			return i;
-		}
-	}
-	return -1;
+	if (users.find(name) == users.end())
+		return -1;
+	return 1;
 }
 
 void Conect::signIn()
@@ -86,10 +86,10 @@ citireUsername:
 	std::cout << "[INFO] Username-ul este disponibil.\n";
 	std::cout << "Enter your password: ";
 	std::cin >> pass0;
-	User x(name0, pass0);
+	User x(name0, pass0,0,0,0,0,0);
 	schimbareParolaCorecta(x);
 	std::cout << "[INFO] Username-ul si parola au fost salvate!\n";
-	users.emplace_back(x);
+	users.insert(std::pair<std::string, User>(name0, x));
 }
 
 void Conect::logIn()
@@ -101,11 +101,13 @@ void Conect::logIn()
 	if (userIndex == -1)
 	{
 		std::cout << "Your account does not exist\n";
+		return;
 	}
 	else {
 		std::cout << "Enter your password: ";
 		std::cin >> pass0;
-		while (users[userIndex].getPassword() != pass0)
+		User user = users[name0];
+		while(user.getPassword()!=pass0)
 		{
 			std::cout << "Your password is not correct.\n";
 			char parolaUitata;
@@ -113,8 +115,8 @@ void Conect::logIn()
 			std::cin >> parolaUitata;
 			if (parolaUitata == 'y')
 			{
-				users[userIndex].forgotPasswordProtocol(std::cout, std::cin);
-				schimbareParolaCorecta(users[userIndex]);
+				user.forgotPasswordProtocol(std::cout, std::cin);
+				schimbareParolaCorecta(user);
 				std::cout << "[INFO] Parola a fost schimbata!\n";
 				std::cout << "Please enter again: ";
 				std::cin >> pass0;
@@ -124,6 +126,7 @@ void Conect::logIn()
 				std::cin >> pass0;
 			}
 		}
+		users[name0] = user;
 	}
 	std::cout << "[INFO] Sunteti conectat!\n";
 }
