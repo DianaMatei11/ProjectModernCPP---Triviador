@@ -1,8 +1,24 @@
 #include "User.h"
 
-User::User(std::string userName, std::string pass):
+User::User(std::string userName, std::string pass) :
 	user_name{userName}, password{pass}
-{}
+{
+	m_raspunsIntrebariCorecte = 0;
+	m_raspunsuriTotale = 0;
+	m_meciuriJucate = 0;
+	m_scorMinim = 0;
+	m_scorMaxim = 0;
+}
+
+User::User(std::string userName, std::string pass, int raspunsIntrebariCorecte, int raspunsuriTotale, int meciuriJucate, int scorMaxim, int scorMinim):
+	user_name{ userName }, password{ pass }
+{
+	m_raspunsIntrebariCorecte = raspunsIntrebariCorecte;
+	m_raspunsuriTotale = raspunsuriTotale;
+	m_meciuriJucate = meciuriJucate;
+	m_scorMinim = scorMaxim;
+	m_scorMaxim = scorMinim;
+}
 
 std::string User::getUserName() const
 {
@@ -93,15 +109,3 @@ again:
 	}
 }
 
-
-std::istream& operator>>(std::istream& in, User& user)
-{
-	in >> user.user_name >> user.password;
-	return in;
-}
-
-std::ostream& operator<<(std::ostream& out, User& user)
-{
-	out << user.user_name << ' ' << user.password;
-	return out;
-}

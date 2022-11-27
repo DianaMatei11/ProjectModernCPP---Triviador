@@ -1,14 +1,22 @@
 #pragma once
 #include <fstream>
+#include <iostream>
 
 class User
 {
 private:
 	std::string user_name, password;
+	int m_raspunsIntrebariCorecte;
+	int m_raspunsuriTotale;
+	int m_meciuriJucate;
+	int m_scorMaxim, m_scorMinim;
 
 public:
 	User() = default;
 	User(std::string userName, std::string pass);
+
+	User(std::string userName, std::string pass,int raspunsIntrebariCorecte,int raspunsuriTotale,int meciuriJucate,int scorMaxim,int scorMinim);
+	
 	std::string getUserName() const;
 	std::string getPassword() const;
 	void changePassword(const std::string& pass);
@@ -17,5 +25,6 @@ public:
 	std::string checkStrongPassword();
 	void forgotPasswordProtocol(std::ostream& out, std::istream& in);
 	~User() = default;
+
 };
 
