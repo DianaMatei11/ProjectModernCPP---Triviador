@@ -1,19 +1,14 @@
 #include "IntrebareNumerica.h"
-IntrebareNumerica::IntrebareNumerica(std::string enunt, int raspuns)
-{
-	m_enunt = enunt;
-	m_raspuns = raspuns;
-}
 
-std::string IntrebareNumerica::GetEnunt() const
+IntrebareNumerica::IntrebareNumerica(const std::string& enunt, int raspuns):Intrebare(enunt),m_raspuns{raspuns}
 {
-	return m_enunt;
 }
 
 int IntrebareNumerica::GetRaspuns() const
 {
 	return m_raspuns;
 }
+
 int IntrebareNumerica::DiferentaInput(int input)
 {
 	return abs(input - m_raspuns);
@@ -28,43 +23,31 @@ bool IntrebareNumerica::VerificareRaspuns()
 
 void IntrebareNumerica::AvantajAproximativRaspunsCorect()
 {
-	srand(time(NULL));
-	std::random_device rd;
-	std::mt19937 mt(rd());
-	std::uniform_real_distribution<double> distribution(-10, 10);
 	if (VerificareRaspuns() == true)
 	{
 		std::cout << "Raspunsul corect este apropiat de: ";
-		std::cout << m_raspuns + round(distribution(mt));
+		std::cout << m_raspuns + round(GetRandomNumber(-10,10));
 	}
 }
 
-double IntrebareNumerica::GenerareNumarRandom()
-{
-	srand(time(NULL));
-	std::random_device rd;
-	std::mt19937 mt(rd());
-	std::uniform_real_distribution<double> distribution(-100, 100);
-	return round(distribution(mt));
-}
 std::vector<int>IntrebareNumerica::afis4()
 {
 	std::vector<int>vect;
-	int x = GenerareNumarRandom();
+	int x = GetRandomNumber(-100,100);
 	for (int i = 0; i < 4; i++)
 	{
 		while(m_raspuns + x <5)
 		{ 
-			x = GenerareNumarRandom();
+			x = GetRandomNumber(-100,100);
 		}
 		x = x + m_raspuns;
 		vect.push_back( x);
-		x = GenerareNumarRandom();
+		x = GetRandomNumber(-100,100);
 		
 	}
 	if (std::find(vect.begin(), vect.end(), m_raspuns) == vect.end())
 	{
-		x = GenerareNumarRandom();
+		x = GetRandomNumber(-100, 100);
 		x = abs(x) % 3;
 		vect[x] = m_raspuns;
 	}

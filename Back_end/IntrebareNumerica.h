@@ -2,23 +2,22 @@
 #include<string>
 #include <iostream>
 #include<random>
-class IntrebareNumerica
+#include "Intrebare.h"
+
+class IntrebareNumerica:public Intrebare
 {
 private:
-	std::string m_enunt;
 	int m_raspuns;
 
 public:
 	IntrebareNumerica() = default;
-	IntrebareNumerica(std::string enunt, int raspuns);
-	std::string GetEnunt() const;
+	IntrebareNumerica(const std::string& enunt, int raspuns);
 	int GetRaspuns() const;
 	bool VerificareRaspuns();
 	void AvantajAproximativRaspunsCorect();
 	std::vector<int> afis4();
 	void AfisareAvantaje();
 	void Avantaj4Raspunsuri();
-	double GenerareNumarRandom();
 	void Afisare();
 	void VerificareRaspunsDupaAvantaj();
 	friend std::istream& operator >> (std::istream& in, IntrebareNumerica& intr);
