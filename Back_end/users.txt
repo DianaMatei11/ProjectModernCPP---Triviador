@@ -1,5 +1,5 @@
-jack0 Bala32-ds
-ionel23 Janes-Romanes13
-madalin0972 laMelci!32
-mipmip Bla+Nao12
-anaBanana Andale12+
+jack0 Bala32-ds 0 0 0 0 0
+ionel23 Janes-Romanes13 0 0 0 0 0
+madalin0972 laMelci!32 0 0 0 0 0
+mipmip Bla+Nao12 0 0 0 0 0
+anaBanana Andale12+ 0 0 0 0 0
