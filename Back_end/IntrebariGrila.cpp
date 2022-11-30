@@ -3,20 +3,12 @@
 #include<vector>
 
 
-IntrebariGrila::IntrebariGrila(std::string enunt, std::array < std::string, 4> raspunsuri, int index_rasp_corect)
+IntrebariGrila::IntrebariGrila(const std::string& enunt, std::array < std::string, 4>& answers, int indexRaspunsCorect):Intrebare(enunt),raspunsuri{answers},index_rasp_corect{indexRaspunsCorect}
 {
-	this->enunt = enunt;
-	this->raspunsuri = raspunsuri;
-	this->index_rasp_corect = index_rasp_corect;
-
 }
 
-void IntrebariGrila::SetEnunt(const std::string& enunt)
-{
-	this->enunt = enunt;
-}
 
-void IntrebariGrila::SetRaspunsuri(const std::string& raspunsuri)
+void IntrebariGrila::SetRaspunsuri(const std::array<std::string,4>& raspunsuri)
 {
 	for (int i = 0; i < 4; i++)
 		this->raspunsuri[i] = raspunsuri[i];
@@ -27,10 +19,7 @@ void IntrebariGrila::SetIndex_Rasp_Corect(int index_rasp_corect)
 	this->index_rasp_corect = index_rasp_corect;
 }
 
-std::string IntrebariGrila::GetEnunt() const
-{
-	return enunt;
-}
+
 std::array<std::string, 4> IntrebariGrila::GetRaspunsuri() const
 {
 	return raspunsuri;
@@ -43,13 +32,12 @@ int IntrebariGrila::GetIndex_Rasp_Corect() const
 
 void IntrebariGrila::AfisareAvantaj()
 {
-	srand (time(NULL));
-	int r = rand() % 4;
+	int r = GetRandomNumber(0,3);
 	int x = GetIndex_Rasp_Corect();
 	x--;
 	while (r ==x)
 	{
-		r = rand() % 4;
+		r = GetRandomNumber(0, 3);
 	}
 
 	std::cout << "Avantajul FIFTY - FIFTY este: " << '\n';
@@ -63,7 +51,8 @@ std::istream& operator>>(std::istream& in, IntrebariGrila& intrebari)
 {
 	std::string str;
 	std::getline(in, str);
-	intrebari.enunt = str;
+	intrebari.SetEnunt(str);
+
 	for (int i = 0; i < 4; i++)
 	{
 		getline(in, str);
@@ -77,7 +66,7 @@ std::istream& operator>>(std::istream& in, IntrebariGrila& intrebari)
 }
 std::ostream& operator <<(std::ostream& out, const IntrebariGrila& a)
 {
-	out << a.enunt << '\n';
+	out << a.GetEnunt() << '\n';
 	out << "Variante de raspuns: " << '\n';
 	out << "1." << a.raspunsuri[0] << '\n';
 	out << "2." << a.raspunsuri[1] << '\n';

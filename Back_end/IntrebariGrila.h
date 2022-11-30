@@ -4,21 +4,20 @@
 #include<string>
 #include<array>
 #include<vector>
-class IntrebariGrila
+#include "Intrebare.h"
+
+class IntrebariGrila:public Intrebare
 {
 private:
-	std::string enunt;
 	std::array <std::string, 4> raspunsuri;
 	int index_rasp_corect;
 public:
 	IntrebariGrila() = default;
-	IntrebariGrila(std::string enunt, std::array < std::string, 4> raspunsuri, int index_rasp_corect);
+	IntrebariGrila(const std::string& enunt, std::array < std::string, 4>& answers, int indexRaspunsCorect);
 
-	void SetEnunt(const std::string& enunt);
-	void SetRaspunsuri(const std::string& raspunsuri);
+	void SetRaspunsuri(const std::array<std::string,4>& raspunsuri);
 	void SetIndex_Rasp_Corect(int index_rasp_corect);
 
-	std::string GetEnunt() const;
 	std::array<std::string, 4> GetRaspunsuri() const;
 	int GetIndex_Rasp_Corect() const;
 
@@ -26,6 +25,6 @@ public:
 	
 	friend std::istream& operator>>(std::istream& in, IntrebariGrila& a);
 	friend std::ostream& operator << (std::ostream& out, const IntrebariGrila& a);
-	//~IntrebariGrila();
+	~IntrebariGrila()=default;
 };
 
