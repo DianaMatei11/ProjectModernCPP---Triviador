@@ -1,14 +1,19 @@
 #include "IntrebareNumerica.h"
-
-IntrebareNumerica::IntrebareNumerica(const std::string& enunt, int raspuns):Intrebare(enunt),m_raspuns{raspuns}
+IntrebareNumerica::IntrebareNumerica(std::string enunt, int raspuns)
 {
+	m_enunt = enunt;
+	m_raspuns = raspuns;
+}
+
+std::string IntrebareNumerica::GetEnunt() const
+{
+	return m_enunt;
 }
 
 int IntrebareNumerica::GetRaspuns() const
 {
 	return m_raspuns;
 }
-
 int IntrebareNumerica::DiferentaInput(int input)
 {
 	return abs(input - m_raspuns);
@@ -23,31 +28,43 @@ bool IntrebareNumerica::VerificareRaspuns()
 
 void IntrebareNumerica::AvantajAproximativRaspunsCorect()
 {
+	srand(time(NULL));
+	std::random_device rd;
+	std::mt19937 mt(rd());
+	std::uniform_real_distribution<double> distribution(-10, 10);
 	if (VerificareRaspuns() == true)
 	{
 		std::cout << "Raspunsul corect este apropiat de: ";
-		std::cout << m_raspuns + round(GetRandomNumber(-10,10));
+		std::cout << m_raspuns + round(distribution(mt));
 	}
 }
 
+double IntrebareNumerica::GenerareNumarRandom()
+{
+	srand(time(NULL));
+	std::random_device rd;
+	std::mt19937 mt(rd());
+	std::uniform_real_distribution<double> distribution(-100, 100);
+	return round(distribution(mt));
+}
 std::vector<int>IntrebareNumerica::afis4()
 {
 	std::vector<int>vect;
-	int x = GetRandomNumber(-100,100);
+	int x = GenerareNumarRandom();
 	for (int i = 0; i < 4; i++)
 	{
-		while(m_raspuns + x <5)
-		{ 
-			x = GetRandomNumber(-100,100);
+		while (m_raspuns + x < 5)
+		{
+			x = GenerareNumarRandom();
 		}
 		x = x + m_raspuns;
-		vect.push_back( x);
-		x = GetRandomNumber(-100,100);
-		
+		vect.push_back(x);
+		x = GenerareNumarRandom();
+
 	}
 	if (std::find(vect.begin(), vect.end(), m_raspuns) == vect.end())
 	{
-		x = GetRandomNumber(-100, 100);
+		x = GenerareNumarRandom();
 		x = abs(x) % 3;
 		vect[x] = m_raspuns;
 	}
@@ -86,16 +103,26 @@ void IntrebareNumerica::VerificareRaspunsDupaAvantaj()
 		std::cout << "raspuns gresit";
 }
 
+void IntrebareNumerica::setEnunt(std::string a)
+{
+	this->m_enunt = a;
+}
+
+void IntrebareNumerica::setRaspuns(int i)
+{
+	this->m_raspuns = i;
+}
+
 
 void IntrebareNumerica::AfisareAvantaje()
-{ 
+{
 	int numar;
 	std::cout << "Puteti alege unul dintre urmatoarele avantaje: " << '\n';
 	std::cout << "1.Alegere raspuns! \n";
 	std::cout << "2.Sugerare raspuns!\n";
 	std::cin >> numar;
 	if (numar == 1)
-	{ 
+	{
 		Avantaj4Raspunsuri();
 		VerificareRaspunsDupaAvantaj();
 	}
@@ -110,8 +137,8 @@ void IntrebareNumerica::Avantaj4Raspunsuri()
 	aux = afis4();
 	int a = 1;
 	for (int i = 0; i < aux.size(); i++)
-		std::cout <<a++ <<"." << aux[i] << '\n';
-	
+		std::cout << a++ << "." << aux[i] << '\n';
+
 }
 
 
@@ -134,3 +161,4 @@ std::ostream& operator<<(std::ostream& out, const IntrebareNumerica& intr)
 	//acest lucru se face intr-o functie ulterioara
 	return out;
 }
+
