@@ -1,30 +1,30 @@
-#include "Users.h"
-#include "Quizzes.h"
-#include "NumericalQuestions.h"
-
+#include "Storage.h"
 
 int main()
 {
-	const std::string db_file = "numericalQuestions.sqlite";
-	NumericalQuestionStorage numericalQuestDb = createNumericalQuestionStorage(db_file);
-	numericalQuestDb.sync_schema();
-	auto initQuestionsCount = numericalQuestDb.count<NumericalQuestion>();
-	if (initQuestionsCount == 0)
-		populateNumericalQuestionStorage(numericalQuestDb);
+	const std::string db_file = "Storage.sqlite";
+	Storage storage = createStorage(db_file);
+	storage.sync_schema();
+	auto initUsersCount = storage.count<User>();
+	if (initUsersCount == 0)
+	{
+		populateStorage(storage);
+	}
+
 
 	std::vector<crow::json::wvalue> numericalQuest_json;
-	for (const auto& quest : numericalQuestDb.iterate<NumericalQuestion>())
+	for (const auto& quest : storage.iterate<IntrebareNumerica>())
 	{
 		numericalQuest_json.push_back(crow::json::wvalue{
-			{"id", quest.id},
-			{"question", quest.question},
-			{"answer", quest.answer}
+			{"Id", quest.GetId()},
+			{"Question", quest.GetEnunt()}
 			});
 	}
 
+
 	crow::SimpleApp app;
 	CROW_ROUTE(app, "/numericalQuestion")([&numericalQuest_json]() {
-		int index = std::rand() % numericalQuest_json.size();
+		int index = Intrebare::GetRandomNumber(0, numericalQuest_json.size());
 		return numericalQuest_json[index];
 		});
 
