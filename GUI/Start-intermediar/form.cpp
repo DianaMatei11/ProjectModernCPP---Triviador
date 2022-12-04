@@ -61,6 +61,24 @@ void Form::on_submit_clicked()
 
 
         }
+        else
+        {
+            auto response=cpr::Post(
+                        cpr::Url{ "http://localhost:18080/createnewuser" },
+                        cpr::User{
+                            { "Name", ui->username->text().toStdString()},
+                            { "Password", ui->password->text().toStdString() }
+                        }
+                        );
+            if (response.status_code == 200 || response.status_code == 201) {
+                               //inregistrare cu succes, trecerea in ecranul de pornire
+                           }
+                           else {
+                               QErrorMessage msg;
+                               msg.showMessage("Invalid username or password!");
+                           }
+
+        }
 
 
 }
