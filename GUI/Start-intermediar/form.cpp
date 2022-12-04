@@ -33,6 +33,35 @@ Form::~Form()
     delete ui;
 }
 
+void Form::on_submit_clicked()
+{
+    if(ui->username->text().isEmpty() || ui->password->text().isEmpty())
+    {
+        ui->error->show();
+    }
+    else
+    {
+        ui->error->hide();
+        if(mode)
+        {
+            auto response=cpr::Put(
+                        cpr::Url{ "http://localhost:18080/verifylogin" },
+                        cpr::User{
+                            { "Name", ui->username->text().toStdString()},
+                            { "Password", ui->password->text().toStdString() }
+                        }
+                        );
+            if (response.status_code == 200 || response.status_code == 201) {
+                               //logare cu succes, trecerea in ecranul de pornire
+                           }
+                           else {
+                               QErrorMessage msg;
+                               msg.showMessage("Invalid username or password!");
+                           }
 
 
+        }
+
+
+}
 
