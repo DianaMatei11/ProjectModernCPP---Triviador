@@ -21,3 +21,18 @@ IntermediaryScreen::~IntermediaryScreen()
 {
     delete ui;
 }
+
+void IntermediaryScreen::on_login_clicked()
+{
+    hide();
+    f.setMode(true);
+    f.show();
+}
+
+
+void IntermediaryScreen::on_signup_clicked()
+{
+    hide();
+    f.setMode(false);
+    f.show();
+}
