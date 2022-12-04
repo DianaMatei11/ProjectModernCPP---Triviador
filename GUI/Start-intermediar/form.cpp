@@ -45,8 +45,8 @@ void Form::on_submit_clicked()
         if(mode)
         {
             auto response=cpr::Put(
-                        cpr::Url{ "http://localhost:18080/verifylogin" },
-                        cpr::User{
+                        cpr::Url{ "http://localhost:14040/verifylogin" },
+                        cpr::Payload{
                             { "Name", ui->username->text().toStdString()},
                             { "Password", ui->password->text().toStdString() }
                         }
@@ -64,8 +64,8 @@ void Form::on_submit_clicked()
         else
         {
             auto response=cpr::Post(
-                        cpr::Url{ "http://localhost:18080/createnewuser" },
-                        cpr::User{
+                        cpr::Url{ "http://localhost:14040/createnewuser" },
+                        cpr::Payload{
                             { "Name", ui->username->text().toStdString()},
                             { "Password", ui->password->text().toStdString() }
                         }
