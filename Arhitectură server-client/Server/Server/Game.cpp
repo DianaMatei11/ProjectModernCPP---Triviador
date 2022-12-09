@@ -28,6 +28,17 @@ void Game::initQuizzes_json()
 			});
 	}
 }
+
+void Game::initNumericalAnswers_json()
+{
+	for (const auto& quest : storage.iterate<IntrebareNumerica>())
+	{
+		numericalAnswers_json.push_back(crow::json::wvalue{
+			{"CorrectAnswer", quest.GetRaspuns()}
+			});
+	}
+}
+
 void Game::sentANumericalQuestionRoute(std::vector<crow::json::wvalue> numericalQuest_json)
 {
 	CROW_ROUTE(app, "/numericalQuestion")([&numericalQuest_json]() {
@@ -43,3 +54,13 @@ void Game::sentAGrillQuestionRoute(std::vector<crow::json::wvalue> quizzes_json)
 		return quizzes_json[index];
 		});
 }
+
+int Game::verifyCorrectAnswer(std::vector<crow::json::wvalue> numericalAnswers_json, int id, std::vector<int> answers)
+{
+	CROW_ROUTE(app, "/numericalQuestion")([&numericalAnswers_json,id]() {
+		return  numericalAnswers_json[id];
+		});
+	return 0;
+}
+
+
