@@ -17,4 +17,5 @@ public:
 	void initQuizzes_json();
 	
 	void sentANumericalQuestionRoute(std::vector<crow::json::wvalue> numericalQuest_json);
+	void sentAGrillQuestionRoute(std::vector<crow::json::wvalue> quizzes_json);
 };

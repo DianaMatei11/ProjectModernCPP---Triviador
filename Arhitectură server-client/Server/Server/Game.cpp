@@ -35,3 +35,11 @@ void Game::sentANumericalQuestionRoute(std::vector<crow::json::wvalue> numerical
 		return numericalQuest_json[index];
 		});
 }
+
+void Game::sentAGrillQuestionRoute(std::vector<crow::json::wvalue> quizzes_json)
+{
+	CROW_ROUTE(app, "/numericalQuestion")([&quizzes_json]() {
+		int index = Intrebare::GetRandomNumber(0, quizzes_json.size());
+		return quizzes_json[index];
+		});
+}
