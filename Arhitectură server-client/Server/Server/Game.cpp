@@ -39,6 +39,8 @@ void Game::initNumericalAnswers_json()
 	}
 }
 
+
+
 void Game::sentANumericalQuestionRoute(std::vector<crow::json::wvalue> numericalQuest_json)
 {
 	CROW_ROUTE(app, "/numericalQuestion")([&numericalQuest_json]() {
@@ -59,6 +61,14 @@ int Game::verifyCorrectAnswer(std::vector<crow::json::wvalue> numericalAnswers_j
 {
 	CROW_ROUTE(app, "/numericalQuestion")([&numericalAnswers_json,id]() {
 		return  numericalAnswers_json[id];
+		});
+	return 0;
+}
+
+int Game::verifyCorrectGrillAnswer(std::vector<crow::json::wvalue> quizzes_json, int id, std::vector<int> answers)
+{
+	CROW_ROUTE(app, "/numericalQuestion")([&quizzes_json, id]() {
+		return  quizzes_json[id];
 		});
 	return 0;
 }
