@@ -99,7 +99,7 @@ void User::forgotPasswordProtocol(std::ostream& out, std::istream& in)
 again:
 	out << "Type the last password you remember or at least 60% of it: ";
 	in >> pass;
-	while (pass.size() < (int)(password.size() * 3.0 / 5.0))
+	while (pass.size() < static_cast<int>(password.size() * 3.0 / 5.0))
 	{
 		out << "Sorry, it's too short. Try again: ";
 		in >> pass;
@@ -122,7 +122,7 @@ again:
 float User::getProcentajRaspunsuriCorecte()
 {
 	if (m_raspunsuriTotale != 0) {
-		return float(m_raspunsIntrebariCorecte) / float(m_raspunsuriTotale);
+		return static_cast<float>(m_raspunsIntrebariCorecte / m_raspunsuriTotale);
 	}
 	else
 	{
