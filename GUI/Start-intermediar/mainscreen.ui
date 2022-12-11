@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainScreen</class>
+ <widget class="QMainWindow" name="MainScreen">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QStackedWidget" name="account">
+    <property name="geometry">
+     <rect>
+      <x>-1</x>
+      <y>-1</y>
+      <width>801</width>
+      <height>571</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image:url(&quot;:/images/images/AccountScreen.jpg&quot;);</string>
+    </property>
+    <widget class="QWidget" name="mainAcount">
+     <widget class="QLabel" name="logo">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>50</y>
+        <width>731</width>
+        <height>121</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPixmap pix(&quot;:/images/images/logoFinal.png&quot;);
+background-image:url(&quot;:/images/images/logoFinal.png&quot;);</string>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="configuration">
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>280</y>
+        <width>301</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton 
+{background : rgb(115, 66, 55); color: rgb(245, 242, 220); font-size: 25px; font: Bold; font-family:Georgia; border-radius:15px
+}
+QPushButton:Hover
+{
+background-color: rgb(105,0,16);
+}</string>
+      </property>
+      <property name="text">
+       <string>New game</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="statistics">
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>380</y>
+        <width>301</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton 
+{background : rgb(115, 66, 55); color: rgb(245, 242, 220); font-size: 25px; font: Bold; font-family:Georgia; border-radius:15px
+}
+QPushButton:Hover
+{
+background-color: rgb(105,0,16);
+}</string>
+      </property>
+      <property name="text">
+       <string>History and statistics</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="history"/>
+    <widget class="QWidget" name="gameMode"/>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>26</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

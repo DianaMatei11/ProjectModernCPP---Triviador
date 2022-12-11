@@ -2,5 +2,6 @@
     <qresource prefix="/images">
         <file>images/logoFinal.png</file>
         <file>images/MainScreen Triviador.jpg</file>
+        <file>images/AccountScreen.jpg</file>
     </qresource>
 </RCC>

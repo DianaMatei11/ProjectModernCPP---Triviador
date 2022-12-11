@@ -20,6 +20,8 @@ Form::Form(QWidget *parent, bool mode) :
 
     ui->password->setEchoMode(QLineEdit::Password);
     ui->error->hide();
+    ui->password->setMaxLength(30);
+    ui->username->setMaxLength(30);
 }
 
 void Form::setMode(bool m)
@@ -52,7 +54,7 @@ void Form::on_submit_clicked()
                 }
             );
             if (response.status_code == 200 || response.status_code == 201) {
-                //logare cu succes, trecerea in ecranul de pornire
+
             }
             else {
                 QErrorMessage msg;
@@ -71,7 +73,7 @@ void Form::on_submit_clicked()
                 }
             );
             if (response.status_code == 200 || response.status_code == 201) {
-                //inregistrare cu succes, trecerea in ecranul de pornire
+
             }
             else {
                 QErrorMessage msg;

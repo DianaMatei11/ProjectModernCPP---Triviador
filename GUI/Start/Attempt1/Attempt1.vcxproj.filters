@@ -32,6 +32,9 @@
     <QtUic Include="..\..\Start-intermediar\startscreen.ui">
       <Filter>Form Files</Filter>
     </QtUic>
+    <QtUic Include="..\..\Start-intermediar\mainscreen.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="..\..\Start-intermediar\form.h">
@@ -41,6 +44,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="..\..\Start-intermediar\startscreen.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="..\..\Start-intermediar\mainscreen.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
@@ -60,6 +66,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Start-intermediar\startscreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Start-intermediar\mainscreen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

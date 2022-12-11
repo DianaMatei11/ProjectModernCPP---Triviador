@@ -12,15 +12,19 @@ SOURCES += \
     form.cpp \
     intermediaryscreen.cpp \
     main.cpp \
+    mainscreen.cpp \
     startscreen.cpp
 
 HEADERS += \
     form.h \
     intermediaryscreen.h \
+    mainscreen.h \
     startscreen.h
 
 FORMS += \
+    form.ui \
     intermediaryscreen.ui \
+    mainscreen.ui \
     startscreen.ui
 
 # Default rules for deployment.
