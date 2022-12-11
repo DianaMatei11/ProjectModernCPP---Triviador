@@ -15,3 +15,12 @@ private:
 };
 
 void routeForLogin(crow::SimpleApp& app, Storage& m_db);
+class VerifyUserLogin
+{
+public:
+	VerifyUserLogin(Storage& storage);
+
+	crow::response operator() (const crow::request& req) const;
+private:
+	Storage& m_db;
+};

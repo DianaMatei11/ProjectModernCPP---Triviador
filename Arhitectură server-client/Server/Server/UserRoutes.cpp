@@ -27,6 +27,8 @@ AddNewUserHandler::AddNewUserHandler(Storage& storage) :
 	m_db{ storage }
 {}
 
+
+
 crow::response AddNewUserHandler::operator() (const crow::request& req) const
 {
 	auto bodyArgs = parseUrlArgs(req.body); //id=2&quantity=3&...
@@ -59,5 +61,33 @@ void routeForLogin(crow::SimpleApp& app, Storage& m_db)
 {
 	auto& user = CROW_ROUTE(app, "/verifylogin")
 		.methods(crow::HTTPMethod::PUT);
-	//user(VerifyUserLogin(m_db));
+	user(VerifyUserLogin(m_db));
+}
+
+VerifyUserLogin::VerifyUserLogin(Storage& storage)
+	: m_db{storage}
+{}
+
+crow::response VerifyUserLogin::operator()(const crow::request& req) const
+{
+	auto bodyArgs = parseUrlArgs(req.body); 
+	auto end = bodyArgs.end();
+	auto nameIter = bodyArgs.find("Name");
+	auto passIter = bodyArgs.find("Password");
+	if (nameIter != end && passIter != end)
+	{
+		if (const auto& user = existUserName(nameIter->second, m_db))
+		{
+			if (user->getPassword() == passIter->second)
+			{
+				return crow::response(200); //Ok
+			}
+			else
+			{
+				return crow::response(409); //The password is wrong
+			}
+		}
+		return crow::response(404); //User not found
+	}
+	return crow::response(400); //The transmited info was not ok 
 }
