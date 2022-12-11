@@ -20,9 +20,14 @@ public:
 	void initQuizzes_json();
 	void initNumericalAnswers_json();
 	
+	void getUsersAnswer();
+	void WinnersNumericalQuestion(std::string id);
+	void WinnersGrillQuestion(std::string id);
+
 	int sentANumericalQuestionRoute();
 	int sentAGrillQuestionRoute();
 	
-	int verifyCorrectAnswer(int id, std::vector<int> answers);
-	int verifyCorrectGrillAnswer(int id, std::vector<int> answers);
+	int SentCorrectAnswer(int id, std::vector<int> answers);
+	int SentCorrectGrillAnswer(int id, std::vector<int> answers);
+
 };

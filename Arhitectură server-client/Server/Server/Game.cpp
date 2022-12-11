@@ -39,6 +39,17 @@ void Game::initNumericalAnswers_json()
 	}
 }
 
+void Game::getUsersAnswer()
+{
+	auto& req = CROW_ROUTE(app, "/numericalQuestion/GetUsersAnswer")
+		.methods(crow::HTTPMethod::PUT);
+	//Handler- functor
+}
+
+void Game::Winers(std::string id)
+{
+}
+
 
 
 int Game::sentANumericalQuestionRoute()
@@ -59,7 +70,20 @@ int Game::sentAGrillQuestionRoute()
 	return index;
 }
 
-int Game::verifyCorrectAnswer(int id, std::vector<int> answers)
+void Game::WinnersNumericalQuestion(std::string id) {
+	CROW_ROUTE(app, "/numericalQuestion/winner")([id]() {
+		return id;
+		});
+	
+}
+
+void Game::WinnersGrillQuestion(std::string id) {
+	CROW_ROUTE(app, "/Quiz/winner")([id]() {
+		return id;
+		});
+
+}
+int Game::SentCorrectAnswer(int id, std::vector<int> answers)
 {
 	CROW_ROUTE(app, "/numericalQuestion/answer")([this, id]() {
 		return  numericalAnswers_json[id];
@@ -67,7 +91,7 @@ int Game::verifyCorrectAnswer(int id, std::vector<int> answers)
 	return 0;
 }
 
-int Game::verifyCorrectGrillAnswer(int id, std::vector<int> answers)
+int Game::SentCorrectGrillAnswer(int id, std::vector<int> answers)
 {
 	CROW_ROUTE(app, "/Quiz/answer")([this, id]() {
 		return  quizzes_json[id];
