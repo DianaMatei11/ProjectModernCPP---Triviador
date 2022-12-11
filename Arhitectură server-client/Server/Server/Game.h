@@ -20,8 +20,9 @@ public:
 	void initQuizzes_json();
 	void initNumericalAnswers_json();
 	
-	void sentANumericalQuestionRoute(std::vector<crow::json::wvalue> numericalQuest_json);
-	void sentAGrillQuestionRoute(std::vector<crow::json::wvalue> quizzes_json);
+	int sentANumericalQuestionRoute();
+	int sentAGrillQuestionRoute();
 	
-	int verifyCorrectAnswer(std::vector<crow::json::wvalue> numericalQuest_json,int id, std::vector<int> answers);
+	int verifyCorrectAnswer(int id, std::vector<int> answers);
+	int verifyCorrectGrillAnswer(int id, std::vector<int> answers);
 };

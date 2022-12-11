@@ -41,33 +41,35 @@ void Game::initNumericalAnswers_json()
 
 
 
-void Game::sentANumericalQuestionRoute(std::vector<crow::json::wvalue> numericalQuest_json)
+int Game::sentANumericalQuestionRoute()
 {
-	CROW_ROUTE(app, "/numericalQuestion")([&numericalQuest_json]() {
-		int index = Intrebare::GetRandomNumber(0, numericalQuest_json.size());
+	int index = Intrebare::GetRandomNumber(0, numericalQuest_json.size());
+	CROW_ROUTE(app, "/numericalQuestion")([this, index]() {
 		return numericalQuest_json[index];
 		});
+	return index;
 }
 
-void Game::sentAGrillQuestionRoute(std::vector<crow::json::wvalue> quizzes_json)
+int Game::sentAGrillQuestionRoute()
 {
-	CROW_ROUTE(app, "/numericalQuestion")([&quizzes_json]() {
-		int index = Intrebare::GetRandomNumber(0, quizzes_json.size());
+	int index = Intrebare::GetRandomNumber(0, quizzes_json.size());
+	CROW_ROUTE(app, "/Quiz")([this, index]() {
 		return quizzes_json[index];
 		});
+	return index;
 }
 
-int Game::verifyCorrectAnswer(std::vector<crow::json::wvalue> numericalAnswers_json, int id, std::vector<int> answers)
+int Game::verifyCorrectAnswer(int id, std::vector<int> answers)
 {
-	CROW_ROUTE(app, "/numericalQuestion")([&numericalAnswers_json,id]() {
+	CROW_ROUTE(app, "/numericalQuestion/answer")([this, id]() {
 		return  numericalAnswers_json[id];
 		});
 	return 0;
 }
 
-int Game::verifyCorrectGrillAnswer(std::vector<crow::json::wvalue> quizzes_json, int id, std::vector<int> answers)
+int Game::verifyCorrectGrillAnswer(int id, std::vector<int> answers)
 {
-	CROW_ROUTE(app, "/numericalQuestion")([&quizzes_json, id]() {
+	CROW_ROUTE(app, "/Quiz/answer")([this, id]() {
 		return  quizzes_json[id];
 		});
 	return 0;
