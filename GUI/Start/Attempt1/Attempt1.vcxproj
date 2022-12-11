@@ -85,23 +85,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <QtRcc Include="..\..\..\Triviador\auxiliar\Start-intermediar\images.qrc" />
-    <QtUic Include="..\..\..\Triviador\auxiliar\Start-intermediar\form.ui" />
-    <QtUic Include="..\..\..\Triviador\auxiliar\Start-intermediar\intermediaryscreen.ui" />
-    <QtUic Include="..\..\..\Triviador\auxiliar\Start-intermediar\startscreen.ui" />
-    <ClCompile Include="..\..\..\Triviador\auxiliar\Start-intermediar\form.cpp" />
-    <ClCompile Include="..\..\..\Triviador\auxiliar\Start-intermediar\intermediaryscreen.cpp" />
-    <ClCompile Include="..\..\..\Triviador\auxiliar\Start-intermediar\main.cpp" />
-    <ClCompile Include="..\..\..\Triviador\auxiliar\Start-intermediar\startscreen.cpp" />
+    <QtUic Include="..\..\Start-intermediar\form.ui" />
+    <QtUic Include="..\..\Start-intermediar\intermediaryscreen.ui" />
+    <QtUic Include="..\..\Start-intermediar\startscreen.ui" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="..\..\..\Triviador\auxiliar\Start-intermediar\form.h" />
+    <QtMoc Include="..\..\Start-intermediar\form.h" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="..\..\..\Triviador\auxiliar\Start-intermediar\intermediaryscreen.h" />
+    <QtMoc Include="..\..\Start-intermediar\intermediaryscreen.h" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="..\..\..\Triviador\auxiliar\Start-intermediar\startscreen.h" />
+    <QtMoc Include="..\..\Start-intermediar\startscreen.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="..\..\Start-intermediar\images.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Start-intermediar\form.cpp" />
+    <ClCompile Include="..\..\Start-intermediar\intermediaryscreen.cpp" />
+    <ClCompile Include="..\..\Start-intermediar\main.cpp" />
+    <ClCompile Include="..\..\Start-intermediar\startscreen.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
