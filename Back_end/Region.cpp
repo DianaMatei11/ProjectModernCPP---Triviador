@@ -1,18 +1,37 @@
 #include "Region.h"
 
-Region::Region(std::string name, int scores,bool isBase)
-	:m_name{ name }, m_scores{ scores },m_isBase{isBase}
+
+Region::Region(int id, int scores, bool isBase, std::shared_ptr<User> owner)
+	:m_id{ id }, m_scores{ scores }, m_isBase{ isBase },m_owner{owner}
 {
 }
 
-Region::~Region()
+//Region::~Region()
+//{
+//}
+
+int Region::GetID()
 {
+	return m_id;
 }
 
-std::string Region::GetName()
+bool Region::HasOwner()
 {
-	return m_name;
+	if (m_owner!=nullptr)
+		return true;
+	return false;
 }
+
+User& Region::GetOwner()
+{
+	return *m_owner;
+}
+
+void Region::SetOwner(const User& user)
+{
+	m_owner = std::make_shared<User>(user);
+}
+
 
 int Region::GetScores()
 {
@@ -37,7 +56,8 @@ void Region::SetBase()
 
 std::ostream& operator<<(std::ostream& out, const Region& region)
 {
-	out << region.m_name<<": ";
+	out << region.m_id<<": ";
+
 	out << region.m_scores;
 	return out;
 }
