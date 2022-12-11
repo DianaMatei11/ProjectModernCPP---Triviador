@@ -32,6 +32,19 @@ void Region::SetOwner(const User& user)
 	m_owner = std::make_shared<User>(user);
 }
 
+void Region::SetCoord(coord& c1, coord& c2, coord& c3, coord& c4, coord& c5)
+{
+	m_vectorCoord.push_back(c1);
+	m_vectorCoord.push_back(c2);
+	m_vectorCoord.push_back(c3);
+	m_vectorCoord.push_back(c4);
+	m_vectorCoord.push_back(c5);
+}
+
+const std::vector<coord>& Region::GetCoord()
+{
+	return m_vectorCoord;
+}
 
 int Region::GetScores()
 {
