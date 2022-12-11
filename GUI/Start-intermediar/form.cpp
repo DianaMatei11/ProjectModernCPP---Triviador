@@ -54,7 +54,8 @@ void Form::on_submit_clicked()
                 }
             );
             if (response.status_code == 200 || response.status_code == 201) {
-
+                ms.show();
+                hide();
             }
             else {
                 QErrorMessage msg;
@@ -73,7 +74,8 @@ void Form::on_submit_clicked()
                 }
             );
             if (response.status_code == 200 || response.status_code == 201) {
-
+                ms.show();
+                hide();
             }
             else {
                 QErrorMessage msg;

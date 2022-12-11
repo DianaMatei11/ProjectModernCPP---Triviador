@@ -5,6 +5,7 @@
 #include <cpr/cpr.h>
 //#include <crow.h>
 #include <QErrorMessage>
+#include "mainscreen.h"
 
 namespace Ui {
 class Form;
@@ -25,6 +26,8 @@ private slots:
 private:
     Ui::Form *ui;
     bool mode;
+    MainScreen ms;
+
 
 
 };
