@@ -2,9 +2,11 @@
 #include "Storage.h"
 #include <optional>
 
+
 std::optional<User> existUserName(const std::string& username, Storage& m_db);
 
-void routeForSignin(crow::SimpleApp& app, Storage& m_db);
+void routeForSignIn(crow::SimpleApp& app, Storage& m_db);
+
 class AddNewUserHandler {
 public:
 	AddNewUserHandler(Storage& storage);
@@ -15,6 +17,7 @@ private:
 };
 
 void routeForLogin(crow::SimpleApp& app, Storage& m_db);
+
 class VerifyUserLogin
 {
 public:

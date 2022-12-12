@@ -26,7 +26,8 @@ public:
 	void changePassword(const std::string& pass);
 	friend std::istream& operator >> (std::istream& in, User& user);
 	friend std::ostream& operator << (std::ostream& out, User& user);
-	std::string checkStrongPassword();
+	
+	static bool checkStrongPassword(const std::string& password);
 	void forgotPasswordProtocol(std::ostream& out, std::istream& in);
 	~User() = default;
 

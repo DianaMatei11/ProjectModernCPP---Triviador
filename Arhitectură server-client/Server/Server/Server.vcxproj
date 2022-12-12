@@ -104,6 +104,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalOptions>/D_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -127,15 +129,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="NumericalQuestions.h" />
-    <ClInclude Include="Quizzes.h" />
-    <ClInclude Include="Users.h" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Intrebare.cpp" />
+    <ClCompile Include="IntrebareNumerica.cpp" />
+    <ClCompile Include="IntrebariGrila.cpp" />
+    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Storage.cpp" />
+    <ClCompile Include="User.cpp" />
+    <ClCompile Include="UserRoutes.cpp" />
+    <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="NumericalQuestions.cpp" />
-    <ClCompile Include="Quizzes.cpp" />
-    <ClCompile Include="Source.cpp" />
-    <ClCompile Include="Users.cpp" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="Intrebare.h" />
+    <ClInclude Include="IntrebareNumerica.h" />
+    <ClInclude Include="IntrebariGrila.h" />
+    <ClInclude Include="Storage.h" />
+    <ClInclude Include="User.h" />
+    <ClInclude Include="UserRoutes.h" />
+    <ClInclude Include="utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

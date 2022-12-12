@@ -3,7 +3,6 @@
 
 #include <QWidget>
 #include <cpr/cpr.h>
-//#include <crow.h>
 #include <QErrorMessage>
 #include "mainscreen.h"
 

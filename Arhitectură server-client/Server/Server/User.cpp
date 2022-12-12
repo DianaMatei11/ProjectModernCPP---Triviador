@@ -46,11 +46,12 @@ void User::changePassword(const std::string& pass)
 }
 
 
-std::string User::checkStrongPassword()
+bool User::checkStrongPassword(const std::string& password)
 {
 	if (password.size() < 8)
 	{
-		return "Your password need to have at least 8 characters\n";
+		return false;
+		//return "Your password need to have at least 8 characters\n";
 	}
 
 	bool upper = false, specialCh = false, digit = false;
@@ -73,23 +74,27 @@ std::string User::checkStrongPassword()
 
 		if (upper && specialCh && digit)
 		{
-			return "Strong\n";
+			//return "Strong\n";
+			return true;
 		}
 	}
 
 	if (!upper)
 	{
-		return "Your password need to have at least an uppercase character\n";
+		return false;
+		//return "Your password need to have at least an uppercase character\n";
 	}
 
 	if (!specialCh)
 	{
-		return "Your password need to have at least a special character like +\n";
+		return false;
+		//return "Your password need to have at least a special character like +\n";
 	}
 
 	if (!digit)
 	{
-		return "Your password need to have at least a number\n";
+		return false;
+		//return "Your password need to have at least a number\n";
 	}
 }
 
@@ -99,7 +104,7 @@ void User::forgotPasswordProtocol(std::ostream& out, std::istream& in)
 again:
 	out << "Type the last password you remember or at least 60% of it: ";
 	in >> pass;
-	while (pass.size() < static_cast<int>(password.size() * 3.0 / 5.0))
+	while (pass.size() < (int)(password.size() * 3.0 / 5.0))
 	{
 		out << "Sorry, it's too short. Try again: ";
 		in >> pass;
@@ -122,7 +127,7 @@ again:
 float User::getProcentajRaspunsuriCorecte()
 {
 	if (m_raspunsuriTotale != 0) {
-		return static_cast<float>(m_raspunsIntrebariCorecte / m_raspunsuriTotale);
+		return float(m_raspunsIntrebariCorecte) / float(m_raspunsuriTotale);
 	}
 	else
 	{

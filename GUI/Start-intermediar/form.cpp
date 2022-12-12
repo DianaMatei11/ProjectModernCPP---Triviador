@@ -49,8 +49,8 @@ void Form::on_submit_clicked()
             auto response = cpr::Put(
                 cpr::Url{ "http://localhost:14040/verifylogin" },
                 cpr::Payload{
-                    { "Name", ui->username->text().toStdString()},
-                    { "Password", ui->password->text().toStdString() }
+                    { "Name", (ui->username->text().toLocal8Bit().constData())},
+                    { "Password", (ui->password->text().toLocal8Bit().constData())}
                 }
             );
             if (response.status_code == 200 || response.status_code == 201) {
@@ -69,8 +69,8 @@ void Form::on_submit_clicked()
             auto response = cpr::Post(
                 cpr::Url{ "http://localhost:14040/createnewuser" },
                 cpr::Payload{
-                    { "Name", ui->username->text().toStdString()},
-                    { "Password", ui->password->text().toStdString() }
+                    { "Name", ui->username->text().toLocal8Bit().constData()},
+                    { "Password", ui->password->text().toLocal8Bit().constData()}
                 }
             );
             if (response.status_code == 200 || response.status_code == 201) {

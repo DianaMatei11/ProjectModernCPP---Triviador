@@ -1,5 +1,6 @@
 #include "UserRoutes.h"
 
+static const std::optional<User> k_invalidUser;
 
 std::optional<User> existUserName(const std::string& username, Storage& m_db)
 {
@@ -10,24 +11,37 @@ std::optional<User> existUserName(const std::string& username, Storage& m_db)
 			return std::optional<User>(quest);
 		}
 	}
-	return std::optional<User>();
+	return k_invalidUser;
 }
 
-//newUser
-void routeForSignin(crow::SimpleApp& app, Storage& m_db)
+void routeForSignIn(crow::SimpleApp& app, Storage& m_db)
 {
 	auto& user = CROW_ROUTE(app, "/createnewuser")
-		.methods(crow::HTTPMethod::PUT);
+		.methods(crow::HTTPMethod::POST);
 	user(AddNewUserHandler(m_db));
 }
 
-
+//newUser
 
 AddNewUserHandler::AddNewUserHandler(Storage& storage) :
 	m_db{ storage }
 {}
 
-
+//crow::response AddNewUserHandler::operator() (const crow::request& req) const
+//{
+//	auto body = crow::json::load(req.body);
+//	if (!body)
+//	{
+//		return crow::response(400);
+//	}
+//
+//	auto name = body["name"].s();
+//	auto password = body["password"].s();
+//
+//	m_db.insert(User{ name, password });
+//
+//	return crow::response(200);
+//}
 
 crow::response AddNewUserHandler::operator() (const crow::request& req) const
 {
@@ -43,7 +57,7 @@ crow::response AddNewUserHandler::operator() (const crow::request& req) const
 		}
 
 
-		if (User::checkStrongPassword(passIter->second) != "Strong\n")
+		if (!User::checkStrongPassword((passIter->second)))
 		{
 			return crow::response(416); //Password not strong enough
 		}
@@ -76,7 +90,8 @@ crow::response VerifyUserLogin::operator()(const crow::request& req) const
 	auto passIter = bodyArgs.find("Password");
 	if (nameIter != end && passIter != end)
 	{
-		if (const auto& user = existUserName(nameIter->second, m_db))
+		const auto& user = existUserName(nameIter->second, m_db);
+		if (user.has_value())
 		{
 			if (user->getPassword() == passIter->second)
 			{
