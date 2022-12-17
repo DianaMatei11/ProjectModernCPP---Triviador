@@ -2,6 +2,10 @@
 #include "Storage.h"
 #include <crow.h>
 
+void Game::addNewPlayer(int id)
+{
+}
+
 void Game::initNumericalQuest_json()
 {
 	for (const auto& quest : storage.iterate<IntrebareNumerica>())
@@ -37,6 +41,24 @@ void Game::initNumericalAnswers_json()
 			{"CorrectAnswer", quest.GetRaspuns()}
 			});
 	}
+}
+
+void Game::initUsers_json()
+{
+	for (const auto& user : storage.iterate<User>())
+	{
+		users_json.push_back(crow::json::wvalue{
+			{"Id",user.GetId()},
+			{"Name",user.getUserName()},
+			{"Pass", user.getPassword()}
+			});
+	}
+}
+
+void Game::addNewPlayer(std::string name, std::string password)
+{
+	User* newUser = new User(name, password);
+	players.push_back(*newUser);
 }
 
 void Game::sentANumericalQuestionRoute(std::vector<crow::json::wvalue> numericalQuest_json)

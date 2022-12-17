@@ -20,15 +20,19 @@ public:
 	std::vector<crow::json::wvalue> numericalQuest_json;
 	std::vector<crow::json::wvalue> quizzes_json;
 	std::vector<crow::json::wvalue> numericalAnswers_json;
+	std::vector<crow::json::wvalue> users_json;
+
+	void addNewPlayer(int id);
    
 	crow::SimpleApp app;
     void initNumericalQuest_json();
 	void initQuizzes_json();
 	void initNumericalAnswers_json();
+	void initUsers_json();
 	
+	void addNewPlayer(std::string name, std::string password);
 	void sentANumericalQuestionRoute(std::vector<crow::json::wvalue> numericalQuest_json);
 	void sentAGrillQuestionRoute(std::vector<crow::json::wvalue> quizzes_json);
 	void assignAColor(User user,std::vector<User> Players);
-	
 	int verifyCorrectAnswer(std::vector<crow::json::wvalue> numericalQuest_json,int id, std::vector<int> answers);
 };
