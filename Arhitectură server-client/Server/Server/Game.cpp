@@ -39,64 +39,52 @@ void Game::initNumericalAnswers_json()
 	}
 }
 
-void Game::getUsersAnswer()
+void Game::sentANumericalQuestionRoute(std::vector<crow::json::wvalue> numericalQuest_json)
 {
-	auto& req = CROW_ROUTE(app, "/numericalQuestion/GetUsersAnswer")
-		.methods(crow::HTTPMethod::PUT);
-	//Handler- functor
-}
-
-//void Game::Winers(std::string id)
-//{
-//}
-
-
-
-int Game::sentANumericalQuestionRoute()
-{
-	int index = Intrebare::GetRandomNumber(0, numericalQuest_json.size());
-	CROW_ROUTE(app, "/numericalQuestion")([this, index]() {
+	CROW_ROUTE(app, "/numericalQuestion")([&numericalQuest_json]() {
+		int index = Intrebare::GetRandomNumber(0, numericalQuest_json.size());
 		return numericalQuest_json[index];
 		});
-	return index;
 }
 
-int Game::sentAGrillQuestionRoute()
+void Game::sentAGrillQuestionRoute(std::vector<crow::json::wvalue> quizzes_json)
 {
-	int index = Intrebare::GetRandomNumber(0, quizzes_json.size());
-	CROW_ROUTE(app, "/Quiz")([this, index]() {
+	CROW_ROUTE(app, "/numericalQuestion")([&quizzes_json]() {
+		int index = Intrebare::GetRandomNumber(0, quizzes_json.size());
 		return quizzes_json[index];
 		});
-	return index;
 }
 
-void Game::WinnersNumericalQuestion(std::string id) {
-	CROW_ROUTE(app, "/numericalQuestion/winner")([id]() {
-		return id;
-		});
-	
-}
-
-void Game::WinnersGrillQuestion(std::string id) {
-	CROW_ROUTE(app, "/Quiz/winner")([id]() {
-		return id;
-		});
-
-}
-int Game::SentCorrectAnswer(int id, std::vector<int> answers)
+int Game::verifyCorrectAnswer(std::vector<crow::json::wvalue> numericalAnswers_json, int id, std::vector<int> answers)
 {
-	CROW_ROUTE(app, "/numericalQuestion/answer")([this, id]() {
+	CROW_ROUTE(app, "/numericalQuestion")([&numericalAnswers_json,id]() {
 		return  numericalAnswers_json[id];
 		});
 	return 0;
 }
 
-int Game::SentCorrectGrillAnswer(int id, std::vector<int> answers)
+void Game::assignAColor(User user, std::vector<User> Players)
 {
-	CROW_ROUTE(app, "/Quiz/answer")([this, id]() {
-		return  quizzes_json[id];
+	int index = 0;
+	CROW_ROUTE(app, "/assignAColor")([&Players,&user,&index]() {
+		for (int i = 0; i < Players.size(); i++)
+			if (Players[i] == user)
+				index = i;
+		switch (index)
+		{
+		case 0:
+			return red;
+			break;
+		case 1:
+			return yellow;
+			break;
+		case 2:
+			return blue;
+			break;
+		case 3:
+			return green;
+			break;
+		}
 		});
-	return 0;
 }
-
 

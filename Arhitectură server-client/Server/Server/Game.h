@@ -8,10 +8,10 @@ public:
 	std::vector<User> players;
 	//MAP map;
 	enum colors {
-		red,
-		yellow,
-		blue,
-		green
+		red = 0,
+		yellow = 1,
+		blue = 2,
+		green = 3
 	};
 
 	const std::string db_file = "Storage.sqlite";
@@ -26,14 +26,9 @@ public:
 	void initQuizzes_json();
 	void initNumericalAnswers_json();
 	
-	void getUsersAnswer();
-	void WinnersNumericalQuestion(std::string id);
-	void WinnersGrillQuestion(std::string id);
-
-	int sentANumericalQuestionRoute();
-	int sentAGrillQuestionRoute();
+	void sentANumericalQuestionRoute(std::vector<crow::json::wvalue> numericalQuest_json);
+	void sentAGrillQuestionRoute(std::vector<crow::json::wvalue> quizzes_json);
+	void assignAColor(User user,std::vector<User> Players);
 	
-	int SentCorrectAnswer(int id, std::vector<int> answers);
-	int SentCorrectGrillAnswer(int id, std::vector<int> answers);
-
+	int verifyCorrectAnswer(std::vector<crow::json::wvalue> numericalQuest_json,int id, std::vector<int> answers);
 };
