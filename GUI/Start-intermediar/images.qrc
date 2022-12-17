@@ -3,5 +3,7 @@
         <file>images/logoFinal.png</file>
         <file>images/MainScreen Triviador.jpg</file>
         <file>images/AccountScreen.jpg</file>
+        <file>images/back_icon.png</file>
     </qresource>
+    <qresource prefix="/"/>
 </RCC>
