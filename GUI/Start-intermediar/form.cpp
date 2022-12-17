@@ -1,12 +1,11 @@
 #include "form.h"
 #include "ui_form.h"
 
-Form::Form(QWidget *parent, bool mode) :
+Form::Form(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Form)
 {
     ui->setupUi(this);
-    this->mode=mode;
     QPixmap bkgnd(":/images/images/MainScreen Triviador.jpg");
     bkgnd = bkgnd.scaled(this->size(), Qt::IgnoreAspectRatio);
     QPalette palette;
@@ -28,6 +27,10 @@ void Form::setMode(bool m)
 
 {
     mode=m;
+    if (!mode)
+        ui->back->setText("If you already have an account, log in");
+    else
+        ui->back->setText("If you don't have an account, sign up");
 }
 
 Form::~Form()
@@ -58,8 +61,14 @@ void Form::on_submit_clicked()
                 hide();
             }
             else {
-                QErrorMessage msg;
-                msg.showMessage("Invalid username or password!");
+                QMessageBox msg;
+                if(response.status_code==409)
+                    msg.setText("Wrong password");
+                if(response.status_code==404)
+                    msg.setText("User not found");
+                if(response.status_code==400)
+                    msg.setText("There was an error in the transmitted information");
+                msg.exec();
             }
 
 
@@ -78,13 +87,30 @@ void Form::on_submit_clicked()
                 hide();
             }
             else {
-                QErrorMessage msg;
-                msg.showMessage("Invalid username or password!");
+                QMessageBox msg;
+                if(response.status_code==451)
+                    msg.setText("Username already exists!");
+                if(response.status_code==416)
+                    msg.setText("Password is not strong enough");
+                if(response.status_code==400)
+                    msg.setText("There was an error in the transmitted information");
+                msg.exec();
+
             }
 
         }
 
 
     }
+}
+
+
+void Form::on_back_clicked()
+{
+    mode=!mode;
+    if(mode)
+        ui->back->setText("If you don't have an account, sign up");
+    else ui->back->setText("If you already have an account, log in");
+    update();
 }
 

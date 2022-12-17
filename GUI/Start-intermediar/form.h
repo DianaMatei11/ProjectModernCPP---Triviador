@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <cpr/cpr.h>
 #include <QErrorMessage>
+#include <QMessageBox>
 #include "mainscreen.h"
 
 namespace Ui {
@@ -15,12 +16,14 @@ class Form : public QWidget
     Q_OBJECT
 
 public:
-    explicit Form(QWidget *parent = nullptr, bool mode=true);
+    explicit Form(QWidget *parent = nullptr);
     void setMode(bool m);
     ~Form();
 
 private slots:
     void on_submit_clicked();
+
+    void on_back_clicked();
 
 private:
     Ui::Form *ui;

@@ -46,9 +46,9 @@ void Game::getUsersAnswer()
 	//Handler- functor
 }
 
-void Game::Winers(std::string id)
-{
-}
+//void Game::Winers(std::string id)
+//{
+//}
 
 
 

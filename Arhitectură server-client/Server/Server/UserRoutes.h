@@ -1,7 +1,7 @@
 #pragma once
 #include "Storage.h"
 #include <optional>
-
+#include "utils.h"
 
 std::optional<User> existUserName(const std::string& username, Storage& m_db);
 
