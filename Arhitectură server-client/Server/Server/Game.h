@@ -7,6 +7,12 @@ class Game {
 public:
 	std::vector<User> players;
 	//MAP map;
+	enum colors {
+		red,
+		yellow,
+		blue,
+		green
+	};
 
 	const std::string db_file = "Storage.sqlite";
 	Storage storage = createStorage(db_file);
