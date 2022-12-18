@@ -17,6 +17,7 @@ public:
 	std::shared_ptr <Region> GetRegion(int id);
 	std::vector<std::shared_ptr<Region>>& GetUnusedRegions();
 	std::vector<std::shared_ptr<Region>>& GetRegions();
+	void GetNeighbours(int id,std::vector<std::shared_ptr<Region>>& neigh);
 	~Map() = default;
 };
 

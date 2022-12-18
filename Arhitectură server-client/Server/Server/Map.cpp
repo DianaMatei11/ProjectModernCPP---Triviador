@@ -17,6 +17,7 @@ Map::Map(int nrPlayers)
 		m_w = 6;
 		m_h = 4;
 	}
+
 	float w = 600 / m_w;
 	float h = 200 / m_h;
 	float initialh=0;
@@ -79,5 +80,100 @@ std::vector<std::shared_ptr<Region>>& Map::GetRegions()
 {
 	return m_regions;
 }
+
+void Map::GetNeighbours(int id, std::vector<std::shared_ptr<Region>>& neigh)
+{
+	std::vector<std::shared_ptr<Region>> vecini;
+	if (id == 1)
+	{
+		vecini.emplace_back(GetRegion(2));
+		vecini.emplace_back(GetRegion(1 + m_w));
+		vecini.emplace_back(GetRegion(1 + m_w + 1));
+		neigh=vecini;
+		return;
+	}
+	if (id == m_w)
+	{
+		vecini.emplace_back(GetRegion(m_w - 1));
+		vecini.emplace_back(GetRegion(m_w + m_w));
+		vecini.emplace_back(GetRegion(m_w + m_w - 1));
+		neigh = vecini;
+		return;
+	}
+	if (id == m_w * m_h - m_w + 1)
+	{
+		vecini.emplace_back(GetRegion(m_w * m_h - 2 * m_w + 1));
+		vecini.emplace_back(GetRegion(m_w * m_h - 2 * m_w + 2));
+		vecini.emplace_back(GetRegion(m_w * m_h - m_w + 2));
+		neigh = vecini;
+		return;
+	}
+	if (id == m_w * m_h)
+	{
+		vecini.emplace_back(GetRegion(m_w * m_h - 1));
+		vecini.emplace_back(GetRegion(m_w * m_h - m_w));
+		vecini.emplace_back(GetRegion(m_w * m_h - m_w - 1));
+		neigh = vecini;
+		return;
+	}
+
+	if ((id-1) % m_w  == 0)
+	{
+		vecini.emplace_back(GetRegion(id - m_w));
+		vecini.emplace_back(GetRegion(id - m_w + 1));
+		vecini.emplace_back(GetRegion(id + 1));
+		vecini.emplace_back(GetRegion(id + m_w));
+		vecini.emplace_back(GetRegion(id + m_w + 1));
+		neigh = vecini;
+		return;
+	}
+
+	if (id % m_w == 0)
+	{
+		vecini.emplace_back(GetRegion(id - m_w));
+		vecini.emplace_back(GetRegion(id - m_w - 1));
+		vecini.emplace_back(GetRegion(id - 1));
+		vecini.emplace_back(GetRegion(id + m_w));
+		vecini.emplace_back(GetRegion(id + m_w - 1));
+		neigh = vecini;
+		return;
+	}
+
+	if (id < m_w)
+	{
+		vecini.emplace_back(GetRegion(id - 1));
+		vecini.emplace_back(GetRegion(id + 1));
+		vecini.emplace_back(GetRegion(id + m_w));
+		vecini.emplace_back(GetRegion(id + m_w + 1));
+		vecini.emplace_back(GetRegion(id + m_w - 1));
+		neigh = vecini;
+		return;
+	}
+
+	if (id > m_w * m_h - m_w)
+	{
+		vecini.emplace_back(GetRegion(id - 1));
+		vecini.emplace_back(GetRegion(id + 1));
+		vecini.emplace_back(GetRegion(id - m_w));
+		vecini.emplace_back(GetRegion(id - m_w + 1));
+		vecini.emplace_back(GetRegion(id - m_w - 1));
+		neigh = vecini;
+		return;
+	}
+	else
+	{
+		vecini.emplace_back(GetRegion(id - 1));
+		vecini.emplace_back(GetRegion(id + 1));
+		vecini.emplace_back(GetRegion(id - m_w));
+		vecini.emplace_back(GetRegion(id - m_w + 1));
+		vecini.emplace_back(GetRegion(id - m_w - 1));
+		vecini.emplace_back(GetRegion(id + m_w - 1));
+		vecini.emplace_back(GetRegion(id + m_w + 1));
+		vecini.emplace_back(GetRegion(id + m_w));
+		neigh = vecini;
+		return;
+	}
+}
+
 
 
