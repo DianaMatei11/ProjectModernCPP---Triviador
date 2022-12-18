@@ -46,6 +46,11 @@ void User::changePassword(const std::string& pass)
 }
 
 
+bool User::operator==(const User& user)
+{
+	return (this->user_name == user.user_name) && (this->password == user.password);
+}
+
 bool User::checkStrongPassword(const std::string& password)
 {
 	if (password.size() < 8)

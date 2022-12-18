@@ -1,10 +1,9 @@
 #include "Game.h"
-#include "Storage.h"
-#include <crow.h>
 
-void Game::addNewPlayer(int id)
-{
-}
+
+Game::Game(Storage& storage) :
+	storage{ storage }
+{}
 
 void Game::initNumericalQuest_json()
 {
@@ -55,44 +54,50 @@ void Game::initUsers_json()
 	}
 }
 
-void Game::addNewPlayer(std::string name, std::string password)
-{
-	User* newUser = new User(name, password);
-	players.push_back(*newUser);
-}
 
-void Game::sentANumericalQuestionRoute(std::vector<crow::json::wvalue> numericalQuest_json)
+void Game::sentANumericalQuestionRoute()
 {
-	CROW_ROUTE(app, "/numericalQuestion")([&numericalQuest_json]() {
-		int index = Intrebare::GetRandomNumber(0, numericalQuest_json.size());
+	int index = Intrebare::GetRandomNumber(0, numericalQuest_json.size());
+	CROW_ROUTE(app, "/numericalQuestion")([&numericalQuest_json = numericalQuest_json, &index]() {
 		return numericalQuest_json[index];
 		});
+
 }
 
-void Game::sentAGrillQuestionRoute(std::vector<crow::json::wvalue> quizzes_json)
+void Game::sentAGrillQuestionRoute()
 {
-	CROW_ROUTE(app, "/numericalQuestion")([&quizzes_json]() {
+	CROW_ROUTE(app, "/Quiz")([&quizzes_json = quizzes_json]() {
 		int index = Intrebare::GetRandomNumber(0, quizzes_json.size());
 		return quizzes_json[index];
 		});
 }
 
-int Game::verifyCorrectAnswer(std::vector<crow::json::wvalue> numericalAnswers_json, int id, std::vector<int> answers)
+int Game::verifyCorrectAnswer(int id, const std::vector<int> &answers)
 {
-	CROW_ROUTE(app, "/numericalQuestion")([&numericalAnswers_json,id]() {
+	CROW_ROUTE(app, "/numericalQuestion/answer")([&numericalAnswers_json = numericalAnswers_json,id]() {
 		return  numericalAnswers_json[id];
 		});
 	return 0;
 }
 
-void Game::assignAColor(User user, std::vector<User> Players)
+int Game::verifyCorrectGrillAnswer(int id, const std::vector<int> &answers)
 {
-	int index = 0;
-	CROW_ROUTE(app, "/assignAColor")([&Players,&user,&index]() {
-		for (int i = 0; i < Players.size(); i++)
-			if (Players[i] == user)
-				index = i;
-		switch (index)
+	CROW_ROUTE(app, "/Quiz/answer")([&quizzes_json = quizzes_json, id]() {
+		return  quizzes_json[id];
+		});
+	return 0;
+}
+
+void Game::addNewPlayer(std::shared_ptr<User> user)
+{
+	players.emplace_back(std::move(user));
+	assignAColor();
+}
+
+void Game::assignAColor()
+{
+	CROW_ROUTE(app, "/assignAColor")([&players = players]() {
+		switch (players.size() - 1)
 		{
 		case 0:
 			return red;

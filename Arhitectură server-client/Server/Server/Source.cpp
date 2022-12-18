@@ -1,4 +1,5 @@
 #include "UserRoutes.h"
+#include "Game.h"
 
 int main()
 {
@@ -9,7 +10,7 @@ int main()
 	
 	routeForSignIn(app, storage);
 	routeForLogin(app, storage);
-	
+
 	app.port(14040).multithreaded().run();
 	
 }
