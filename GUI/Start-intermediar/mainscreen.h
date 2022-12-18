@@ -2,8 +2,8 @@
 #define MAINSCREEN_H
 
 #include <QMainWindow>
-//#include <cpr/cpr.h>
-//#include <crow.h>
+#include <cpr/cpr.h>
+#include <crow.h>
 
 namespace Ui {
 class MainScreen;
