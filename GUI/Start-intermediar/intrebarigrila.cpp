@@ -6,15 +6,7 @@ IntrebariGrila::IntrebariGrila(QWidget *parent)
     , ui(new Ui::IntrebariGrila)
 {
     ui->setupUi(this);
-    QPixmap bkgnd("background-color: rgb(189, 158, 122)");
-    bkgnd=bkgnd.scaled(this->size(),Qt::IgnoreAspectRatio);
-    QPalette palette;
-    palette.setBrush(QPalette::Window,bkgnd);
-    this->setPalette(palette);
 
-    QPixmap pixmap(":/images/images/logoFinal.png");
-    pixmap = pixmap.scaled(this->size(), Qt::IgnoreAspectRatio);
-    ui->logo->setPixmap(pixmap);
 }
 
 IntrebariGrila::~IntrebariGrila()
@@ -22,9 +14,47 @@ IntrebariGrila::~IntrebariGrila()
     delete ui;
 }
 
-void IntrebariGrila::on_pushButton_2_clicked()
+void IntrebariGrila::on_varianta_a_clicked()
 {
-    hide();
+    auto response = cpr::Put(
+        cpr::Url{ "http://localhost:14040/Quiz" },
+        cpr::Payload{
+            {
+                "0", (ui->varianta_a->text().toLocal8Bit().constData())}
+            });
 
+}
+
+
+void IntrebariGrila::on_varianta_b_clicked()
+{
+    auto response = cpr::Put(
+        cpr::Url{ "http://localhost:14040/Quiz" },
+        cpr::Payload{
+            {
+                "1", (ui->varianta_b->text().toLocal8Bit().constData())}
+            });
+}
+
+
+void IntrebariGrila::on_varianta_c_clicked()
+{
+    auto response = cpr::Put(
+        cpr::Url{ "http://localhost:14040/Quiz" },
+        cpr::Payload{
+            {
+                "2", (ui->varianta_c->text().toLocal8Bit().constData())}
+            });
+}
+
+
+void IntrebariGrila::on_varianta_d_clicked()
+{
+    auto response = cpr::Put(
+        cpr::Url{ "http://localhost:14040/Quiz" },
+        cpr::Payload{
+            {
+                "3", (ui->varianta_d->text().toLocal8Bit().constData())}
+            });
 }
 

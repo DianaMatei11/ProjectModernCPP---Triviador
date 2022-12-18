@@ -31,7 +31,7 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>6.4.1_msvc2019_64</QtInstall>
+    <QtInstall>6.4.1</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
@@ -87,6 +87,7 @@
   <ItemGroup>
     <QtUic Include="..\..\Start-intermediar\form.ui" />
     <QtUic Include="..\..\Start-intermediar\intermediaryscreen.ui" />
+    <QtUic Include="..\..\Start-intermediar\intrebarigrila.ui" />
     <QtUic Include="..\..\Start-intermediar\mainscreen.ui" />
     <QtUic Include="..\..\Start-intermediar\startscreen.ui" />
   </ItemGroup>
@@ -105,12 +106,16 @@
   <ItemGroup>
     <ClCompile Include="..\..\Start-intermediar\form.cpp" />
     <ClCompile Include="..\..\Start-intermediar\intermediaryscreen.cpp" />
+    <ClCompile Include="..\..\Start-intermediar\intrebarigrila.cpp" />
     <ClCompile Include="..\..\Start-intermediar\main.cpp" />
     <ClCompile Include="..\..\Start-intermediar\mainscreen.cpp" />
     <ClCompile Include="..\..\Start-intermediar\startscreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="..\..\Start-intermediar\mainscreen.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="..\..\Start-intermediar\intrebarigrila.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

@@ -12,13 +12,17 @@ class IntrebariGrila : public QMainWindow
     Q_OBJECT
 
 public:
-   explicit IntrebariGrila(QWidget *parent = nullptr);
+    explicit IntrebariGrila(QWidget* parent = nullptr);
     ~IntrebariGrila();
 
 private:
-    Ui::IntrebariGrila *ui;
+    Ui::IntrebariGrila* ui;
     Form f;
 private slots:
-    void on_pushButton_2_clicked();
+    //void AfisareIntrebareGrila();
+    void on_varianta_a_clicked();
+    void on_varianta_b_clicked();
+    void on_varianta_c_clicked();
+    void on_varianta_d_clicked();
 };
 #endif // INTREBARIGRILA_H
