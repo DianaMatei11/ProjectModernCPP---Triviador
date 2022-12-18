@@ -19,7 +19,7 @@ private:
     Ui::IntrebariGrila* ui;
     Form f;
 private slots:
-    //void AfisareIntrebareGrila();
+    void AfisareIntrebareGrila();
     void on_varianta_a_clicked();
     void on_varianta_b_clicked();
     void on_varianta_c_clicked();
