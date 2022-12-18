@@ -1,6 +1,7 @@
 #include "UserRoutes.h"
 
 static const std::optional<User> k_invalidUser;
+std::optional<User> actualUser = k_invalidUser;
 
 std::optional<User> existUserName(const std::string& username, Storage& m_db)
 {
@@ -27,25 +28,9 @@ AddNewUserHandler::AddNewUserHandler(Storage& storage) :
 	m_db{ storage }
 {}
 
-//crow::response AddNewUserHandler::operator() (const crow::request& req) const
-//{
-//	auto body = crow::json::load(req.body);
-//	if (!body)
-//	{
-//		return crow::response(400);
-//	}
-//
-//	auto name = body["name"].s();
-//	auto password = body["password"].s();
-//
-//	m_db.insert(User{ name, password });
-//
-//	return crow::response(200);
-//}
-
 crow::response AddNewUserHandler::operator() (const crow::request& req) const
 {
-	auto bodyArgs = parseUrlArgs(req.body); //id=2&quantity=3&...
+	auto bodyArgs = parseUrlArgs(req.body);
 	auto end = bodyArgs.end();
 	auto nameIter = bodyArgs.find("Name");
 	auto passIter = bodyArgs.find("Password");
@@ -62,8 +47,8 @@ crow::response AddNewUserHandler::operator() (const crow::request& req) const
 			return crow::response(416); //Password not strong enough
 		}
 
-
-		m_db.insert(User{ nameIter->second, passIter->second });
+		actualUser = std::move(User{ nameIter->second, passIter->second });
+		m_db.insert(std::move(actualUser.value()));
 		return crow::response(200); //Added to database
 	}
 	return crow::response(400); //The transmited info was not ok 
@@ -79,12 +64,12 @@ void routeForLogin(crow::SimpleApp& app, Storage& m_db)
 }
 
 VerifyUserLogin::VerifyUserLogin(Storage& storage)
-	: m_db{storage}
+	: m_db{ storage }
 {}
 
 crow::response VerifyUserLogin::operator()(const crow::request& req) const
 {
-	auto bodyArgs = parseUrlArgs(req.body); 
+	auto bodyArgs = parseUrlArgs(req.body);
 	auto end = bodyArgs.end();
 	auto nameIter = bodyArgs.find("Name");
 	auto passIter = bodyArgs.find("Password");
@@ -96,6 +81,7 @@ crow::response VerifyUserLogin::operator()(const crow::request& req) const
 			if (user->getPassword() == passIter->second)
 			{
 				return crow::response(200); //Ok
+				actualUser = std::move(user);
 			}
 			else
 			{
@@ -105,4 +91,21 @@ crow::response VerifyUserLogin::operator()(const crow::request& req) const
 		return crow::response(404); //User not found
 	}
 	return crow::response(400); //The transmited info was not ok 
+}
+
+void routeForStatistics(crow::SimpleApp& app)
+{
+	CROW_ROUTE(app, "/Statistics")([&user = actualUser]() {
+
+		return crow::json::wvalue{
+		{ "meciuriJucate", user->getMeciuriJucate()},
+		{ "raspunsuri corecte", user->getRaspunsuriCorecte()},
+		{ "raspunsuriTotale", user->getRaspunsuriTotale() },
+		{ "scorMaxim", user->getScorMaxim() },
+		{ "scorMinim", user->getScorMinim()},
+		{ "procentajRaspunsuriCorecte", user->getProcentajRaspunsuriCorecte()}
+		};
+
+		});
+
 }

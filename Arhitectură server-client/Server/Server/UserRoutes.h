@@ -1,7 +1,8 @@
 #pragma once
-#include "Storage.h"
 #include <optional>
 #include "utils.h"
+#include "Game.h"
+
 
 std::optional<User> existUserName(const std::string& username, Storage& m_db);
 
@@ -27,3 +28,5 @@ public:
 private:
 	Storage& m_db;
 };
+
+void routeForStatistics(crow::SimpleApp& app);
