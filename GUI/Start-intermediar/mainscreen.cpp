@@ -49,13 +49,13 @@ void MainScreen::on_statistics_clicked()
         auto history = crow::json::load(r.text);
         for (const auto& performance : history)
         {
-
-           // QString p1 = QStringLiteral("Number of games played: %1\n").arg(performance["meciuri_jucate"]);
-           ui->stats->setText("Number of games played " + QString::number(performance["meciuri_jucate"]) +
-              "\nTotal number of questions answered: " + QString::number(performance["raspunsuri_totale"]) +
-               "\nNumber of correct answers: " + QString::number(performance["raspunsuri_corecte"]) +
-                "\nMaximum score " + QString::number(performance["scor_maxim"]) +
-                "\nMinimum score: " + QString::number(performance["scor_minim"]));
+           // auto t = performance["meciuri_jucate"];
+          QString p1 = QStringLiteral("Number of games played: %1\n").arg(performance["meciuri_jucate"].i());
+          QString p2= QStringLiteral("Number of questions answered: %1\n").arg(performance["raspunsuri_totale"].i());
+          QString p3= QStringLiteral("Number of correct answerd: %1\n").arg(performance["raspunsuri_corecte"].i());
+          QString p4= QStringLiteral("Maximum score: %1\n").arg(performance["scor_maxim"].i());
+          QString p5= QStringLiteral("Minimum score: %1\n").arg(performance["scor_minim"].i());
+          ui->stats->setText(p1+p2+p3+p4+p5);
 
 
         }
