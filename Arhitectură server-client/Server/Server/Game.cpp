@@ -1,8 +1,8 @@
 #include "Game.h"
 
 
-Game::Game(Storage& storage) :
-	storage{ storage }
+Game::Game(Storage& storage, crow::SimpleApp& app) :
+	storage{ storage }, app { app }
 {}
 
 void Game::initNumericalQuest_json()
@@ -88,10 +88,18 @@ int Game::verifyCorrectGrillAnswer(int id, const std::vector<int> &answers)
 	return 0;
 }
 
-void Game::addNewPlayer(std::shared_ptr<User> user)
+void Game::addPlayerByUsername()
 {
-	players.emplace_back(std::move(user));
-	assignAColor();
+	auto& usernameJson = CROW_ROUTE(app, "/GamePlayerUsername")
+		.methods(crow::HTTPMethod::PUT);
+
+	std::optional<User> user;
+	usernameJson(GetUserbyUserName(storage, user));
+	if (user.has_value())
+	{
+		players.emplace_back(std::move(std::make_shared<User>(std::move(user.value()))));
+		assignAColor();
+	}
 }
 
 void Game::assignAColor()
