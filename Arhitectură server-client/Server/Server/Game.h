@@ -4,6 +4,7 @@
 #include "UserRoutes.h"
 #include "Map.h"
 #include <crow.h>
+#include <queue>
 
 class Game {
 
@@ -30,8 +31,8 @@ private:
 	void initNumericalAnswers_json();
 	void initUsers_json();
 	
-	void sentANumericalQuestionRoute();
-	void sentAGrillQuestionRoute();
+	int sentANumericalQuestionRoute();
+	int sentAGrillQuestionRoute();
 
 	int verifyCorrectAnswer(int id, const std::vector<int> &answers);
 	int verifyCorrectGrillAnswer(int id, const std::vector<int> &answers);
@@ -39,9 +40,10 @@ private:
 	void addPlayerByUsername();
 	void assignAColor();
 
+
 public:
 	Game(Storage& storage, crow::SimpleApp& app);
 	
-	void conqueringRound();
+	std::array<std::string, 4> launchNumericalQuestionAndReturnRanking();
 	
 };
