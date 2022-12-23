@@ -1,15 +1,14 @@
 #include "UserRoutes.h"
 
 static const std::optional<User> k_invalidUser;
-std::optional<User> actualUser = k_invalidUser;
 
 std::optional<User> existUserName(const std::string& username, Storage& m_db)
 {
-	for (const auto& quest : m_db.iterate<User>())
+	for (auto& quest : m_db.iterate<User>())
 	{
 		if (quest.getUserName() == username)
 		{
-			return std::optional<User>(quest);
+			return std::optional<User>(std::move(quest));
 		}
 	}
 	return k_invalidUser;
@@ -47,8 +46,7 @@ crow::response AddNewUserHandler::operator() (const crow::request& req) const
 			return crow::response(416); //Password not strong enough
 		}
 
-		actualUser = std::move(User{ nameIter->second, passIter->second });
-		m_db.insert(std::move(actualUser.value()));
+		m_db.insert(std::move(User{ nameIter->second, passIter->second }));
 		return crow::response(200); //Added to database
 	}
 	return crow::response(400); //The transmited info was not ok 
@@ -81,7 +79,6 @@ crow::response VerifyUserLogin::operator()(const crow::request& req) const
 			if (user->getPassword() == passIter->second)
 			{
 				return crow::response(200); //Ok
-				actualUser = std::move(user);
 			}
 			else
 			{
@@ -93,9 +90,15 @@ crow::response VerifyUserLogin::operator()(const crow::request& req) const
 	return crow::response(400); //The transmited info was not ok 
 }
 
-void routeForStatistics(crow::SimpleApp& app)
+void routeForStatistics(crow::SimpleApp& app, Storage& m_db)
 {
-	CROW_ROUTE(app, "/Statistics")([&user = actualUser]() {
+	auto& usernameJson = CROW_ROUTE(app, "/Statistics/username")
+		.methods(crow::HTTPMethod::PUT);
+
+	std::optional<User> user;
+	usernameJson(GetUserbyUserName(m_db, user));
+	
+	CROW_ROUTE(app, "/Statistics")([&user]() {
 
 		return crow::json::wvalue{
 		{ "meciuriJucate", user->getMeciuriJucate()},
@@ -108,4 +111,25 @@ void routeForStatistics(crow::SimpleApp& app)
 
 		});
 
+}
+
+GetUserbyUserName::GetUserbyUserName(Storage& storage, std::optional<User>& user):
+	m_db {storage},
+	m_user {user}
+{}
+
+crow::response GetUserbyUserName::operator()(const crow::request & req) const
+{
+	std::string username;
+
+	auto bodyArgs = parseUrlArgs(req.body);
+	auto end = bodyArgs.end();
+	auto nameIter = bodyArgs.find("Name");
+	if (nameIter != end)
+	{
+		username = nameIter->second;
+		m_user = existUserName(username, m_db);
+		return crow::response(200);
+	}
+	return crow::response(400);
 }

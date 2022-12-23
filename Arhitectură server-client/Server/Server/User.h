@@ -33,7 +33,7 @@ public:
 	void forgotPasswordProtocol(std::ostream& out, std::istream& in);
 	~User() = default;
 
-	float getProcentajRaspunsuriCorecte();
+	float getProcentajRaspunsuriCorecte() const;
 	int getMeciuriJucate() const ;
 	void setMeciuriJucate(const int meciuriJucate);
 	int getScorMinim() const ;

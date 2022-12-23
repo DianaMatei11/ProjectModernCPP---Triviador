@@ -177,8 +177,8 @@ void Map::GetNeighbours(int id, std::vector<std::shared_ptr<Region>>& neigh)
 
 void Map::RouteForCoordinates()
 {
-	std::vector<std::shared_ptr<Region>> regions=GetRegions();
-	CROW_ROUTE(app, "/coordinates")([&regions]() {
+
+	/*CROW_ROUTE(app, "/coordinates")([&regions = m_regions]() {
 		std::vector<crow::json::wvalue> coordinates;
 	for (const auto& region : regions) {
 		coord coord = (*region).GetCoord();
@@ -190,6 +190,6 @@ void Map::RouteForCoordinates()
 			});
 	}
 	return crow::json::wvalue{ coordinates };
-		});
+		});*/
 }
 

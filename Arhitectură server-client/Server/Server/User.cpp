@@ -129,7 +129,7 @@ again:
 	}
 }
 
-float User::getProcentajRaspunsuriCorecte()
+float User::getProcentajRaspunsuriCorecte() const
 {
 	if (m_raspunsuriTotale != 0) {
 		return float(m_raspunsIntrebariCorecte) / float(m_raspunsuriTotale);

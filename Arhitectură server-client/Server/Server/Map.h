@@ -13,6 +13,7 @@ private:
 public:
 	Map() = default;
 	Map(int nrPlayers);
+	
 	std::shared_ptr <Region> PickRegion(int id);
 	std::shared_ptr <Region> GetRegion(int id);
 	std::vector<std::shared_ptr<Region>>& GetUnusedRegions();

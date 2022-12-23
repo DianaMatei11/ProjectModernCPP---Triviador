@@ -1,7 +1,7 @@
 #pragma once
 #include <optional>
 #include "utils.h"
-#include "Game.h"
+#include "Storage.h"
 
 
 std::optional<User> existUserName(const std::string& username, Storage& m_db);
@@ -29,4 +29,16 @@ private:
 	Storage& m_db;
 };
 
-void routeForStatistics(crow::SimpleApp& app);
+class GetUserbyUserName
+{
+public: 
+	GetUserbyUserName(Storage& storage, std::optional<User>& user);
+
+	crow::response operator() (const crow::request& req) const;
+	
+private:
+	Storage& m_db;
+	std::optional<User>& m_user;
+};
+
+void routeForStatistics(crow::SimpleApp& app, Storage& m_db);

@@ -10,7 +10,7 @@ int main()
 	
 	routeForSignIn(app, storage);
 	routeForLogin(app, storage);
-	routeForStatistics(app);
+	routeForStatistics(app, storage);
 
 	app.port(14040).multithreaded().run();
 	
