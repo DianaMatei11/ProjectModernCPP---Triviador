@@ -19,6 +19,7 @@ private:
     Ui::IntrebariGrila* ui;
     Form f;
 private slots:
+    QString fromStdString(const std::string& str);
     void AfisareIntrebareGrila();
     void on_varianta_a_clicked();
     void on_varianta_b_clicked();
