@@ -15,6 +15,7 @@ class MainScreen : public QMainWindow
 
 public:
     explicit MainScreen(QWidget *parent = nullptr);
+    void setUsername(std::string str);
     ~MainScreen();
 
 private slots:
@@ -26,6 +27,7 @@ private slots:
 
 private:
     Ui::MainScreen *ui;
+    std::string userName;
 };
 
 #endif // MAINSCREEN_H

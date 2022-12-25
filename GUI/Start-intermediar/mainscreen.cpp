@@ -27,6 +27,11 @@ MainScreen::MainScreen(QWidget *parent) :
     ui->account->setCurrentIndex(0);
 }
 
+void MainScreen::setUsername(std::string str)
+{
+    this->userName = str;
+}
+
 MainScreen::~MainScreen()
 {
     delete ui;
@@ -43,7 +48,7 @@ void MainScreen::on_configuration_clicked()
 void MainScreen::on_statistics_clicked()
 {
     ui->account->setCurrentIndex(1);
-    cpr::Response r=cpr::Get(cpr::Url{ "http://localhost:14040/history" });
+    cpr::Response r = cpr::Get(cpr::Url{ "http://localhost:14040/Statistics" }, cpr::Parameters{ {"username", userName} });
     if (r.status_code == 200)
     {
         auto history = crow::json::load(r.text);

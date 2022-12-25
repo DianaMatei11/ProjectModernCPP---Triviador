@@ -57,6 +57,7 @@ void Form::on_submit_clicked()
                 }
             );
             if (response.status_code == 200 || response.status_code == 201) {
+                ms.setUsername(ui->username->text().toLocal8Bit().constData());
                 ms.show();
                 hide();
             }
@@ -83,6 +84,7 @@ void Form::on_submit_clicked()
                 }
             );
             if (response.status_code == 200 || response.status_code == 201) {
+                ms.setUsername(ui->username->text().toLocal8Bit().constData());
                 ms.show();
                 hide();
             }
