@@ -45,5 +45,7 @@ public:
 	Game(Storage& storage, crow::SimpleApp& app);
 	
 	std::array<std::string, 4> launchNumericalQuestionAndReturnRanking();
+
+	void getTheLeaderBoard(crow::SimpleApp& app);
 	
 };

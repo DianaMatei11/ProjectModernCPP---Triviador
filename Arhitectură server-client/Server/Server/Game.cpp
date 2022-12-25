@@ -48,6 +48,26 @@ std::array<std::string, 4> Game::launchNumericalQuestionAndReturnRanking()
 	return ranking;
 }
 
+void Game::getTheLeaderBoard(crow::SimpleApp& app)
+{
+	std::array<std::string, 4> ranking = launchNumericalQuestionAndReturnRanking();
+	CROW_ROUTE(app, "/leaderBoard")([&ranking]() {
+	std::vector<crow::json::wvalue> leaderBoard;
+	int position = 1;
+	for (const auto& playerName : ranking) {
+		results.push_back(crow::json::wvalue{
+			{ "Pos", position },
+			{ "name", playerName },
+			});
+		nr++;
+	}
+
+	return crow::json::wvalue{ leaderBoard };
+		});
+}
+
+
+
 void Game::initNumericalQuest_json()
 {
 	for (const auto& quest : storage.iterate<IntrebareNumerica>())
