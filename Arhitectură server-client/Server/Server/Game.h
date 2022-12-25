@@ -47,5 +47,7 @@ public:
 	std::array<std::string, 4> launchNumericalQuestionAndReturnRanking();
 
 	void getTheLeaderBoard(crow::SimpleApp& app);
+
+	crow::response GetPlayersBases();
 	
 };
