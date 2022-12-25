@@ -5,6 +5,7 @@
 #include <cpr/cpr.h>
 #include <crow.h>
 
+
 namespace Ui {
 class MainScreen;
 }
@@ -25,9 +26,14 @@ private slots:
 
     void on_back_clicked();
 
+    void on_logOut_clicked();
+
+    void on_back_2_clicked();
+
 private:
     Ui::MainScreen *ui;
     std::string userName;
+    
 };
 
 #endif // MAINSCREEN_H

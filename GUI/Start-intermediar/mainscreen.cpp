@@ -1,4 +1,5 @@
 #include "mainscreen.h"
+#include "ui_intermediaryscreen.h"
 #include "ui_mainscreen.h"
 
 MainScreen::MainScreen(QWidget *parent) :
@@ -18,11 +19,13 @@ MainScreen::MainScreen(QWidget *parent) :
     pixmap= pixmap.scaled(this->size(), Qt::IgnoreAspectRatio);
     ui->logo->setPixmap(pixmap);
     ui->logo2->setPixmap(pixmap);
+    ui->logo3->setPixmap(pixmap);
 
     QPixmap pixmap2(":/images/images/back_icon.png");
     pixmap2= pixmap2.scaled(this->size(), Qt::IgnoreAspectRatio);
     QIcon aux(pixmap2);
     ui->back->setIcon(aux);
+    ui->back_2->setIcon(aux);
     ui->stats->setAlignment(Qt::AlignCenter);
     ui->account->setCurrentIndex(0);
 }
@@ -55,11 +58,11 @@ void MainScreen::on_statistics_clicked()
         for (const auto& performance : history)
         {
            // auto t = performance["meciuri_jucate"];
-          QString p1 = QStringLiteral("Number of games played: %1\n").arg(performance["meciuri_jucate"].i());
-          QString p2= QStringLiteral("Number of questions answered: %1\n").arg(performance["raspunsuri_totale"].i());
-          QString p3= QStringLiteral("Number of correct answerd: %1\n").arg(performance["raspunsuri_corecte"].i());
-          QString p4= QStringLiteral("Maximum score: %1\n").arg(performance["scor_maxim"].i());
-          QString p5= QStringLiteral("Minimum score: %1\n").arg(performance["scor_minim"].i());
+          QString p1 = QStringLiteral("Number of games played: %1\n").arg(performance["meciuriJucate"].i());
+          QString p2= QStringLiteral("Number of questions answered: %1\n").arg(performance["raspunsuriTotale"].i());
+          QString p3= QStringLiteral("Number of correct answerd: %1\n").arg(performance["raspunsuri corecte"].i());
+          QString p4= QStringLiteral("Maximum score: %1\n").arg(performance["scorMaxim"].i());
+          QString p5= QStringLiteral("Minimum score: %1\n").arg(performance["scorMinim"].i());
           ui->stats->setText(p1+p2+p3+p4+p5);
 
 
@@ -74,6 +77,19 @@ void MainScreen::on_statistics_clicked()
 
 
 void MainScreen::on_back_clicked()
+{
+    ui->account->setCurrentIndex(0);
+}
+
+
+void MainScreen::on_logOut_clicked()
+{
+   // hide();
+    //aux.show();
+}
+
+
+void MainScreen::on_back_2_clicked()
 {
     ui->account->setCurrentIndex(0);
 }
