@@ -74,6 +74,7 @@ crow::response Game::GetPlayersBases()
 		auto bodyArgs = parseUrlArgs(req.body); 
 		auto end = bodyArgs.end();
 
+		nrPlayers = 0;
 		for (auto& player : players)
 		{
 			if (bodyArgs.find(player->getUserName()) != end)
@@ -96,6 +97,17 @@ crow::response Game::GetPlayersBases()
 		}
 
 	}
+
+		if (nrPlayers == players.size())
+		{
+			for (auto& baza : baze)
+			{
+				const auto & [player, index] = baza;
+				std::shared_ptr<Region> region = map.GetRegion(index - 1);
+				region.SetBase();
+				region.SetOwner(player);
+			}
+		}
 
 	return crow::response(200);	
 }
