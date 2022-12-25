@@ -15,6 +15,10 @@ public:
     IntrebariNumerice(QWidget *parent = nullptr);
     ~IntrebariNumerice();
 
+private slots:
+    void AfisareIntrebare();
+    void on_IntrebareNumerica_linkActivated();
+
 private:
     Ui::IntrebariNumerice *ui;
 };
