@@ -11,6 +11,8 @@ CONFIG += c++17
 SOURCES += \
     form.cpp \
     intermediaryscreen.cpp \
+    intrebarigrila.cpp \
+    intrebarinumerice.cpp \
     main.cpp \
     mainscreen.cpp \
     startscreen.cpp
@@ -18,12 +20,14 @@ SOURCES += \
 HEADERS += \
     form.h \
     intermediaryscreen.h \
+    intrebarinumerice.h \
     mainscreen.h \
     startscreen.h
 
 FORMS += \
     form.ui \
     intermediaryscreen.ui \
+    intrebarinumerice.ui \
     mainscreen.ui \
     startscreen.ui
 
