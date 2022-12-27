@@ -136,8 +136,9 @@ float User::getProcentajRaspunsuriCorecte() const
 	}
 	else
 	{
-		std::cerr << "[WARNING] Nu a fost jucat nici un meci!\n";
-		exit(0);
+		/*std::cerr << "[WARNING] Nu a fost jucat nici un meci!\n";
+		exit(0);*/
+		return 100;
 	}
 }
 

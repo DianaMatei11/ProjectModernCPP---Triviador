@@ -55,63 +55,64 @@ void Game::getTheLeaderBoard(crow::SimpleApp& app)
 	std::vector<crow::json::wvalue> leaderBoard;
 	int position = 1;
 	for (const auto& playerName : ranking) {
-		results.push_back(crow::json::wvalue{
+		leaderBoard.push_back(crow::json::wvalue{
 			{ "Pos", position },
 			{ "name", playerName },
 			});
-		nr++;
+		position++;
 	}
 
 	return crow::json::wvalue{ leaderBoard };
 		});
 }
 
-crow::response Game::GetPlayersBases()
-{
-	std::vector<User, int> baze;
-	std::vector<std::shared_ptr<Region>> regiuniBaze;
-	CROW_ROUTE(app, "/getPlayersBases")([&Players = players](const crow::request& req) {
-		auto bodyArgs = parseUrlArgs(req.body); 
-		auto end = bodyArgs.end();
-
-		int nrPlayers = 0;
-		for (auto& player : players)
-		{
-			if (bodyArgs.find(player->getUserName()) != end)
-			{
-				auto indexRegion = bodyArgs.find("index");
-				int index = std::stoi(indexRegion->second);
-				std::shared_ptr<Region> region = map.GetRegion(index-1);
-				std::vector<std::shared_ptr<Region>>& regions = map.GetUnusedRegions();
-				auto it=std::find(regions.begin(), regions.end(), region);
-				if (it!=regions.end())
-				{
-					std::pair<std::string, int> baza;
-					baza.first = player;
-					baza.second = std::stoi(id);
-					baze.push_back(baza);
-					regiuniBaze.push_back(map.PickRegion(index - 1));
-					nrPlayers++;
-				}
-			}
-		}
-
-		}
-
-		if (nrPlayers == players.size())
-		{
-			for (auto& baza : baze)
-			{
-				const auto& [player, index] = baza;
-				std::shared_ptr<Region> region = map.GetRegion(index - 1);
-				region.SetBase();
-				region.SetOwner(player);
-			}
-		}
-		else return crow::response(400);
-
-	return crow::response(200);	
-}
+//void Game::GetPlayersBases()
+//{
+//	std::vector< std::pair<std::string, int>> baze;
+//	std::vector<std::shared_ptr<Region>> regiuniBaze;
+//	CROW_ROUTE(app, "/getPlayersBases")([&players = players, &map = map, &baze, &regiuniBaze](const crow::request& req) {
+//		auto bodyArgs = parseUrlArgs(req.body);
+//		auto end = bodyArgs.end();
+//
+//		int nrPlayers = 0;
+//		for (auto& player : players)
+//		{
+//			if (bodyArgs.find(player->getUserName()) != end)
+//			{
+//				auto indexRegion = bodyArgs.find("index");
+//				int index = std::stoi(indexRegion->second);
+//				std::shared_ptr<Region> region = map.GetRegion(index - 1);
+//				std::vector<std::shared_ptr<Region>>& regions = map.GetUnusedRegions();
+//				auto it = std::find(regions.begin(), regions.end(), region);
+//				if (it != regions.end())
+//				{
+//					std::pair<std::string, int> baza;
+//					baza.first = player->getUserName();
+//					baza.second = index;
+//					baze.push_back(baza);
+//					regiuniBaze.push_back(map.PickRegion(index - 1));
+//					nrPlayers++;
+//				}
+//			}
+//		}
+//
+//		
+//
+//		if (nrPlayers == players.size())
+//		{
+//			for (auto& baza : baze)
+//			{
+//				const auto& [player, index] = baza;
+//				std::shared_ptr<Region> region = map.GetRegion(index - 1);
+//				region->SetBase();
+//				//region->SetOwner(player);
+//			}
+//		}
+//		else return crow::response(400);
+//	
+//		return crow::response(200);
+//		});
+//}
 
 void Game::initNumericalQuest_json()
 {
