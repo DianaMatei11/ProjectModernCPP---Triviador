@@ -21,21 +21,11 @@ private:
 		green = 3
 	};
 	
-	std::vector<crow::json::wvalue> numericalQuest_json;
-	std::vector<crow::json::wvalue> quizzes_json;
-	std::vector<crow::json::wvalue> numericalAnswers_json;
-	std::vector<crow::json::wvalue> users_json;
-
-    void initNumericalQuest_json();
-	void initQuizzes_json();
-	void initNumericalAnswers_json();
-	void initUsers_json();
-	
 	int sentANumericalQuestionRoute();
 	int sentAGrillQuestionRoute();
 
-	int verifyCorrectAnswer(int id, const std::vector<int> &answers);
-	int verifyCorrectGrillAnswer(int id, const std::vector<int> &answers);
+	int sendCorrectAnswerNQ(int answer);
+	int sendCorrectGrillAnswer(int answer);
 	
 	void addPlayerByUsername();
 	void assignAColor();
@@ -45,9 +35,6 @@ public:
 	Game(Storage& storage, crow::SimpleApp& app);
 	
 	std::array<std::string, 4> launchNumericalQuestionAndReturnRanking();
-
 	void getTheLeaderBoard(crow::SimpleApp& app);
-
-	crow::response GetPlayersBases();
-	
+	void GetPlayersBases();
 };
