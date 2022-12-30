@@ -1,6 +1,6 @@
 #include "Region.h"
 
-Region::Region(int id,coord vectorCoord, int scores, bool isBase, std::shared_ptr<User> owner)
+Region::Region(int id,coord vectorCoord, int scores, bool isBase, std::string owner)
 	:m_id{ id }, m_vectorCoord{ vectorCoord }, m_scores{ scores }, m_isBase{ isBase }, m_owner{ owner }
 {
 }
@@ -16,19 +16,18 @@ int Region::GetID()
 
 bool Region::HasOwner()
 {
-	if (m_owner!=nullptr)
-		return true;
-	return false;
+	if (m_owner.empty())return false;
+	return true;
 }
 
-User& Region::GetOwner()
+std::string Region::GetOwner()
 {
-	return *m_owner;
+	return m_owner;
 }
 
-void Region::SetOwner(const User& user)
+void Region::SetOwner(const std::string& user)
 {
-	m_owner = std::make_shared<User>(user);
+	m_owner = user;
 }
 
 const coord& Region::GetCoord()

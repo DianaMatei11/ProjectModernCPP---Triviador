@@ -147,6 +147,14 @@
       <Project>{020e7210-068d-496f-9088-899d35ef162a}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Server\Map.cpp" />
+    <ClCompile Include="..\Server\Region.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Server\Map.h" />
+    <ClInclude Include="..\Server\Region.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -13,19 +13,19 @@ class Region
 {
 private:
 	int m_scores;
-	std::shared_ptr<User> m_owner;
+	std::string m_owner;
 	int m_id;
 	bool m_isBase;
 	coord m_vectorCoord;
 
 public:
 	Region() = default;
-	Region(int id,coord vectorCoord, int scores = 100,bool isBase=false, std::shared_ptr<User> owner=nullptr);
+	Region(int id,coord vectorCoord, int scores = 100,bool isBase=false, std::string owner="");
 	//~Region();
 	int GetID();
 	bool HasOwner();
-	User& GetOwner();
-	void SetOwner(const User& user);
+	std::string GetOwner();
+	void SetOwner(const std::string& user);
 	const coord& GetCoord();
 	int GetScores();
 	void SetScores(int scores);

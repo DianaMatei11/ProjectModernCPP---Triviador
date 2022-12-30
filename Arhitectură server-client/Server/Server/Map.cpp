@@ -17,7 +17,6 @@ Map::Map(int nrPlayers)
 		m_w = 6;
 		m_h = 4;
 	}
-
 	float w = 600 / m_w;
 	float h = 200 / m_h;
 	float initialh=0;
@@ -51,7 +50,7 @@ std::shared_ptr<Region> Map::PickRegion(int id)
 	else
 	{
 		//throw std::exception{ "The region was not found" };
-		std::cout << "The region was not found.\n";
+		std::cout << "The region was not found\n";
 	}
 }
 

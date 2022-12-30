@@ -11,6 +11,7 @@ private:
 	std::vector<std::shared_ptr<Region>> m_regions;
 	int m_w,m_h;
 public:
+	//
 	Map() = default;
 	Map(int nrPlayers);
 	
