@@ -86,3 +86,24 @@ void IntrebariGrila::on_varianta_d_clicked()
 
 }
 
+
+void IntrebariGrila::on_pushButton_clicked()
+{
+    auto response=cpr::Get(
+                cpr::Url{ "http://localhost:14040/Avantaj" }
+                );
+    int index1=response["index1"].i();
+    int index2=response["index2"].i();
+    if(index1!=0 || index2!=0)
+        ui->varianta_a->hide();
+
+    if(index1!=1 || index2!=1)
+        ui->varianta_b->hide();
+
+    if(index1!=2 || index2!=2)
+        ui->varianta_c->hide();
+
+    if(index1!=3||index2!=3)
+        ui->varianta_d->hide();
+}
+

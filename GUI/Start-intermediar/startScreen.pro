@@ -20,6 +20,7 @@ SOURCES += \
 HEADERS += \
     form.h \
     intermediaryscreen.h \
+    intrebarigrila.h \
     intrebarinumerice.h \
     mainscreen.h \
     startscreen.h
@@ -27,6 +28,7 @@ HEADERS += \
 FORMS += \
     form.ui \
     intermediaryscreen.ui \
+    intrebarigrila.ui \
     intrebarinumerice.ui \
     mainscreen.ui \
     startscreen.ui
