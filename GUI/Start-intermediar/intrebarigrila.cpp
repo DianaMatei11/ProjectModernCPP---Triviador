@@ -105,5 +105,6 @@ void IntrebariGrila::on_pushButton_clicked()
 
     if(index1!=3||index2!=3)
         ui->varianta_d->hide();
+
 }
 

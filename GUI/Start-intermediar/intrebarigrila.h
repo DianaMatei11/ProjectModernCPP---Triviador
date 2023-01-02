@@ -25,5 +25,6 @@ private slots:
     void on_varianta_b_clicked();
     void on_varianta_c_clicked();
     void on_varianta_d_clicked();
+    void on_pushButton_clicked();
 };
 #endif // INTREBARIGRILA_H

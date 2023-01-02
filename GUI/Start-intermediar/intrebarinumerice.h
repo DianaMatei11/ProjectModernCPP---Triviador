@@ -19,6 +19,8 @@ private slots:
     void AfisareIntrebare();
     void on_IntrebareNumerica_linkActivated();
 
+    void on_pushButton_clicked();
+
 private:
     Ui::IntrebariNumerice *ui;
 };

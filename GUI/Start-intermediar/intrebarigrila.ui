@@ -106,6 +106,24 @@ color: rgb(245, 242, 220); font-size: 25px; font: Bold; font-family:Georgia; bor
      <string/>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>580</x>
+      <y>480</y>
+      <width>161</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(189, 158, 122);
+color: rgb(245, 242, 220); font-size: 16px; font: Bold; font-family:Georgia; border-radius:15px
+</string>
+    </property>
+    <property name="text">
+     <string>Avantaj fify-fifty</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -113,7 +131,7 @@ color: rgb(245, 242, 220); font-size: 25px; font: Bold; font-family:Georgia; bor
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>26</height>
+     <height>31</height>
     </rect>
    </property>
   </widget>
