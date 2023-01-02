@@ -38,6 +38,9 @@
     <QtUic Include="..\..\Start-intermediar\intrebarigrila.ui">
       <Filter>Form Files</Filter>
     </QtUic>
+    <QtUic Include="..\..\Start-intermediar\intrebarinumerice.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="..\..\Start-intermediar\form.h">

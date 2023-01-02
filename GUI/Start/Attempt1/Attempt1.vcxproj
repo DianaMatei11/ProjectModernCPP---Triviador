@@ -88,6 +88,7 @@
     <QtUic Include="..\..\Start-intermediar\form.ui" />
     <QtUic Include="..\..\Start-intermediar\intermediaryscreen.ui" />
     <QtUic Include="..\..\Start-intermediar\intrebarigrila.ui" />
+    <QtUic Include="..\..\Start-intermediar\intrebarinumerice.ui" />
     <QtUic Include="..\..\Start-intermediar\mainscreen.ui" />
     <QtUic Include="..\..\Start-intermediar\startscreen.ui" />
   </ItemGroup>

@@ -30,6 +30,19 @@ int IntrebariGrila::GetIndex_Rasp_Corect() const
 	return index_rasp_corect;
 }
 
+int IntrebariGrila::GetOptionRandom() const
+{
+	int r = GetRandomNumber(0, 3);
+	int x = GetIndex_Rasp_Corect();
+	x--;
+	while (r == x)
+	{
+		r = GetRandomNumber(0, 3);
+	}
+	return r;
+	
+}
+
 std::string IntrebariGrila::GetOption0() const
 {
 	return raspunsuri[0];
@@ -49,6 +62,7 @@ std::string IntrebariGrila::GetOption3() const
 {
 	return raspunsuri[3];
 }
+
 
 void IntrebariGrila::SetOption0(const std::string opt)
 {
@@ -70,6 +84,7 @@ void IntrebariGrila::SetOption3(const std::string opt)
 	raspunsuri[3] = opt;
 }
 
+
 uint16_t IntrebariGrila::GetId() const
 {
 	return m_id;
@@ -78,23 +93,6 @@ uint16_t IntrebariGrila::GetId() const
 void IntrebariGrila::SetId(const uint16_t& newId)
 {
 	m_id = newId;
-}
-
-void IntrebariGrila::AfisareAvantaj()
-{
-	int r = GetRandomNumber(0,3);
-	int x = GetIndex_Rasp_Corect();
-	x--;
-	while (r ==x)
-	{
-		r = GetRandomNumber(0, 3);
-	}
-
-	std::cout << "Avantajul FIFTY - FIFTY este: " << '\n';
-	std::cout<< raspunsuri[r];
-	std::cout << std::endl;
-	std::cout<< raspunsuri[x];
-
 }
 
 

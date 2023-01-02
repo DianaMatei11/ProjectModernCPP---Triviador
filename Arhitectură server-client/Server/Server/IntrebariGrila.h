@@ -22,12 +22,13 @@ public:
 
 	std::array<std::string, 4> GetRaspunsuri() const;
 	int GetIndex_Rasp_Corect() const;
+	int GetOptionRandom()const;
 
 	std::string GetOption0() const;
 	std::string GetOption1() const;
 	std::string GetOption2() const;
 	std::string GetOption3() const;
-
+	
 	void SetOption0(const std::string opt);
 	void SetOption1(const std::string opt);
 	void SetOption2(const std::string opt);
@@ -37,8 +38,6 @@ public:
 	uint16_t GetId() const;
 	void SetId(const uint16_t& newId);
 
-	void AfisareAvantaj();
-	
 	friend std::istream& operator>>(std::istream& in, IntrebariGrila& a);
 	friend std::ostream& operator << (std::ostream& out, const IntrebariGrila& a);
 	~IntrebariGrila()=default;

@@ -13,6 +13,7 @@ private:
 	crow::SimpleApp& app;
 	Storage& storage;
 	Map map;
+	int index_answer;
 
 	enum colors {
 		red = 0,
@@ -29,7 +30,6 @@ private:
 	
 	void addPlayerByUsername();
 	void assignAColor();
-
 
 public:
 	Game(Storage& storage, crow::SimpleApp& app);

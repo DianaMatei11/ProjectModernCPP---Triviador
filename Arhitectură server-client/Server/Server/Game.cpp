@@ -30,8 +30,18 @@ int Game::sentAGrillQuestionRoute()
 			{"Optiune1", quest.GetOption1()},
 			{"Optiune2", quest.GetOption2()},
 			{"Optiune3", quest.GetOption3()},
+	
 			};
 		});
+
+
+	CROW_ROUTE(app, "/GrillQuestion/Avantaj")([&quest]() {
+		return crow::json::wvalue{
+			{"index1", quest.GetIndex_Rasp_Corect() },
+			{"index2",quest.GetOptionRandom()},
+			};
+		});
+
 	return index;
 }
 
@@ -89,6 +99,8 @@ void Game::assignAColor()
 		}
 		});
 }
+
+
 
 std::array<std::string, 4> Game::launchNumericalQuestionAndReturnRanking()
 {

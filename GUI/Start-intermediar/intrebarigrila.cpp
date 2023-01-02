@@ -90,7 +90,7 @@ void IntrebariGrila::on_varianta_d_clicked()
 void IntrebariGrila::on_pushButton_clicked()
 {
     auto response=cpr::Get(
-                cpr::Url{ "http://localhost:14040/Avantaj" }
+                cpr::Url{ "http://localhost:14040/GrillQuestion/Avantaj" }
                 );
     int index1=response["index1"].i();
     int index2=response["index2"].i();
