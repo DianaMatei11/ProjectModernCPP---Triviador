@@ -57,11 +57,75 @@ void IntrebariNumerice::on_avantaj4_rasp_clicked()
 void IntrebariNumerice::on_avantaj1_rasp_clicked()
 {
     ui->avantaj4_rasp->setDisabled(false);
+
     cpr::Response response = cpr::Get(
                 cpr::Url{ "http://localhost:14040//NumericalQuestion/Avantaj/1Answer" }
                 );
     auto aux = crow::json::load(response.text);
     ui->raspuns_numeric->setText(QString::fromLocal8Bit(static_cast<std::string> (aux["varianta"])));
+
+}
+
+
+void IntrebariNumerice::on_av0_clicked()
+{
+    auto response = cpr::Put(
+        cpr::Url{ "http://localhost:14040/Answer" },
+        cpr::Payload{
+            {
+                "0", (ui->av0->text().toLocal8Bit().constData())}
+            });
+    ui->av1->setDisabled(false);
+    ui->av2->setDisabled(false);
+    ui->av3->setDisabled(false);
+
+}
+
+
+void IntrebariNumerice::on_av1_clicked()
+{
+    auto response = cpr::Put(
+        cpr::Url{ "http://localhost:14040/Answer" },
+        cpr::Payload{
+            {
+                "1", (ui->av1->text().toLocal8Bit().constData())}
+            });
+
+    ui->av0->setDisabled(false);
+    ui->av2->setDisabled(false);
+    ui->av3->setDisabled(false);
+
+}
+
+
+void IntrebariNumerice::on_av2_clicked()
+{
+    auto response = cpr::Put(
+        cpr::Url{ "http://localhost:14040/Answer" },
+        cpr::Payload{
+            {
+                "2", (ui->av2->text().toLocal8Bit().constData())}
+            });
+
+    ui->av1->setDisabled(false);
+    ui->av0->setDisabled(false);
+    ui->av3->setDisabled(false);
+
+}
+
+
+void IntrebariNumerice::on_av3_clicked()
+{
+    auto response = cpr::Put(
+        cpr::Url{ "http://localhost:14040/Answer" },
+        cpr::Payload{
+            {
+                "3", (ui->av3->text().toLocal8Bit().constData())}
+            });
+
+    ui->av1->setDisabled(false);
+    ui->av2->setDisabled(false);
+    ui->av0->setDisabled(false);
 
 }
 

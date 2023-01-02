@@ -21,6 +21,14 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_av0_clicked();
+
+    void on_av1_clicked();
+
+    void on_av2_clicked();
+
+    void on_av3_clicked();
+
 private:
     Ui::IntrebariNumerice *ui;
 };
