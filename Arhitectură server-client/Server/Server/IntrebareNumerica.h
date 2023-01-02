@@ -2,6 +2,7 @@
 #include<string>
 #include <iostream>
 #include<random>
+#include<array>
 #include "Intrebare.h"
 
 class IntrebareNumerica : public Intrebare
@@ -17,7 +18,7 @@ public:
 	bool VerificareRaspuns();
 
 	void AvantajAproximativRaspunsCorect();
-	std::vector<int> afis4();
+	std::array<int,4> afis4();
 	void AfisareAvantaje();
 	void Avantaj4Raspunsuri();
 	void Afisare();

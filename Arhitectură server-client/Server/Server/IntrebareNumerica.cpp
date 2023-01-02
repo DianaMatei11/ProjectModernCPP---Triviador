@@ -35,9 +35,9 @@ void IntrebareNumerica::AvantajAproximativRaspunsCorect()
 	}
 }
 
-std::vector<int>IntrebareNumerica::afis4()
+std::array<int,4>IntrebareNumerica::afis4()
 {
-	std::vector<int>vect;
+	std::array<int,4>a;
 	int x = GetRandomNumber(-100,100);
 	for (int i = 0; i < 4; i++)
 	{
@@ -46,17 +46,17 @@ std::vector<int>IntrebareNumerica::afis4()
 			x = GetRandomNumber(-100,100);
 		}
 		x = x + m_raspuns;
-		vect.push_back( x);
+		a[i]= x;
 		x = GetRandomNumber(-100,100);
 		
 	}
-	if (std::find(vect.begin(), vect.end(), m_raspuns) == vect.end())
+	if (std::find(a.begin(), a.end(), m_raspuns) == a.end())
 	{
 		x = GetRandomNumber(-100, 100);
 		x = abs(x) % 3;
-		vect[x] = m_raspuns;
+		a[x] = m_raspuns;
 	}
-	return vect;
+	return a;
 }
 void IntrebareNumerica::Afisare()
 {
@@ -121,7 +121,7 @@ void IntrebareNumerica::AfisareAvantaje()
 
 void IntrebareNumerica::Avantaj4Raspunsuri()
 {
-	std::vector<int>aux;
+	std::array<int,4>aux;
 	aux = afis4();
 	int a = 1;
 	for (int i = 0; i < aux.size(); i++)

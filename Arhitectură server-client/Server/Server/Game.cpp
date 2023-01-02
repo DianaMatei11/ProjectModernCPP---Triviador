@@ -15,6 +15,7 @@ int Game::sentANumericalQuestionRoute()
 			{"Question", quest.GetEnunt()}
 			};
 		});
+	sentAvantaj4AnswerNumericalQuestionRoute(index);
 	return index;
 }
 
@@ -42,6 +43,31 @@ int Game::sentAGrillQuestionRoute()
 			};
 		});
 
+	return index;
+}
+
+int Game::sentAvantaj4AnswerNumericalQuestionRoute(int index)
+{
+	auto quest = storage.get<IntrebareNumerica>(index);
+	CROW_ROUTE(app,"/NumericalQuestion/Avantaj/4Answer")([&quest]() {
+			return crow::json::wvalue{
+				{"varianta0",quest.afis4()[0]},
+				{"varianta1",quest.afis4()[1]},
+				{"varianta2",quest.afis4()[2]},
+				{"varianta3",quest.afis4()[3]},
+			};
+			});
+	return index;
+}
+
+int Game::sentAvantaj1AnswerNumericalQuestionRoute(int index)
+{
+	auto quest = storage.get<IntrebareNumerica>(index);
+	CROW_ROUTE(app, "/NumericalQuestion/Avantaj/1Answer")([&quest]() {
+		return crow::json::wvalue{
+			{"varianta",quest.AvantajAproximativRaspunsCorect()}
+		};
+		});
 	return index;
 }
 

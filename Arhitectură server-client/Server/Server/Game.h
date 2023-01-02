@@ -24,6 +24,8 @@ private:
 	
 	int sentANumericalQuestionRoute();
 	int sentAGrillQuestionRoute();
+	int sentAvantaj4AnswerNumericalQuestionRoute(int index);
+	int sentAvantaj1AnswerNumericalQuestionRoute(int index);
 
 	int sendCorrectAnswerNQ(int answer);
 	int sendCorrectGrillAnswer(int answer);
