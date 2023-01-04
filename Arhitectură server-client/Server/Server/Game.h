@@ -13,7 +13,6 @@ private:
 	crow::SimpleApp& app;
 	Storage& storage;
 	Map map;
-	int index_answer;
 
 	enum colors {
 		red = 0,
@@ -24,14 +23,13 @@ private:
 	
 	int sentANumericalQuestionRoute();
 	int sentAGrillQuestionRoute();
-	int sentAvantaj4AnswerNumericalQuestionRoute(int index);
-	int sentAvantaj1AnswerNumericalQuestionRoute(int index);
 
 	int sendCorrectAnswerNQ(int answer);
 	int sendCorrectGrillAnswer(int answer);
 	
 	void addPlayerByUsername();
 	void assignAColor();
+	void sendPlayersUsername();
 
 public:
 	Game(Storage& storage, crow::SimpleApp& app);
@@ -39,4 +37,7 @@ public:
 	std::array<std::string, 4> launchNumericalQuestionAndReturnRanking();
 	void getTheLeaderBoard(crow::SimpleApp& app);
 	void GetPlayersBases();
+	void gameManager();
+	
+	
 };

@@ -133,6 +133,7 @@
     <ClCompile Include="Intrebare.cpp" />
     <ClCompile Include="IntrebareNumerica.cpp" />
     <ClCompile Include="IntrebariGrila.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Storage.cpp" />
     <ClCompile Include="User.cpp" />

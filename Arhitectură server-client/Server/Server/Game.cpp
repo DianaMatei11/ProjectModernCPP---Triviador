@@ -15,7 +15,6 @@ int Game::sentANumericalQuestionRoute()
 			{"Question", quest.GetEnunt()}
 			};
 		});
-	sentAvantaj4AnswerNumericalQuestionRoute(index);
 	return index;
 }
 
@@ -31,42 +30,7 @@ int Game::sentAGrillQuestionRoute()
 			{"Optiune1", quest.GetOption1()},
 			{"Optiune2", quest.GetOption2()},
 			{"Optiune3", quest.GetOption3()},
-	
 			};
-		});
-
-
-	CROW_ROUTE(app, "/GrillQuestion/Avantaj")([&quest]() {
-		return crow::json::wvalue{
-			{"index1", quest.GetIndex_Rasp_Corect() },
-			{"index2",quest.GetOptionRandom()},
-			};
-		});
-
-	return index;
-}
-
-int Game::sentAvantaj4AnswerNumericalQuestionRoute(int index)
-{
-	auto quest = storage.get<IntrebareNumerica>(index);
-	CROW_ROUTE(app,"/NumericalQuestion/Avantaj/4Answer")([&quest]() {
-			return crow::json::wvalue{
-				{"varianta0",quest.afis4()[0]},
-				{"varianta1",quest.afis4()[1]},
-				{"varianta2",quest.afis4()[2]},
-				{"varianta3",quest.afis4()[3]},
-			};
-			});
-	return index;
-}
-
-int Game::sentAvantaj1AnswerNumericalQuestionRoute(int index)
-{
-	auto quest = storage.get<IntrebareNumerica>(index);
-	CROW_ROUTE(app, "/NumericalQuestion/Avantaj/1Answer")([&quest]() {
-		return crow::json::wvalue{
-			{"varianta",quest.AvantajAproximativRaspunsCorect()}
-		};
 		});
 	return index;
 }
@@ -93,40 +57,68 @@ int Game::sendCorrectGrillAnswer(int answer)
 
 void Game::addPlayerByUsername()
 {
-	auto& usernameJson = CROW_ROUTE(app, "/GamePlayerUsername")
-		.methods(crow::HTTPMethod::PUT);
+	CROW_ROUTE(app, "/GamePlayerUsername")
+		.methods(crow::HTTPMethod::PUT)([&db = storage, &players = players](const crow::request& req) {
+		std::string username;
 
-	std::optional<User> user;
-	usernameJson(GetUserbyUserName(storage, user));
-	if (user.has_value())
-	{
-		players.emplace_back(std::move(std::make_shared<User>(std::move(user.value()))));
-		assignAColor();
-	}
+		auto bodyArgs = parseUrlArgs(req.body);
+		auto end = bodyArgs.end();
+		auto nameIter = bodyArgs.find("Name");
+		if (nameIter != end)
+		{
+			username = nameIter->second;
+			auto user = existUserName(username, db);
+			players.emplace_back(std::move(std::make_shared<User>(std::move(user.value()))));
+			return crow::response(200);
+		}
+		return crow::response(400);
+			});
+
+
+}
+
+void Game::sendPlayersUsername()
+{
+	CROW_ROUTE(app, "/PlayersInGame")([&players = players]() {
+		
+		std::vector<crow::json::wvalue> playersJson;
+		for (const auto& player : players)
+		{
+			playersJson.push_back(crow::json::wvalue{
+				{"username", player->getUserName()}
+			});
+		}
+		return crow::json::wvalue{ playersJson };
+		});
 }
 
 void Game::assignAColor()
 {
 	CROW_ROUTE(app, "/assignAColor")([&players = players]() {
+		colors color;
 		switch (players.size() - 1)
 		{
 		case 0:
-			return red;
+			color = red;
 			break;
 		case 1:
-			return yellow;
+			color = yellow;
 			break;
 		case 2:
-			return blue;
+			color = green;
 			break;
 		case 3:
-			return green;
+			color = blue;
 			break;
 		}
+
+		return crow::json::wvalue{
+				{"color", (color)}
+		};
+
 		});
+
 }
-
-
 
 std::array<std::string, 4> Game::launchNumericalQuestionAndReturnRanking()
 {
@@ -181,7 +173,7 @@ void Game::getTheLeaderBoard(crow::SimpleApp& app)
 		for (const auto& playerName : ranking) {
 			leaderBoard.push_back(crow::json::wvalue{
 				{ "Pos", position },
-				{ "name", playerName },
+				{ "name", playerName }
 				});
 			position++;
 		}
@@ -238,4 +230,12 @@ void Game::GetPlayersBases()
 
 		return crow::response(200);
 			});
+}
+
+void Game::gameManager()
+{
+	addPlayerByUsername();
+	assignAColor();
+	sendPlayersUsername();
+	
 }

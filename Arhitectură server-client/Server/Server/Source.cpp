@@ -13,6 +13,7 @@ int main()
 	routeForStatistics(app, storage);
 
 	Game game(storage, app);
+	game.gameManager();
 	app.port(14040).multithreaded().run();
 	
 }

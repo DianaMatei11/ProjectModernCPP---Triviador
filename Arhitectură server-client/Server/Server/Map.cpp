@@ -12,25 +12,25 @@ Map::Map(int nrPlayers)
 		m_w = 5;
 		m_h = 3;
 	}
-	if (nrPlayers == 4) 
+	if (nrPlayers == 4)
 	{
 		m_w = 6;
 		m_h = 4;
 	}
 	float w = 600 / m_w;
 	float h = 200 / m_h;
-	float initialh=0;
-	float initialw=0;
+	float initialh = 0;
+	float initialw = 0;
 	coord tuplu;
 	for (int i = 0; i < m_h; i++)
-	{	
+	{
 		initialw = 0;
 		for (int j = 0; j < m_w; j++)
 		{
-		
+
 			tuplu = std::make_tuple(100 + initialw, 100 + initialh, w, h);
-			m_unusedRegions.emplace_back(std::make_shared<Region>(i*m_w + j + 1, tuplu));
-			m_regions.emplace_back(std::make_shared<Region>(i*m_w + j + 1, tuplu));
+			m_unusedRegions.emplace_back(std::make_shared<Region>(i * m_w + j + 1, tuplu));
+			m_regions.emplace_back(std::make_shared<Region>(i * m_w + j + 1, tuplu));
 			initialw += w;
 		}
 		initialh += h;
@@ -88,7 +88,7 @@ void Map::GetNeighbours(int id, std::vector<std::shared_ptr<Region>>& neigh)
 		vecini.emplace_back(GetRegion(2));
 		vecini.emplace_back(GetRegion(1 + m_w));
 		vecini.emplace_back(GetRegion(1 + m_w + 1));
-		neigh=vecini;
+		neigh = vecini;
 		return;
 	}
 	if (id == m_w)
@@ -116,7 +116,7 @@ void Map::GetNeighbours(int id, std::vector<std::shared_ptr<Region>>& neigh)
 		return;
 	}
 
-	if ((id-1) % m_w  == 0)
+	if ((id - 1) % m_w == 0)
 	{
 		vecini.emplace_back(GetRegion(id - m_w));
 		vecini.emplace_back(GetRegion(id - m_w + 1));
@@ -174,14 +174,15 @@ void Map::GetNeighbours(int id, std::vector<std::shared_ptr<Region>>& neigh)
 	}
 }
 
-void Map::RouteForCoordinates()
+void Map::RouteForCoordinates(crow::SimpleApp& app)
 {
 
-	/*CROW_ROUTE(app, "/coordinates")([&regions = m_regions]() {
+	CROW_ROUTE(app, "/coordinates")([&regions = m_regions]() {
 		std::vector<crow::json::wvalue> coordinates;
 	for (const auto& region : regions) {
 		coord coord = (*region).GetCoord();
 		coordinates.push_back(crow::json::wvalue{
+			{"index", region->GetID()},
 			{ "x", std::get<0>(coord) },
 			{ "y", std::get<1>(coord) },
 			{ "width", std::get<2>(coord) },
@@ -189,6 +190,6 @@ void Map::RouteForCoordinates()
 			});
 	}
 	return crow::json::wvalue{ coordinates };
-		});*/
+		});
 }
 
