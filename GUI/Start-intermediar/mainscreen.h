@@ -17,6 +17,7 @@ class MainScreen : public QMainWindow
 public:
     explicit MainScreen(QWidget *parent = nullptr);
     void setUsername(std::string str);
+    void addPlayersOnTheScreen();
     ~MainScreen();
 
 private slots:
@@ -30,10 +31,11 @@ private slots:
 
     void on_back_2_clicked();
 
+
 private:
     Ui::MainScreen *ui;
     std::string userName;
-    
+    QColor userColor;
 };
 
 #endif // MAINSCREEN_H

@@ -35,6 +35,17 @@ void MainScreen::setUsername(std::string str)
 	this->userName = str;
 }
 
+void MainScreen::addPlayersOnTheScreen()
+{
+	cpr::Response response = cpr::Get(cpr::Url{ "http://localhost:14040/PlayersInGame" });
+	auto users = crow::json::load(response.text);
+	for (const auto& user : users)
+	{
+		ui->listOfPlayers->append(QString::fromLocal8Bit(static_cast<std::string> (user["username"])));
+	}
+
+}
+
 MainScreen::~MainScreen()
 {
 	delete ui;
@@ -45,6 +56,43 @@ MainScreen::~MainScreen()
 void MainScreen::on_configuration_clicked()
 {
 	ui->account->setCurrentIndex(2);
+	
+	{
+		sendUsername:
+		auto response = cpr::Put(
+			cpr::Url{ "http://localhost:14040/GamePlayerUsername" },
+			cpr::Payload{
+				{ "Name", (this->userName)}
+			}
+		);
+
+		if (response.status_code == 400)
+		{
+			goto sendUsername;
+		}
+	}
+
+	{
+		cpr::Response response = cpr::Get(cpr::Url{ "http://localhost:14040/assignAColor" });
+		auto colorId = crow::json::load(response.text);
+		switch (colorId["color"].i())
+		{
+		case 0:
+			this->userColor = Qt::red;
+			break;
+		case 1:
+			this->userColor = Qt::yellow;
+			break;
+		case 2:
+			this->userColor = Qt::blue;
+			break;
+		case 3:
+			this->userColor = Qt::green;
+			break;
+		}
+	}
+
+	addPlayersOnTheScreen();
 }
 
 
