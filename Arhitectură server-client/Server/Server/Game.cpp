@@ -337,6 +337,46 @@ void Game::Duel(std::shared_ptr<User>& attacker, std::shared_ptr<User>& defender
 
 		int idNumericalQuestion=sentANumericalQuestionRoute();
 		sendCorrectAnswerNQ(idNumericalQuestion);
+
+		auto comp = ([](std::tuple<std::string, int, float> A, std::tuple<std::string, int, float> B)
+			{
+				return std::get<1>(A) == std::get<1>(B) ? std::get<2>(A) < std::get<2>(B) : std::get<1>(A) < std::get<1>(B);
+			});
+
+		std::priority_queue < std::tuple<std::string, int, float>, std::vector<std::tuple<std::string, int, float>>, decltype(comp)> pq(comp);
+
+		int answer = storage.get<IntrebareNumerica>(idNumericalQuestion).GetRaspuns();
+		while (pq.size() != 2)
+		{
+			CROW_ROUTE(app, "/numericalQuestion/usersAnswers")
+				.methods(crow::HTTPMethod::PUT)
+				([&playersOfTheDuel, answer, idNumericalQuestion, &pq,&defender,&attacker](const crow::request& req) {
+				auto bodyArgs = parseUrlArgs(req.body);
+			auto end = bodyArgs.end();
+
+			for (auto& user_ptr : playersOfTheDuel)
+			{
+				if (bodyArgs.find(user_ptr->getUserName()) == end || bodyArgs.find(user_ptr->getUserName() + "Time") == end)
+				{
+					continue;
+				}
+				pq.push(std::make_tuple(user_ptr->getUserName(), std::abs(std::stoi(bodyArgs[user_ptr->getUserName()]) - answer), std::stof(bodyArgs[user_ptr->getUserName() + "Time"])));
+			}
+			return 200;
+					});
+		}
+
+		if (std::get<0>(pq.top()) == attacker->getUserName())
+		{
+			attackersAnswerIsRight = true;
+			defendersAnswerIsRight = false;
+		}
+		else
+		{
+			attackersAnswerIsRight = false;
+			defendersAnswerIsRight = true;
+		}
+
 		//de trimis si verificat raspunsurile
 
 
