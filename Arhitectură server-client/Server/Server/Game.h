@@ -38,6 +38,7 @@ public:
 	void getTheLeaderBoard(crow::SimpleApp& app);
 	void GetPlayersBases();
 	void gameManager();
-	
+
+	void Duel(std::shared_ptr<User>& attacker, std::shared_ptr<User>& defender, std::shared_ptr<Region>& region);
 	
 };

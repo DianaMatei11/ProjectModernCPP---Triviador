@@ -239,3 +239,107 @@ void Game::gameManager()
 	sendPlayersUsername();
 	
 }
+
+void Game::Duel(std::shared_ptr<User>& attacker, std::shared_ptr<User>& defender, std::shared_ptr<Region>& region)
+{
+	std::vector<std::shared_ptr<User>> playersOfTheDuel;
+	playersOfTheDuel.push_back(attacker);
+	playersOfTheDuel.push_back(defender);
+
+	int noLives;
+	if ((*region).IsBase())
+	{
+		noLives = 3;
+	}
+	else noLives = 1;
+	bool defenderLost = false;
+	bool attackerLost = false;
+	bool defendersAnswerIsRight = false;
+	bool attackersAnswerIsRight = false;
+	int counter = 0;
+	while (!defenderLost && !attackerLost)
+	{
+		int idGridQuestion;
+		idGridQuestion=sentAGrillQuestionRoute();
+		sendCorrectGrillAnswer(idGridQuestion);
+
+		int indexAnswerGQ = storage.get<IntrebariGrila>(idGridQuestion).GetIndex_Rasp_Corect();
+		std::vector<std::pair<std::shared_ptr<User>, int>> answerOfPlayers;
+		//de trimis si verificat raspunsurile
+
+		if (!defendersAnswerIsRight && attackersAnswerIsRight)
+			counter++;
+
+		if (defendersAnswerIsRight && !attackersAnswerIsRight)
+		{
+			attackerLost = true;
+			break;
+		}
+
+		if (!defendersAnswerIsRight && !attackersAnswerIsRight)
+		{
+			attackerLost = true;
+			defenderLost = true;
+			break;
+		}
+
+		if (counter == noLives)
+		{
+			defenderLost = true;
+			break;
+		}
+
+		//if (defendersAnswerIsRight && attackersAnswerIsRight)
+		//{
+			defendersAnswerIsRight = false;
+			attackersAnswerIsRight = false;
+		//}
+
+		int idNumericalQuestion=sentANumericalQuestionRoute();
+		sendCorrectAnswerNQ(idNumericalQuestion);
+		//de trimis si verificat raspunsurile
+
+
+		if (!defendersAnswerIsRight && attackersAnswerIsRight)
+			counter++;
+
+		if (defendersAnswerIsRight && !attackersAnswerIsRight)
+		{
+			attackerLost = true;
+			break;
+		}
+
+		if (!defendersAnswerIsRight && !attackersAnswerIsRight)
+		{
+			attackerLost = true;
+			defenderLost = true;
+			break;
+		}
+
+		if (counter == noLives)
+		{
+			defenderLost = true;
+			break;
+		}
+
+		if (counter<noLives)
+		{
+			defendersAnswerIsRight = false;
+			attackersAnswerIsRight = false;
+		}
+	}
+
+	if (defenderLost && !attackerLost)
+	{
+		region->SetOwner(attacker->getUserName());
+		//(*region).changeColour();
+		//attacker.IncreaseScore();
+	}
+
+	if (!defenderLost && attackerLost)
+	{
+		int score = region->GetScores();
+		region->SetScores(score + 100);
+		//defender.IncreaseScore();
+	}
+}
