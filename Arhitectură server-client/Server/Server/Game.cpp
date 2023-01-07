@@ -265,6 +265,46 @@ void Game::Duel(std::shared_ptr<User>& attacker, std::shared_ptr<User>& defender
 
 		int indexAnswerGQ = storage.get<IntrebariGrila>(idGridQuestion).GetIndex_Rasp_Corect();
 		std::vector<std::pair<std::shared_ptr<User>, int>> answerOfPlayers;
+
+		while (answerOfPlayers.size() != 2)
+		{
+			CROW_ROUTE(app, "/gridQuestion/usersAnswers")
+				.methods(crow::HTTPMethod::PUT)
+				([&playersOfTheDuel, indexAnswerGQ, idGridQuestion, &answerOfPlayers, &defender, &attacker](const crow::request& req) {
+				auto bodyArgs = parseUrlArgs(req.body);
+			auto end = bodyArgs.end();
+
+			for (auto& user_ptr : playersOfTheDuel)
+			{			
+				if (bodyArgs.find(user_ptr->getUserName()) == end)
+				{
+					continue;
+				}
+				auto answerIter = bodyArgs.find("answer");
+				if (answerIter != end)
+				{
+					int playerAnswer=std::stoi(answerIter->second);
+					std::pair < std::shared_ptr<User>, int> pair;
+					pair.first = user_ptr;
+					pair.second = playerAnswer;
+					answerOfPlayers.push_back(pair);
+				}
+			}
+			return 200;
+					});
+		}
+
+		for (const auto& p : answerOfPlayers)
+		{
+			if (p.second == indexAnswerGQ)
+			{
+				if (p.first->getUserName() == attacker->getUserName())
+				{
+					attackersAnswerIsRight = true;
+				}
+				else defendersAnswerIsRight = true;
+			}
+		}
 		//de trimis si verificat raspunsurile
 
 		if (!defendersAnswerIsRight && attackersAnswerIsRight)
