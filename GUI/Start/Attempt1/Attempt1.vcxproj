@@ -106,6 +106,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Start-intermediar\form.cpp" />
+    <ClCompile Include="..\..\Start-intermediar\harta.cpp" />
     <ClCompile Include="..\..\Start-intermediar\intermediaryscreen.cpp" />
     <ClCompile Include="..\..\Start-intermediar\intrebarigrila.cpp" />
     <ClCompile Include="..\..\Start-intermediar\main.cpp" />
