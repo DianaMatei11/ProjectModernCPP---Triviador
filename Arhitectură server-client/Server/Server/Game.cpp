@@ -122,6 +122,8 @@ void Game::assignAColor()
 
 void Game::arePlayersReady()
 {
+	static bool startGame = false;
+
 	CROW_ROUTE(app, "/startGame")
 		.methods(crow::HTTPMethod::PUT)([&players = players, &startGame = startGame](const crow::request& req) {
 		static std::unordered_map<std::string, bool> playersReady{};
@@ -162,6 +164,18 @@ void Game::arePlayersReady()
 		return 400;
 			});
 
+	CROW_ROUTE(app, "/launchGame")([&startGame = startGame]() {
+		if (startGame)
+		{
+			return crow::json::wvalue{
+				{"start", "launch"}
+			};
+		}
+
+		return crow::json::wvalue{
+			{"start", "stay"}
+		};
+		});
 }
 
 std::array<std::string, 4> Game::launchNumericalQuestionAndReturnRanking()
@@ -281,7 +295,7 @@ void Game::gameManager()
 	addPlayerByUsername();
 	assignAColor();
 	sendPlayersUsername();
-	
+	arePlayersReady();
 }
 
 void Game::Duel(std::shared_ptr<User>& attacker, std::shared_ptr<User>& defender, std::shared_ptr<Region>& region)

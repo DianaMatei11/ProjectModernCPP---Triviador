@@ -12,7 +12,6 @@ private:
 	std::vector<std::shared_ptr<User>> players;
 	crow::SimpleApp& app;
 	Storage& storage;
-	bool startGame = false;
 	Map map;
 
 	enum colors {
