@@ -4,6 +4,12 @@
 #include<vector>
 #include <QMainWindow>
 #include <QPushButton>
+#include <QPen>
+#include <QPainter>
+#include <QMouseEvent>
+#include <cpr/cpr.h>
+#include <crow.h>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class harta; }
@@ -21,7 +27,7 @@ public:
     void coord();
     ~harta();
 private slots:
-    void on_showPaths_clicked();
+
 private:
     std::vector<QRect> patrat;
     Ui::harta* ui;

@@ -86,6 +86,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <QtUic Include="..\..\Start-intermediar\form.ui" />
+    <QtUic Include="..\..\Start-intermediar\harta.ui" />
     <QtUic Include="..\..\Start-intermediar\intermediaryscreen.ui" />
     <QtUic Include="..\..\Start-intermediar\intrebarigrila.ui" />
     <QtUic Include="..\..\Start-intermediar\intrebarinumerice.ui" />
@@ -118,11 +119,6 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="..\..\Start-intermediar\intrebarigrila.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\DLL\DLL.vcxproj">
-      <Project>{22613933-8044-4941-8bba-4aaec79fdcee}</Project>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="..\..\Start-intermediar\harta.h" />

@@ -145,3 +145,15 @@ void MainScreen::on_back_2_clicked()
 	ui->account->setCurrentIndex(0);
 }
 
+void MainScreen::on_ready_clicked()
+{
+	start += '1';
+
+	auto response = cpr::Put(
+		cpr::Url{ "http://localhost:14040/startGame" },
+		cpr::Payload{
+			{ "username", (this->userName)},
+			{ "ready", (start)}
+		}
+	);
+}

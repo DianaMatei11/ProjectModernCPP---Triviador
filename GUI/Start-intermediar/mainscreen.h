@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <cpr/cpr.h>
 #include <crow.h>
-
+#include <qtimer.h>
 
 namespace Ui {
 class MainScreen;
@@ -31,9 +31,11 @@ private slots:
 
     void on_back_2_clicked();
 
+    void on_ready_clicked();
 
 private:
     Ui::MainScreen *ui;
+    std::string start;
     std::string userName;
     QColor userColor;
 };

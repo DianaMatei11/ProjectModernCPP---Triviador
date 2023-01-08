@@ -1,8 +1,6 @@
 #include "harta.h"
 #include "ui_harta.h"
-#include <QPen>
-#include<QPainter>
-#include<QMouseEvent>
+
 harta::harta(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::harta)
@@ -25,14 +23,12 @@ void harta::mousePressEvent(QMouseEvent *ev)
             auto response = cpr::Put(
             cpr::Url{ "http://localhost:14040/CoordClickHarta" },
             cpr::Payload{
-                {
-                "x", (ev->position().x());
-                "y", (ev->position().y());
-                }
+                
+                {"x", "" + static_cast<int>(ev->position().x())},
+                {"y", "" + static_cast<int>(ev->position().y())}
+                
             });
     }
-
-
 }
 
 void harta::coord()
@@ -44,10 +40,10 @@ void harta::coord()
             auto aux = crow::json::load(response.text);
     for(auto a:aux)
     {
-            x=aux["x"];
-            y=aux["y"];
-            width=aux["width"];
-            height=aux["height"];
+            x = aux["x"].i();
+            y = aux["y"].i();
+            width = aux["width"].i();
+            height = aux["height"].i();
             patrat.push_back(QRect(x,y,width,height));
     }
     update();
