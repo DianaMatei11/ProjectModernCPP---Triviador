@@ -15,10 +15,13 @@ class MainScreen : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainScreen(QWidget *parent = nullptr);
+    explicit MainScreen(QWidget* parent = nullptr);
     void setUsername(std::string str);
-    void addPlayersOnTheScreen();
     ~MainScreen();
+
+private:
+    void addPlayersOnTheScreen();
+    void findOutStartGame();
 
 private slots:
     void on_configuration_clicked();

@@ -37,6 +37,7 @@ void MainScreen::setUsername(std::string str)
 
 void MainScreen::addPlayersOnTheScreen()
 {
+	ui->listOfPlayers->clear();
 	cpr::Response response = cpr::Get(cpr::Url{ "http://localhost:14040/PlayersInGame" });
 	auto users = crow::json::load(response.text);
 	for (const auto& user : users)
@@ -44,6 +45,31 @@ void MainScreen::addPlayersOnTheScreen()
 		ui->listOfPlayers->append(QString::fromLocal8Bit(static_cast<std::string> (user["username"])));
 	}
 
+}
+
+void MainScreen::findOutStartGame()
+{
+	bool launchGame = false;
+	while (start.size() % 2 == 1 && !launchGame)
+	{
+		addPlayersOnTheScreen();
+		cpr::Response response = cpr::Get(cpr::Url{ "http://localhost:14040/launchGame" });
+
+		auto aux = crow::json::load(response.text);
+		if (aux["start"] == "stay")
+		{
+			QEventLoop loop;
+			QTimer t;
+			t.connect(&t, &QTimer::timeout, &loop, &QEventLoop::quit);
+			t.start(1000);
+			loop.exec();
+		}
+		else
+		{
+			launchGame = true;
+			//goto next window
+		}
+	}
 }
 
 MainScreen::~MainScreen()
@@ -129,7 +155,7 @@ void MainScreen::on_statistics_clicked()
 
 void MainScreen::on_back_clicked()
 {
-	ui->account->setCurrentIndex(0);
+	//ui->account->setCurrentIndex(0);
 }
 
 
@@ -156,4 +182,6 @@ void MainScreen::on_ready_clicked()
 			{ "ready", (start)}
 		}
 	);
+
+	findOutStartGame();
 }
