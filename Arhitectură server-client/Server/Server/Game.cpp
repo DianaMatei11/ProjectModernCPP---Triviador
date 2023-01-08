@@ -120,6 +120,50 @@ void Game::assignAColor()
 
 }
 
+void Game::arePlayersReady()
+{
+	CROW_ROUTE(app, "/startGame")
+		.methods(crow::HTTPMethod::PUT)([&players = players, &startGame = startGame](const crow::request& req) {
+		static std::unordered_map<std::string, bool> playersReady{};
+		auto bodyArgs = parseUrlArgs(req.body);
+		auto end = bodyArgs.end();
+		auto usernameIter = bodyArgs.find("username");
+		auto statusIter = bodyArgs.find("ready");
+		if (usernameIter != end && statusIter != end)
+		{
+			if (statusIter->second.size() % 2 == 1)
+			{
+				playersReady[usernameIter->second] = true;
+			}
+			else
+			{
+				playersReady[usernameIter->second] = false;
+			}
+
+			if (playersReady.size() >= 2 && playersReady.size() == players.size())
+			{
+				for (const auto& [username, status] : playersReady)
+				{
+					if (status == false)
+					{
+						return 200;
+					}
+				}
+			}
+			else
+			{
+				return 200;
+			}
+
+			startGame = true;
+
+			return 200;
+		}
+		return 400;
+			});
+
+}
+
 std::array<std::string, 4> Game::launchNumericalQuestionAndReturnRanking()
 {
 	int idQuest = sentANumericalQuestionRoute();
@@ -223,7 +267,7 @@ void Game::GetPlayersBases()
 				const auto& [player, index] = baza;
 				std::shared_ptr<Region> region = map.GetRegion(index - 1);
 				region->SetBase();
-				//region->SetOwner(player);
+				region->SetOwner(player);
 			}
 		}
 		else return crow::response(400);
