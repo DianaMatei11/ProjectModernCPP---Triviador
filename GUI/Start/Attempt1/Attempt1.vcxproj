@@ -124,6 +124,9 @@
       <Project>{22613933-8044-4941-8bba-4aaec79fdcee}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="..\..\Start-intermediar\harta.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
     <Import Project="$(QtMsBuild)\qt.targets" />

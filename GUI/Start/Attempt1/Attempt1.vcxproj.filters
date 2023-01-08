@@ -58,6 +58,9 @@
     <QtMoc Include="..\..\Start-intermediar\intrebarigrila.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="..\..\Start-intermediar\harta.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="..\..\Start-intermediar\images.qrc">

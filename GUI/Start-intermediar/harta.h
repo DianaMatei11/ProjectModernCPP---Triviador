@@ -1,6 +1,7 @@
 #ifndef HARTA_H
 #define HARTA_H
 
+#include<vector>
 #include <QMainWindow>
 #include <QPushButton>
 
@@ -13,14 +14,17 @@ class harta : public QMainWindow
     Q_OBJECT
 
 public:
-    harta(QWidget *parent = nullptr);
-    void mousePressEvent(QMouseEvent *ev);
-    void paintEvent(QPaintEvent*);
-    void coord(int x, int y,int width, int height);
-    ~harta();
 
+    harta(QWidget* parent = nullptr);
+    void mousePressEvent(QMouseEvent* ev);
+    void paintEvent(QPaintEvent*);
+    void coord();
+    ~harta();
+private slots:
+    void on_showPaths_clicked();
 private:
-    Ui::harta *ui;
-    QPushButton *buton;
+    std::vector<QRect> patrat;
+    Ui::harta* ui;
+    QPushButton* buton;
 };
 #endif // HARTA_H
