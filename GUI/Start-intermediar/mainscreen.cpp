@@ -67,6 +67,8 @@ void MainScreen::findOutStartGame()
 		{
 			launchGame = true;
 			harta.show();
+			harta.setUsername(userName);
+			harta.setColor(userColor);
 			harta.coord();
 			hide();
 		}

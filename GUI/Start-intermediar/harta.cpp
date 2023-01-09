@@ -9,6 +9,16 @@ Harta::Harta(QWidget *parent)
     ui->setupUi(this);
 }
 
+void Harta::setUsername(std::string str)
+{
+    userName = str;
+}
+
+void Harta::setColor(QColor color)
+{
+    userColor = color;
+}
+
 Harta::~Harta()
 {
     delete ui;
@@ -46,6 +56,18 @@ void Harta::coord()
     }
     update();
 
+}
+
+void Harta::gameManager()
+{
+    QEventLoop loop;
+    QTimer t;
+    t.connect(&t, &QTimer::timeout, &loop, &QEventLoop::quit);
+    t.start(3000);
+    loop.exec();
+
+    intrebareNumerica.show();
+    hide();
 }
 
 void Harta::paintEvent(QPaintEvent *)

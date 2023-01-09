@@ -15,7 +15,7 @@ void  IntrebariGrila::AfisareIntrebareGrila() {
 	cpr::Response response = cpr::Get(cpr::Url{ "http://localhost:14040/Quiz" });
 	auto aux = crow::json::load(response.text);
 
-	ui->label->setText(QString::fromLocal8Bit(static_cast<std::string> (aux["Enunt"])));
+	ui->intrebare_grila->setText(QString::fromLocal8Bit(static_cast<std::string> (aux["Enunt"])));
 	ui->varianta_a->setText(QString::fromLocal8Bit(static_cast<std::string> (aux["Optiune0"])));
 	ui->varianta_b->setText(QString::fromLocal8Bit(static_cast<std::string> (aux["Optiune1"])));
 	ui->varianta_c->setText(QString::fromLocal8Bit(static_cast<std::string> (aux["Optiune2"])));

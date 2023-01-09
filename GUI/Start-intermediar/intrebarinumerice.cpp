@@ -18,12 +18,16 @@ void IntrebariNumerice::AfisareIntrebare()
     cpr::Response response = cpr::Get(cpr::Url{ "http://localhost:14040/numericalQuestion" });
         auto aux = crow::json::load(response.text);
 
-        ui->intrebare_grila->setText(QString::fromLocal8Bit(static_cast<std::string> (aux["Question"])));
+        
+        timer.start();
+        ui->IntrebareNumerica->setText(QString::fromLocal8Bit(static_cast<std::string> (aux["Question"])));
+
 
 }
+
 void IntrebariNumerice::on_IntrebareNumerica_linkActivated()
 {
-    ui->raspuns_numeric->setCurrentIndex();
+    //ui->raspuns_numeric->setCurrentIndex();
 }
 
 
@@ -69,12 +73,15 @@ void IntrebariNumerice::on_avantaj1_rasp_clicked()
 
 void IntrebariNumerice::on_av0_clicked()
 {
+    double time = timer.elapsed() / 1000.0;
     auto response = cpr::Put(
         cpr::Url{ "http://localhost:14040/Answer" },
         cpr::Payload{
-            {
-                "0", (ui->av0->text().toLocal8Bit().constData())}
-            });
+           
+            {"0", (ui->av0->text().toLocal8Bit().constData())},
+            {"Time", std::to_string(time)}
+
+        });
     ui->av1->setDisabled(false);
     ui->av2->setDisabled(false);
     ui->av3->setDisabled(false);
@@ -84,12 +91,14 @@ void IntrebariNumerice::on_av0_clicked()
 
 void IntrebariNumerice::on_av1_clicked()
 {
+    double time = timer.elapsed() / 1000.0;
     auto response = cpr::Put(
         cpr::Url{ "http://localhost:14040/Answer" },
         cpr::Payload{
-            {
-                "1", (ui->av1->text().toLocal8Bit().constData())}
-            });
+            
+            {"1", (ui->av1->text().toLocal8Bit().constData())},
+            {"Time", std::to_string(time)}
+        });
 
     ui->av0->setDisabled(false);
     ui->av2->setDisabled(false);
@@ -100,12 +109,15 @@ void IntrebariNumerice::on_av1_clicked()
 
 void IntrebariNumerice::on_av2_clicked()
 {
+    double time = timer.elapsed() / 1000.0;
     auto response = cpr::Put(
         cpr::Url{ "http://localhost:14040/Answer" },
         cpr::Payload{
-            {
-                "2", (ui->av2->text().toLocal8Bit().constData())}
-            });
+           
+            {"2", (ui->av2->text().toLocal8Bit().constData())},
+            {"Time", std::to_string(time)}
+            
+        });
 
     ui->av1->setDisabled(false);
     ui->av0->setDisabled(false);
@@ -116,16 +128,32 @@ void IntrebariNumerice::on_av2_clicked()
 
 void IntrebariNumerice::on_av3_clicked()
 {
+    double time = timer.elapsed() / 1000.0;
     auto response = cpr::Put(
         cpr::Url{ "http://localhost:14040/Answer" },
         cpr::Payload{
-            {
-                "3", (ui->av3->text().toLocal8Bit().constData())}
-            });
+            
+            {"3", (ui->av3->text().toLocal8Bit().constData())},
+            {"Time", std::to_string(time)}
+            
+        });
 
     ui->av1->setDisabled(false);
     ui->av2->setDisabled(false);
     ui->av0->setDisabled(false);
 
+}
+
+void IntrebariNumerice::on_sendAnswer_clicked()
+{
+    double time = timer.elapsed() / 1000.0;
+    auto raspuns = ui->raspuns_numeric->text();
+    auto response = cpr::Put(
+        cpr::Url{ "http://localhost:14040/numericalQuestion/userAnswers" },
+        cpr::Payload{
+            
+            {"username", (raspuns.toLocal8Bit().constData())},
+            {"Time", (std::to_string(time))}
+        });
 }
 

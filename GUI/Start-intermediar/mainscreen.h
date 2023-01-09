@@ -42,6 +42,7 @@ private:
     std::string start;
     std::string userName;
     QColor userColor;
+
     Harta harta;
 };
 

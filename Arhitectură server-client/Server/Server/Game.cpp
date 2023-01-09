@@ -194,7 +194,7 @@ std::array<std::string, 4> Game::launchNumericalQuestionAndReturnRanking()
 	int answer = storage.get<IntrebareNumerica>(idQuest).GetRaspuns();
 	while (pq.size() != players.size())
 	{
-		CROW_ROUTE(app, "/numericalQuestion/usersAnswers")
+		CROW_ROUTE(app, "/numericalQuestion/userAnswers")
 			.methods(crow::HTTPMethod::PUT)
 			([&players = players, answer, idQuest, &pq](const crow::request& req) {
 			auto bodyArgs = parseUrlArgs(req.body);
@@ -211,6 +211,8 @@ std::array<std::string, 4> Game::launchNumericalQuestionAndReturnRanking()
 			return 200;
 				});
 	}
+
+	sendCorrectAnswerNQ(idQuest);
 
 	std::array<std::string, 4> ranking;
 	int index = 0;
