@@ -110,6 +110,7 @@
     <ClCompile Include="..\..\Start-intermediar\harta.cpp" />
     <ClCompile Include="..\..\Start-intermediar\intermediaryscreen.cpp" />
     <ClCompile Include="..\..\Start-intermediar\intrebarigrila.cpp" />
+    <ClCompile Include="..\..\Start-intermediar\intrebarinumerice.cpp" />
     <ClCompile Include="..\..\Start-intermediar\main.cpp" />
     <ClCompile Include="..\..\Start-intermediar\mainscreen.cpp" />
     <ClCompile Include="..\..\Start-intermediar\startscreen.cpp" />
@@ -122,6 +123,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="..\..\Start-intermediar\harta.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="..\..\Start-intermediar\intrebarinumerice.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

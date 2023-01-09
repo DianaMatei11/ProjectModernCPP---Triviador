@@ -5,12 +5,13 @@ IntrebariNumerice::IntrebariNumerice(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::IntrebariNumerice)
 {
+    ui->setupUi(this);
+
     ui->av0->hide();
     ui->av1->hide();
     ui->av2->hide();
     ui->av3->hide();
 
-    ui->setupUi(this);
 }
 
 void IntrebariNumerice::AfisareIntrebare()

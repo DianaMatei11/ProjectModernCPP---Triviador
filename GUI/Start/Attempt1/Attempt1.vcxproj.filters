@@ -64,6 +64,9 @@
     <QtMoc Include="..\..\Start-intermediar\harta.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="..\..\Start-intermediar\intrebarinumerice.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="..\..\Start-intermediar\images.qrc">
@@ -90,6 +93,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Start-intermediar\harta.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Start-intermediar\intrebarinumerice.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

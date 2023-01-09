@@ -89,7 +89,7 @@ color: rgb(245, 242, 220); font-size: 25px; font: Bold; font-family:Georgia; bor
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="intrebare_grila">
     <property name="geometry">
      <rect>
       <x>180</x>
@@ -131,7 +131,7 @@ color: rgb(245, 242, 220); font-size: 16px; font: Bold; font-family:Georgia; bor
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>31</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
