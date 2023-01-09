@@ -1,22 +1,20 @@
 #include "harta.h"
 #include "ui_harta.h"
 
-harta::harta(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::harta)
+Harta::Harta(QWidget *parent)
+    : QMainWindow(parent), 
+    ui(new Ui::harta)
 {
 
-
     ui->setupUi(this);
-    coord();
 }
 
-harta::~harta()
+Harta::~Harta()
 {
     delete ui;
 }
 
-void harta::mousePressEvent(QMouseEvent *ev)
+void Harta::mousePressEvent(QMouseEvent *ev)
 {
     if(ev->button() == Qt::LeftButton)
        {
@@ -31,36 +29,32 @@ void harta::mousePressEvent(QMouseEvent *ev)
     }
 }
 
-void harta::coord()
+void Harta::coord()
 {
-    int x, y,  width,height;
+    float x, y,  width,height;
     cpr::Response response = cpr::Get(
                     cpr::Url{ "http://localhost:14040/coordinates"}
                 );
-            auto aux = crow::json::load(response.text);
-    for(auto a:aux)
+    auto aux = crow::json::load(response.text);
+    for(const auto& a : aux)
     {
-            x = aux["x"].i();
-            y = aux["y"].i();
-            width = aux["width"].i();
-            height = aux["height"].i();
+            x = a["x"].d();
+            y = a["y"].d();
+            width = a["width"].d();
+            height = a["height"].d();
             patrat.push_back(QRect(x,y,width,height));
     }
     update();
 
 }
 
-void harta::paintEvent(QPaintEvent *)
+void Harta::paintEvent(QPaintEvent *)
 {
     QPainter p(this);
     int x,y,width,height;
     QPen pen;
-    pen.setColor(QColorConstants::Svg::pink);
+    pen.setWidth(2);
     p.setPen(pen);
-    coord();
-    QRect r(QPoint(x,y), QSize(width,height));
-    p.drawRect(r);
-
     for(const auto& a:patrat)
     {
         p.drawRect(a);

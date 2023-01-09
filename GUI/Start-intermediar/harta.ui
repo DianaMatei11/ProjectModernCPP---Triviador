@@ -13,34 +13,14 @@
   <property name="windowTitle">
    <string>harta</string>
   </property>
-  <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="ana">
-    <property name="geometry">
-     <rect>
-      <x>140</x>
-      <y>240</y>
-      <width>83</width>
-      <height>29</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>83</width>
-      <height>0</height>
-     </size>
-    </property>
-    <property name="text">
-     <string>PushButton</string>
-    </property>
-   </widget>
-  </widget>
+  <widget class="QWidget" name="centralwidget"/>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>31</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

@@ -1,5 +1,4 @@
 #include "mainscreen.h"
-#include "ui_intermediaryscreen.h"
 #include "ui_mainscreen.h"
 
 MainScreen::MainScreen(QWidget* parent) :
@@ -67,7 +66,9 @@ void MainScreen::findOutStartGame()
 		else
 		{
 			launchGame = true;
-			//goto next window
+			harta.show();
+			harta.coord();
+			hide();
 		}
 	}
 }

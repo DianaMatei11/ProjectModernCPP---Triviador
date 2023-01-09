@@ -11,26 +11,23 @@
 #include <crow.h>
 
 
-QT_BEGIN_NAMESPACE
 namespace Ui { class harta; }
-QT_END_NAMESPACE
 
-class harta : public QMainWindow
+class Harta : public QMainWindow
 {
     Q_OBJECT
 
 public:
 
-    harta(QWidget* parent = nullptr);
+    explicit Harta(QWidget* parent = nullptr);
     void mousePressEvent(QMouseEvent* ev);
     void paintEvent(QPaintEvent*);
     void coord();
-    ~harta();
+    ~Harta();
 private slots:
 
 private:
     std::vector<QRect> patrat;
     Ui::harta* ui;
-    QPushButton* buton;
 };
 #endif // HARTA_H

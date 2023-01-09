@@ -5,6 +5,7 @@
 #include <cpr/cpr.h>
 #include <crow.h>
 #include <qtimer.h>
+#include "harta.h"
 
 namespace Ui {
 class MainScreen;
@@ -41,6 +42,7 @@ private:
     std::string start;
     std::string userName;
     QColor userColor;
+    Harta harta;
 };
 
 #endif // MAINSCREEN_H

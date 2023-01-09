@@ -164,9 +164,10 @@ void Game::arePlayersReady()
 		return 400;
 			});
 
-	CROW_ROUTE(app, "/launchGame")([&startGame = startGame]() {
+	CROW_ROUTE(app, "/launchGame")([&startGame = startGame, &map = map, &players = players]() {
 		if (startGame)
 		{
+			map.buildMap(players.size());
 			return crow::json::wvalue{
 				{"start", "launch"}
 			};
@@ -176,6 +177,7 @@ void Game::arePlayersReady()
 			{"start", "stay"}
 		};
 		});
+
 }
 
 std::array<std::string, 4> Game::launchNumericalQuestionAndReturnRanking()
@@ -288,14 +290,6 @@ void Game::GetPlayersBases()
 
 		return crow::response(200);
 			});
-}
-
-void Game::gameManager()
-{
-	addPlayerByUsername();
-	assignAColor();
-	sendPlayersUsername();
-	arePlayersReady();
 }
 
 void Game::Duel(std::shared_ptr<User>& attacker, std::shared_ptr<User>& defender, std::shared_ptr<Region>& region)
@@ -481,3 +475,13 @@ void Game::Duel(std::shared_ptr<User>& attacker, std::shared_ptr<User>& defender
 		//defender.IncreaseScore();
 	}
 }
+
+void Game::gameManager()
+{
+	addPlayerByUsername();
+	assignAColor();
+	sendPlayersUsername();
+	arePlayersReady();
+	map.RouteForCoordinates(app);
+}
+

@@ -13,7 +13,7 @@ private:
 public:
 	//
 	Map() = default;
-	Map(int nrPlayers);
+	void buildMap(int nrPlayers);
 	
 	std::shared_ptr <Region> PickRegion(int id);
 	std::shared_ptr <Region> GetRegion(int id);

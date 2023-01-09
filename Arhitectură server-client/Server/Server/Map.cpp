@@ -1,7 +1,12 @@
 #include "Map.h"
 
-Map::Map(int nrPlayers)
+void Map::buildMap(int nrPlayers)
 {
+	if (m_regions.size() != 0)
+	{
+		return;
+	}
+
 	if (nrPlayers == 2)
 	{
 		m_w = 3;
@@ -18,7 +23,7 @@ Map::Map(int nrPlayers)
 		m_h = 4;
 	}
 	float w = 600 / m_w;
-	float h = 200 / m_h;
+	float h = 350 / m_h;
 	float initialh = 0;
 	float initialw = 0;
 	coord tuplu;
@@ -28,7 +33,7 @@ Map::Map(int nrPlayers)
 		for (int j = 0; j < m_w; j++)
 		{
 
-			tuplu = std::make_tuple(100 + initialw, 100 + initialh, w, h);
+			tuplu = std::make_tuple(100 + initialw, 200 + initialh, w, h);
 			m_unusedRegions.emplace_back(std::make_shared<Region>(i * m_w + j + 1, tuplu));
 			m_regions.emplace_back(std::make_shared<Region>(i * m_w + j + 1, tuplu));
 			initialw += w;
@@ -183,7 +188,7 @@ void Map::RouteForCoordinates(crow::SimpleApp& app)
 		coord coord = (*region).GetCoord();
 		coordinates.push_back(crow::json::wvalue{
 			{"index", region->GetID()},
-			{ "x", std::get<0>(coord) },
+			{ "x", std::get<0>(coord)},
 			{ "y", std::get<1>(coord) },
 			{ "width", std::get<2>(coord) },
 			{ "height", std::get<3>(coord) }
