@@ -158,7 +158,7 @@ void MainScreen::on_statistics_clicked()
 
 void MainScreen::on_back_clicked()
 {
-	//ui->account->setCurrentIndex(0);
+	ui->account->setCurrentIndex(0);
 }
 
 

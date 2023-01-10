@@ -10,6 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     form.cpp \
+    harta.cpp \
     intermediaryscreen.cpp \
     intrebarigrila.cpp \
     intrebarinumerice.cpp \
@@ -19,6 +20,7 @@ SOURCES += \
 
 HEADERS += \
     form.h \
+    harta.h \
     intermediaryscreen.h \
     intrebarigrila.h \
     intrebarinumerice.h \
@@ -27,6 +29,7 @@ HEADERS += \
 
 FORMS += \
     form.ui \
+    harta.ui \
     intermediaryscreen.ui \
     intrebarigrila.ui \
     intrebarinumerice.ui \

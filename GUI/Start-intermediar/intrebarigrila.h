@@ -2,7 +2,7 @@
 #define INTREBARIGRILA_H
 
 #include <QMainWindow>
-#include"form.h"
+//#include"form.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class IntrebariGrila; }
 QT_END_NAMESPACE
@@ -17,7 +17,7 @@ public:
 
 private:
     Ui::IntrebariGrila* ui;
-    Form f;
+   // Form f;
 private slots:
     //QString fromStdString(const std::string& str);
     void AfisareIntrebareGrila();

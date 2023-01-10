@@ -7,6 +7,9 @@ Harta::Harta(QWidget *parent)
 {
 
     ui->setupUi(this);
+    ui->game->insertWidget(1,&intrebareNumerica);
+    ui->game->insertWidget(2,&intrebareGrila);   
+    ui->game->setCurrentIndex(0);
 }
 
 void Harta::setUsername(std::string str)
@@ -65,9 +68,9 @@ void Harta::gameManager()
     t.connect(&t, &QTimer::timeout, &loop, &QEventLoop::quit);
     t.start(3000);
     loop.exec();
-
-    intrebareNumerica.show();
-    hide();
+    ui->game->setCurrentWidget(&intrebareNumerica);
+    //intrebareNumerica.show();
+    //hide();
 }
 
 void Harta::paintEvent(QPaintEvent *)

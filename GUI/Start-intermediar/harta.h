@@ -10,6 +10,7 @@
 #include <cpr/cpr.h>
 #include <crow.h>
 #include "intrebarinumerice.h"
+#include "intrebarigrila.h"
 #include <qtimer.h>
 
 namespace Ui { class harta; }
@@ -36,6 +37,7 @@ private:
     std::string userName;
     QColor userColor;
     IntrebariNumerice intrebareNumerica;
+    IntrebariGrila intrebareGrila;
     Ui::harta* ui;
 };
 #endif // HARTA_H
