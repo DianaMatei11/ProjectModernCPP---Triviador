@@ -35,11 +35,17 @@ crow::response AddNewUserHandler::operator() (const crow::request& req) const
 	auto passIter = bodyArgs.find("Password");
 	if (nameIter != end && passIter != end)
 	{
+		std::string usernamePattern = "([a-zA-Z0-9_]){5,15}";
+		std::regex usernameRule(usernamePattern);
+		if (!regex_match(nameIter->second, usernameRule))
+		{
+			return crow::response(404);//Username-ul trebuie sa contina doar litere mari, litere mici, cifre, sau '_', si sa aibe intre 5 si 15 caractere
+		}
+
 		if (existUserName(nameIter->second, m_db).has_value())
 		{
 			return crow::response(451); //UserName already exist
 		}
-
 
 		if (!User::checkStrongPassword((passIter->second)))
 		{

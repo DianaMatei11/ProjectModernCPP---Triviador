@@ -96,6 +96,8 @@ void Form::on_submit_clicked()
                     msg.setText("Password is not strong enough");
                 if(response.status_code==400)
                     msg.setText("There was an error in the transmitted information");
+                if (response.status_code == 404)
+                    msg.setText("Your username is not valid");
                 msg.exec();
 
             }

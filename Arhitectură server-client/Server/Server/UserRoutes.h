@@ -2,6 +2,7 @@
 #include <optional>
 #include "utils.h"
 #include "Storage.h"
+#include <regex>
 
 
 std::optional<User> existUserName(const std::string& username, Storage& m_db);
