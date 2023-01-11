@@ -491,6 +491,29 @@ void Game::clickedCoordinates()
 		int x = std::stoi(xIter->second);
 		int y = std::stoi(yIter->second);
 		int id=-1;
+
+		int noRegionsH;
+		if (players.size() == 2 || players.size()==3)
+		{
+			noRegionsH = 3;
+		}
+		if (players.size() == 4)
+		{
+			noRegionsH = 4;
+		}
+
+		std::vector<std::shared_ptr<Region>> regions = map.GetRegions();
+		float h = static_cast<float>(350/noRegionsH);
+
+		for (auto& regiune : regions)
+		{
+			const auto& [xR, yR, hR, wR] = regiune->GetCoord();
+			if (xR <= x && y <= yR+h && yR <= y)
+			{
+				id = regiune->GetID();
+			}
+		}
+
 		if (id != -1) 
 		{
 			std::shared_ptr<Region> region = map.GetRegion(id);
