@@ -478,6 +478,49 @@ void Game::Duel(std::shared_ptr<User>& attacker, std::shared_ptr<User>& defender
 	}
 }
 
+void Game::clickedCoordinates()
+{
+	CROW_ROUTE(app, "/CoordClickHarta")
+		.methods(crow::HTTPMethod::PUT)
+		([&map = map, &players = players](const crow::request& req) {
+		std::vector<std::shared_ptr<Region>> regions = map.GetRegions();
+		auto bodyArgs = parseUrlArgs(req.body);
+		auto end = bodyArgs.end();
+		auto xIter = bodyArgs.find("x");
+		auto yIter = bodyArgs.find("y");
+		int x = std::stoi(xIter->second);
+		int y = std::stoi(yIter->second);
+		int id=-1;
+		if (id != -1) 
+		{
+			std::shared_ptr<Region> region = map.GetRegion(id);
+			crow::json::wvalue dateRegiune;
+			if (region->HasOwner()) {
+				dateRegiune = crow::json::wvalue{
+					{ "index", region->GetID()},
+					//{ "color", region->GetCoord() }
+					{ "score", region->GetScores()}
+				};
+				return dateRegiune;
+			}
+			else {
+				dateRegiune = crow::json::wvalue{
+					{"response", "invalid"}
+				};
+				return dateRegiune;
+				//return crow::response(400);
+			}
+		}
+		else
+		{
+			crow::json::wvalue answer = {
+				{"response", "no region"}
+			};
+			return answer;
+		}
+	});
+}
+
 void Game::gameManager()
 {
 	addPlayerByUsername();
