@@ -34,7 +34,7 @@ private:
 	void assignAColor();
 	void sendPlayersUsername();
 	void arePlayersReady();
-	void populateUsersRanking(std::unordered_map < std::string, std::pair<int, colors>>& usersRanking);
+	void populateUsersRanking();
 
 public:
 	Game(Storage& storage, crow::SimpleApp& app);

@@ -180,7 +180,7 @@ void Game::arePlayersReady()
 
 }
 //std::vector<std::shared_ptr<User>> players;
-void Game::populateUsersRanking(std::unordered_map<std::string, std::pair<int, colors>>& usersRanking)
+void Game::populateUsersRanking()
 {
 	for (int i = 0; i < players.size(); i++)
 	{
