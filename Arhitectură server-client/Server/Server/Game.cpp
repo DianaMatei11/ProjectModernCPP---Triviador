@@ -179,6 +179,16 @@ void Game::arePlayersReady()
 		});
 
 }
+//std::vector<std::shared_ptr<User>> players;
+void Game::populateUsersRanking(std::unordered_map<std::string, std::pair<int, colors>>& usersRanking)
+{
+	for (int i = 0; i < players.size(); i++)
+	{
+		User user = *players[i];
+		std::string playerName = user.getUserName();
+		usersRanking[playerName] = { 0,colors (i) };
+	}
+}
 
 std::array<std::string, 4> Game::launchNumericalQuestionAndReturnRanking()
 {

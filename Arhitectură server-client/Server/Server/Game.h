@@ -5,6 +5,7 @@
 #include "Map.h"
 #include <crow.h>
 #include <queue>
+#include <unordered_map>
 
 class Game {
 
@@ -20,6 +21,8 @@ private:
 		blue = 2,
 		green = 3
 	};
+
+	std::unordered_map < std::string, std::pair<int, colors>> usersRanking;
 	
 	int sentANumericalQuestionRoute();
 	int sentAGrillQuestionRoute();
@@ -31,6 +34,7 @@ private:
 	void assignAColor();
 	void sendPlayersUsername();
 	void arePlayersReady();
+	void populateUsersRanking(std::unordered_map < std::string, std::pair<int, colors>>& usersRanking);
 
 public:
 	Game(Storage& storage, crow::SimpleApp& app);
