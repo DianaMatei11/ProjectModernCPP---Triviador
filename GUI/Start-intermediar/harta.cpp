@@ -1,6 +1,7 @@
 #include "harta.h"
 #include "ui_harta.h"
-
+#include<queue>>
+#include<QLabel>
 Harta::Harta(QWidget *parent)
     : QMainWindow(parent), 
     ui(new Ui::harta)
@@ -61,6 +62,7 @@ void Harta::coord()
 
 }
 
+
 void Harta::gameManager()
 {
     QEventLoop loop;
@@ -71,6 +73,69 @@ void Harta::gameManager()
     ui->game->setCurrentWidget(&intrebareNumerica);
     //intrebareNumerica.show();
     //hide();
+}
+
+void Harta::getScore()
+{
+    std::queue<QLabel> labels;
+
+    while(true)
+    {
+        cpr::Response response = cpr::Get(
+                        cpr::Url{ "http://localhost:14040/getScore"}
+                    );
+        auto aux = crow::json::load(response.text);
+        int numar_jucatori=aux.size();
+        if(numar_jucatori==2)
+        {
+            ui->player1->hide();
+            ui->player4->hide();
+            labels.push(ui->player2);
+            labels.push(ui->player3);
+
+        }
+        else if(numar_jucatori==3)
+        {
+            ui->player4->hide();
+            labels.push(ui->player1);
+            labels.push(ui->player2);
+            labels.push(ui->player3);
+        }
+        else
+        {
+            labels.push(ui->player1);
+            labels.push(ui->player2);
+            labels.push(ui->player3);
+            labels.push(ui->player4);
+        }
+        for(const auto& player:aux)
+        {
+            const auto & curent_label= labels.front();
+
+            switch (player["color"])
+            {
+            case 0:
+                curent_label.setStyleSheet("QLabel { background-color : red }");
+
+                break;
+            case 1:
+                curent_label.setStyleSheet("QLabel { background-color : yellow }");
+                break;
+            case 2:
+                curent_label.setStyleSheet("QLabel { background-color : blue }");
+                break;
+            case 3:
+                curent_label.setStyleSheet("QLabel { background-color : green }");
+                break;
+            }
+            curent_label.setText(player["name"]+" - "+ player["score"]);
+
+            labels.pop();
+
+        }
+
+
+    }
 }
 
 void Harta::paintEvent(QPaintEvent *)

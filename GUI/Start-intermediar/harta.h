@@ -28,6 +28,7 @@ public:
     void paintEvent(QPaintEvent*);
     void coord();
     void gameManager();
+    void getScore();
     ~Harta();
 
 private slots:
