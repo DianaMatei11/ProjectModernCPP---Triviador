@@ -30,6 +30,8 @@ private:
 	int sendCorrectAnswerNQ(int answer);
 	int sendCorrectGrillAnswer(int answer);
 	
+	void sentUserRanking(std::string userName);
+	
 	void addPlayerByUsername();
 	void assignAColor();
 	void sendPlayersUsername();

@@ -35,8 +35,18 @@ int Game::sentAGrillQuestionRoute()
 			};
 		});
 	return index0;
+}//std::unordered_map < std::string, std::pair<int, colors>> usersRanking
+void Game::sentUserRanking(std::string userName)
+{
+	std::pair<int, colors> p = usersRanking[userName];
+	CROW_ROUTE(app, "/UsersRanking")([this, p, userName]() {
+			return crow::json::wvalue{
+			{"userName", userName},
+			{"points", p.first},
+			{"color", p.second},
+			};
+		});
 }
-
 int Game::sendCorrectAnswerNQ(int answer)
 {
 	CROW_ROUTE(app, "/numericalQuestion/answer")([answer]() {
@@ -56,6 +66,8 @@ int Game::sendCorrectGrillAnswer(int answer)
 		});
 	return 0;
 }
+
+
 
 void Game::addPlayerByUsername()
 {
