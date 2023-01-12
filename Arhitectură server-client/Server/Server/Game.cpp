@@ -526,7 +526,7 @@ void Game::clickedCoordinates()
 			noRegionsH = 4;
 		}
 
-		std::vector<std::shared_ptr<Region>> regions = map.GetRegions();
+		//std::vector<std::shared_ptr<Region>> regions = map.GetRegions();
 		float h = static_cast<float>(350/noRegionsH);
 
 		for (auto& regiune : regions)

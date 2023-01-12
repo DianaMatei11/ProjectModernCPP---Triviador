@@ -4,6 +4,7 @@
         <file>images/MainScreen Triviador.jpg</file>
         <file>images/AccountScreen.jpg</file>
         <file>images/back_icon.png</file>
+        <file>images/base.png</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>

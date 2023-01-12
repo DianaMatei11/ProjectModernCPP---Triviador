@@ -165,7 +165,7 @@ void MainScreen::on_back_clicked()
 void MainScreen::on_logOut_clicked()
 {
 	// hide();
-	 //aux.show();
+	//aux.show();
 }
 
 

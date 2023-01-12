@@ -29,6 +29,7 @@ public:
     void coord();
     void gameManager();
     void getScore();
+    void getOrder(int i);
     ~Harta();
 
 private slots:

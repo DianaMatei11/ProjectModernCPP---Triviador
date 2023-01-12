@@ -11,7 +11,7 @@ IntrebariNumerice::IntrebariNumerice(QWidget *parent)
     ui->av1->hide();
     ui->av2->hide();
     ui->av3->hide();
-
+    //AfisareIntrebare();
 }
 
 void IntrebariNumerice::AfisareIntrebare()
