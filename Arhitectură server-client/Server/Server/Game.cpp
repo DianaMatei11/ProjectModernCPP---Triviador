@@ -7,22 +7,24 @@ Game::Game(Storage& storage, crow::SimpleApp& app) :
 
 int Game::sentANumericalQuestionRoute()
 {
-	int index = Intrebare::GetRandomNumber(0, storage.count<IntrebareNumerica>());
-	auto quest = storage.get<IntrebareNumerica>(index);
-	CROW_ROUTE(app, "/numericalQuestion")([&quest]() {
-		return crow::json::wvalue{
+	int index0 = Intrebare::GetRandomNumber(0, storage.count<IntrebareNumerica>());
+	CROW_ROUTE(app, "/numericalQuestion")([this](int index, auto& quest) {
+		index = Intrebare::GetRandomNumber(0, storage.count<IntrebareNumerica>());
+	    quest = storage.get<IntrebareNumerica>(index);
+        return crow::json::wvalue{
 			{"Id", quest.GetId()},
 			{"Question", quest.GetEnunt()}
 			};
 		});
-	return index;
+	return index0;
 }
 
 int Game::sentAGrillQuestionRoute()
 {
-	int index = Intrebare::GetRandomNumber(0, storage.count<IntrebariGrila>());
-	auto quest = storage.get<IntrebariGrila>(index);
-	CROW_ROUTE(app, "/Quiz")([&quest]() {
+	int index0 = Intrebare::GetRandomNumber(0, storage.count<IntrebariGrila>());
+	CROW_ROUTE(app, "/Quiz")([this](int index, auto& quest) {
+		index = Intrebare::GetRandomNumber(0, storage.count<IntrebariGrila>());
+	    quest = storage.get<IntrebariGrila>(index);
 		return crow::json::wvalue{
 			{"Id", quest.GetId()},
 			{"Enunt", quest.GetEnunt()},
@@ -32,7 +34,7 @@ int Game::sentAGrillQuestionRoute()
 			{"Optiune3", quest.GetOption3()},
 			};
 		});
-	return index;
+	return index0;
 }
 
 int Game::sendCorrectAnswerNQ(int answer)
