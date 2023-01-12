@@ -5,6 +5,7 @@
 #include <cpr/cpr.h>
 #include <crow.h>
 #include <qelapsedtimer.h>
+#include <qtimer.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class IntrebariNumerice; }
@@ -17,13 +18,13 @@ class IntrebariNumerice : public QMainWindow
 public:
     IntrebariNumerice(QWidget *parent = nullptr);
     ~IntrebariNumerice();
-
+    void setUsername(const std::string& str);
+    void AfisareIntrebare();
     void on_avantaj4_rasp_clicked();
 
     void on_avantaj1_rasp_clicked();
 
 private slots:
-    void AfisareIntrebare();
 
     void on_IntrebareNumerica_linkActivated();
 
@@ -39,6 +40,8 @@ private slots:
 
 private:
     Ui::IntrebariNumerice *ui;
+    std::string userName;
+    bool answered = false;
     QElapsedTimer timer;
 };
 #endif // INTREBARINUMERICE_H

@@ -6,6 +6,7 @@
 #include <crow.h>
 #include <queue>
 #include <unordered_map>
+#include <windows.h>
 
 class Game {
 
@@ -16,6 +17,7 @@ private:
 	Map map;
 
 	enum colors {
+		none = -1,
 		red = 0,
 		yellow = 1,
 		blue = 2,
@@ -36,13 +38,13 @@ private:
 	void assignAColor();
 	void sendPlayersUsername();
 	void arePlayersReady();
-	void populateUsersRanking();
+	void getRegionStatus();
 
 public:
 	Game(Storage& storage, crow::SimpleApp& app);
 	
-	std::array<std::string, 4> launchNumericalQuestionAndReturnRanking();
-	void getTheLeaderBoard(crow::SimpleApp& app);
+	void launchNumericalQuestionAndReturnRanking();
+	void getTheLeaderBoard();
 	void GetPlayersBases();
 	void gameManager();
 

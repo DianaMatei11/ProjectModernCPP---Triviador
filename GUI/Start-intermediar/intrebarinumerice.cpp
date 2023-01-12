@@ -19,11 +19,18 @@ void IntrebariNumerice::AfisareIntrebare()
     cpr::Response response = cpr::Get(cpr::Url{ "http://localhost:14040/numericalQuestion" });
         auto aux = crow::json::load(response.text);
 
-        
+        bool x;
         timer.start();
         ui->IntrebareNumerica->setText(QString::fromLocal8Bit(static_cast<std::string> (aux["Question"])));
-
-
+        QEventLoop loop;
+        QTimer t;
+        t.connect(&t, &QTimer::timeout, &loop, &QEventLoop::quit);
+        t.start(10000);
+        loop.exec();
+        if (!answered)
+        {
+            on_sendAnswer_clicked();
+        }
 }
 
 void IntrebariNumerice::on_IntrebareNumerica_linkActivated()
@@ -35,6 +42,11 @@ void IntrebariNumerice::on_IntrebareNumerica_linkActivated()
 IntrebariNumerice::~IntrebariNumerice()
 {
     delete ui;
+}
+
+void IntrebariNumerice::setUsername(const std::string& str)
+{
+    userName = str;
 }
 
 
@@ -148,13 +160,15 @@ void IntrebariNumerice::on_av3_clicked()
 void IntrebariNumerice::on_sendAnswer_clicked()
 {
     double time = timer.elapsed() / 1000.0;
-    auto raspuns = ui->raspuns_numeric->text();
-    auto response = cpr::Put(
+    answered = true;
+    const auto& raspuns = ui->raspuns_numeric->text();
+    const auto& response = cpr::Put(
         cpr::Url{ "http://localhost:14040/numericalQuestion/userAnswers" },
         cpr::Payload{
             
-            {"username", (raspuns.toLocal8Bit().constData())},
-            {"Time", (std::to_string(time))}
+            {userName, (raspuns.toLocal8Bit().constData())},
+            {userName + "Time", (std::to_string(time))}
         });
+    
 }
 

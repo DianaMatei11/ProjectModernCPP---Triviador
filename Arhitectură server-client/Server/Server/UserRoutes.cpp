@@ -100,7 +100,6 @@ void routeForStatistics(crow::SimpleApp& app, Storage& m_db)
 {
 	auto& usernameJson = CROW_ROUTE(app, "/Statistics/username")
 		.methods(crow::HTTPMethod::PUT);
-
 	std::optional<User> user;
 	usernameJson(GetUserbyUserName(m_db, user));
 	

@@ -18,18 +18,25 @@ namespace Ui { class harta; }
 class Harta : public QMainWindow
 {
     Q_OBJECT
+private:
+    enum class Etapa
+    {
+        AlegereBaza,
+        Cucerire,
+        Razboi
+    };
 
 public:
 
     explicit Harta(QWidget* parent = nullptr);
-    void setUsername(std::string str);
+    void setUsername(const std::string& str);
     void setColor(QColor color);
     void mousePressEvent(QMouseEvent* ev);
     void paintEvent(QPaintEvent*);
     void coord();
     void gameManager();
     void getScore();
-    void getOrder(int i);
+    void getOrder(Etapa etapa);
     ~Harta();
 
 private slots:

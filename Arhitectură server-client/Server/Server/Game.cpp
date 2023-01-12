@@ -7,24 +7,16 @@ Game::Game(Storage& storage, crow::SimpleApp& app) :
 
 int Game::sentANumericalQuestionRoute()
 {
-	int index0 = Intrebare::GetRandomNumber(0, storage.count<IntrebareNumerica>());
-	CROW_ROUTE(app, "/numericalQuestion")([this](int index, auto& quest) {
-		index = Intrebare::GetRandomNumber(0, storage.count<IntrebareNumerica>());
-	    quest = storage.get<IntrebareNumerica>(index);
-        return crow::json::wvalue{
-			{"Id", quest.GetId()},
-			{"Question", quest.GetEnunt()}
-			};
-		});
-	return index0;
+
+
+	return 0;
 }
 
 int Game::sentAGrillQuestionRoute()
 {
-	int index0 = Intrebare::GetRandomNumber(0, storage.count<IntrebariGrila>());
-	CROW_ROUTE(app, "/Quiz")([this](int index, auto& quest) {
-		index = Intrebare::GetRandomNumber(0, storage.count<IntrebariGrila>());
-	    quest = storage.get<IntrebariGrila>(index);
+	int index = Intrebare::GetRandomNumber(0, storage.count<IntrebariGrila>());
+	auto quest = storage.get<IntrebariGrila>(index);
+	CROW_ROUTE(app, "/Quiz")([&quest]() {
 		return crow::json::wvalue{
 			{"Id", quest.GetId()},
 			{"Enunt", quest.GetEnunt()},
@@ -32,26 +24,28 @@ int Game::sentAGrillQuestionRoute()
 			{"Optiune1", quest.GetOption1()},
 			{"Optiune2", quest.GetOption2()},
 			{"Optiune3", quest.GetOption3()},
-			};
+		};
 		});
-	return index0;
-}//std::unordered_map < std::string, std::pair<int, colors>> usersRanking
+	return index;
+}
+
 void Game::sentUserRanking(std::string userName)
 {
 	std::pair<int, colors> p = usersRanking[userName];
 	CROW_ROUTE(app, "/UsersRanking")([this, p, userName]() {
-			return crow::json::wvalue{
-			{"userName", userName},
-			{"points", p.first},
-			{"color", p.second},
-			};
+		return crow::json::wvalue{
+		{"userName", userName},
+		{"points", p.first},
+		{"color", p.second},
+		};
 		});
 }
+
 int Game::sendCorrectAnswerNQ(int answer)
 {
 	CROW_ROUTE(app, "/numericalQuestion/answer")([answer]() {
 		return  crow::json::wvalue{
-			{"CorrectAnswer", answer} 
+			{"CorrectAnswer", answer}
 		};
 		});
 	return 0;
@@ -62,7 +56,7 @@ int Game::sendCorrectGrillAnswer(int answer)
 	CROW_ROUTE(app, "/Quiz/answer")([&answer]() {
 		return  crow::json::wvalue{
 			{"CorrectAnswer", answer}
-			};
+		};
 		});
 	return 0;
 }
@@ -94,13 +88,13 @@ void Game::addPlayerByUsername()
 void Game::sendPlayersUsername()
 {
 	CROW_ROUTE(app, "/PlayersInGame")([&players = players]() {
-		
+
 		std::vector<crow::json::wvalue> playersJson;
 		for (const auto& player : players)
 		{
 			playersJson.push_back(crow::json::wvalue{
 				{"username", player->getUserName()}
-			});
+				});
 		}
 		return crow::json::wvalue{ playersJson };
 		});
@@ -178,9 +172,14 @@ void Game::arePlayersReady()
 		return 400;
 			});
 
-	CROW_ROUTE(app, "/launchGame")([&startGame = startGame, &map = map, &players = players]() {
+	CROW_ROUTE(app, "/launchGame")([&usersRanking = usersRanking, &startGame = startGame, &map = map, &players = players]() {
 		if (startGame)
 		{
+			for (int i = 0; i < players.size(); i++)
+			{
+				std::string playerName = players[i]->getUserName();
+				usersRanking[playerName] = { 0, colors(i) };
+			}
 			map.buildMap(players.size());
 			return crow::json::wvalue{
 				{"start", "launch"}
@@ -193,79 +192,104 @@ void Game::arePlayersReady()
 		});
 
 }
-//std::vector<std::shared_ptr<User>> players;
-void Game::populateUsersRanking()
+
+void Game::getRegionStatus()
 {
-	for (int i = 0; i < players.size(); i++)
-	{
-		User user = *players[i];
-		std::string playerName = user.getUserName();
-		usersRanking[playerName] = { 0,colors (i) };
-	}
+	CROW_ROUTE(app, "/getRegionsStatus") ([&map = map, &usersRanking = usersRanking]() {
+
+		std::vector<crow::json::wvalue> regionsDetils;
+		for (const auto& region : map.GetRegions())
+		{
+			colors regionColor;
+			if (region->HasOwner())
+			{
+				regionColor = usersRanking[region->GetOwner()].second;
+			}
+			else
+			{
+				regionColor = none;
+			}
+
+			regionsDetils.push_back(
+				crow::json::wvalue{
+					{"color", regionColor},
+					{"isBase", region->IsBase()}
+				});
+		}
+
+		return crow::json::wvalue{ regionsDetils };
+		});
 }
 
-std::array<std::string, 4> Game::launchNumericalQuestionAndReturnRanking()
+void Game::launchNumericalQuestionAndReturnRanking()
 {
-	int idQuest = sentANumericalQuestionRoute();
+	static int index = Intrebare::GetRandomNumber(0, storage.count<IntrebareNumerica>());
+	static auto quest = storage.get<IntrebareNumerica>(index).GetEnunt();
+	static bool newQuest = false;
+	CROW_ROUTE(app, "/numericalQuestion")([&newQuest = newQuest, &index = index, &quest = quest, this]() {
+		if (newQuest)
+		{
+			index = Intrebare::GetRandomNumber(0, storage.count<IntrebareNumerica>());
+			quest = storage.get<IntrebareNumerica>(index).GetEnunt();
+		}
+
+		return crow::json::wvalue{
+			{"Question", quest}
+		};
+		});
 
 	auto comp = ([](std::tuple<std::string, int, float> A, std::tuple<std::string, int, float> B)
 		{
 			return std::get<1>(A) == std::get<1>(B) ? std::get<2>(A) < std::get<2>(B) : std::get<1>(A) < std::get<1>(B);
 		});
 
-	std::priority_queue < std::tuple<std::string, int, float>, std::vector<std::tuple<std::string, int, float>>, decltype(comp)> pq(comp);
+	static std::priority_queue < std::tuple<std::string, int, float>, std::vector<std::tuple<std::string, int, float>>, decltype(comp)> pq(comp);
 
-	int answer = storage.get<IntrebareNumerica>(idQuest).GetRaspuns();
-	while (pq.size() != players.size())
-	{
-		CROW_ROUTE(app, "/numericalQuestion/userAnswers")
-			.methods(crow::HTTPMethod::PUT)
-			([&players = players, answer, idQuest, &pq](const crow::request& req) {
-			auto bodyArgs = parseUrlArgs(req.body);
-			auto end = bodyArgs.end();
+	CROW_ROUTE(app, "/numericalQuestion/userAnswers")
+		.methods(crow::HTTPMethod::PUT)
+		([&players = players, &index = index, &pq = pq, &storage = storage](const crow::request& req) {
+		int answer = storage.get<IntrebareNumerica>(index).GetRaspuns();
+		
+		auto bodyArgs = parseUrlArgs(req.body);
+		auto end = bodyArgs.end();
 
-			for (auto& user_ptr : players)
+		for (auto& user_ptr : players)
+		{
+			if (bodyArgs.find(user_ptr->getUserName()) == end || bodyArgs.find(user_ptr->getUserName() + "Time") == end)
 			{
-				if (bodyArgs.find(user_ptr->getUserName()) == end || bodyArgs.find(user_ptr->getUserName() + "Time") == end)
-				{
-					continue;
-				}
-				pq.push(std::make_tuple(user_ptr->getUserName(), std::abs(std::stoi(bodyArgs[user_ptr->getUserName()]) - answer), std::stof(bodyArgs[user_ptr->getUserName() + "Time"])));
+				continue;
 			}
-			return 200;
-				});
-	}
+			pq.push({ user_ptr->getUserName(), std::abs(std::stoi(bodyArgs[user_ptr->getUserName()]) - answer), std::stof(bodyArgs[user_ptr->getUserName() + "Time"])});
+		}
+		return 200;
+			});
 
-	sendCorrectAnswerNQ(idQuest);
 
-	std::array<std::string, 4> ranking;
-	int index = 0;
-	while (!pq.empty())
-	{
-		ranking[index] = std::get<0>(pq.top());
-		pq.pop();
-		index++;
-	}
-
-	return ranking;
-}
-
-void Game::getTheLeaderBoard(crow::SimpleApp& app)
-{
-	std::array<std::string, 4> ranking = launchNumericalQuestionAndReturnRanking();
-	CROW_ROUTE(app, "/leaderBoard")([&ranking]() {
+	CROW_ROUTE(app, "/getOrder")([&newQuest = newQuest, &pq = pq, &players = players]() {
+		if (pq.size() != players.size())
+		{
+			return crow::json::wvalue{
+				{ "wait", 0 }
+			};
+		}
+		newQuest = true;
 		std::vector<crow::json::wvalue> leaderBoard;
-		int position = 1;
-		for (const auto& playerName : ranking) {
+		while (!pq.empty()) {
+			const auto& [playerName, diffrenceOfAnswer, time] = pq.top();
 			leaderBoard.push_back(crow::json::wvalue{
-				{ "Pos", position },
-				{ "name", playerName }
+				{ "player", playerName }
 				});
-			position++;
+			pq.pop();
 		}
 
 		return crow::json::wvalue{ leaderBoard };
 		});
+}
+
+void Game::getTheLeaderBoard()
+{
+
+
 }
 
 void Game::GetPlayersBases()
@@ -338,7 +362,7 @@ void Game::Duel(std::shared_ptr<User>& attacker, std::shared_ptr<User>& defender
 	while (!defenderLost && !attackerLost)
 	{
 		int idGridQuestion;
-		idGridQuestion=sentAGrillQuestionRoute();
+		idGridQuestion = sentAGrillQuestionRoute();
 		sendCorrectGrillAnswer(idGridQuestion);
 
 		int indexAnswerGQ = storage.get<IntrebariGrila>(idGridQuestion).GetIndex_Rasp_Corect();
@@ -350,25 +374,25 @@ void Game::Duel(std::shared_ptr<User>& attacker, std::shared_ptr<User>& defender
 				.methods(crow::HTTPMethod::PUT)
 				([&playersOfTheDuel, indexAnswerGQ, idGridQuestion, &answerOfPlayers, &defender, &attacker](const crow::request& req) {
 				auto bodyArgs = parseUrlArgs(req.body);
-			auto end = bodyArgs.end();
+				auto end = bodyArgs.end();
 
-			for (auto& user_ptr : playersOfTheDuel)
-			{			
-				if (bodyArgs.find(user_ptr->getUserName()) == end)
+				for (auto& user_ptr : playersOfTheDuel)
 				{
-					continue;
+					if (bodyArgs.find(user_ptr->getUserName()) == end)
+					{
+						continue;
+					}
+					auto answerIter = bodyArgs.find("answer");
+					if (answerIter != end)
+					{
+						int playerAnswer = std::stoi(answerIter->second);
+						std::pair < std::shared_ptr<User>, int> pair;
+						pair.first = user_ptr;
+						pair.second = playerAnswer;
+						answerOfPlayers.push_back(pair);
+					}
 				}
-				auto answerIter = bodyArgs.find("answer");
-				if (answerIter != end)
-				{
-					int playerAnswer=std::stoi(answerIter->second);
-					std::pair < std::shared_ptr<User>, int> pair;
-					pair.first = user_ptr;
-					pair.second = playerAnswer;
-					answerOfPlayers.push_back(pair);
-				}
-			}
-			return 200;
+				return 200;
 					});
 		}
 
@@ -409,11 +433,11 @@ void Game::Duel(std::shared_ptr<User>& attacker, std::shared_ptr<User>& defender
 
 		//if (defendersAnswerIsRight && attackersAnswerIsRight)
 		//{
-			defendersAnswerIsRight = false;
-			attackersAnswerIsRight = false;
+		defendersAnswerIsRight = false;
+		attackersAnswerIsRight = false;
 		//}
 
-		int idNumericalQuestion=sentANumericalQuestionRoute();
+		int idNumericalQuestion = sentANumericalQuestionRoute();
 		sendCorrectAnswerNQ(idNumericalQuestion);
 
 		auto comp = ([](std::tuple<std::string, int, float> A, std::tuple<std::string, int, float> B)
@@ -428,19 +452,19 @@ void Game::Duel(std::shared_ptr<User>& attacker, std::shared_ptr<User>& defender
 		{
 			CROW_ROUTE(app, "/numericalQuestion/usersAnswers")
 				.methods(crow::HTTPMethod::PUT)
-				([&playersOfTheDuel, answer, idNumericalQuestion, &pq,&defender,&attacker](const crow::request& req) {
+				([&playersOfTheDuel, answer, idNumericalQuestion, &pq, &defender, &attacker](const crow::request& req) {
 				auto bodyArgs = parseUrlArgs(req.body);
-			auto end = bodyArgs.end();
+				auto end = bodyArgs.end();
 
-			for (auto& user_ptr : playersOfTheDuel)
-			{
-				if (bodyArgs.find(user_ptr->getUserName()) == end || bodyArgs.find(user_ptr->getUserName() + "Time") == end)
+				for (auto& user_ptr : playersOfTheDuel)
 				{
-					continue;
+					if (bodyArgs.find(user_ptr->getUserName()) == end || bodyArgs.find(user_ptr->getUserName() + "Time") == end)
+					{
+						continue;
+					}
+					pq.push(std::make_tuple(user_ptr->getUserName(), std::abs(std::stoi(bodyArgs[user_ptr->getUserName()]) - answer), std::stof(bodyArgs[user_ptr->getUserName() + "Time"])));
 				}
-				pq.push(std::make_tuple(user_ptr->getUserName(), std::abs(std::stoi(bodyArgs[user_ptr->getUserName()]) - answer), std::stof(bodyArgs[user_ptr->getUserName() + "Time"])));
-			}
-			return 200;
+				return 200;
 					});
 		}
 
@@ -480,7 +504,7 @@ void Game::Duel(std::shared_ptr<User>& attacker, std::shared_ptr<User>& defender
 			break;
 		}
 
-		if (counter<noLives)
+		if (counter < noLives)
 		{
 			defendersAnswerIsRight = false;
 			attackersAnswerIsRight = false;
@@ -512,60 +536,64 @@ void Game::clickedCoordinates()
 		auto end = bodyArgs.end();
 		auto xIter = bodyArgs.find("x");
 		auto yIter = bodyArgs.find("y");
+		auto nameIter = bodyArgs.find("userName");
+
+		if (xIter == end || yIter == end)
+		{
+			return 400;
+		}
+
 		int x = std::stoi(xIter->second);
 		int y = std::stoi(yIter->second);
-		int id=-1;
-
-		int noRegionsH;
-		if (players.size() == 2 || players.size()==3)
-		{
-			noRegionsH = 3;
-		}
-		if (players.size() == 4)
-		{
-			noRegionsH = 4;
-		}
-
-		//std::vector<std::shared_ptr<Region>> regions = map.GetRegions();
-		float h = static_cast<float>(350/noRegionsH);
+		int id = -1;
 
 		for (auto& regiune : regions)
 		{
 			const auto& [xR, yR, hR, wR] = regiune->GetCoord();
-			if (xR <= x && y <= yR+h && yR <= y)
+			if (xR <= x && x <= xR + wR && y <= yR + hR && yR <= y)
 			{
 				id = regiune->GetID();
+				if (!regiune->HasOwner())
+				{
+					map.PickRegion(id);
+					regiune->SetOwner(nameIter->second);
+					if (map.GetUnusedRegions().size() <= map.GetUnusedRegions().size() - players.size())
+					{
+						regiune->SetBase();
+					}
+				}
+				break;
 			}
 		}
 
-		if (id != -1) 
-		{
-			std::shared_ptr<Region> region = map.GetRegion(id);
-			crow::json::wvalue dateRegiune;
-			if (region->HasOwner()) {
-				dateRegiune = crow::json::wvalue{
-					{ "index", region->GetID()},
-					//{ "color", region->GetCoord() }
-					{ "score", region->GetScores()}
-				};
-				return dateRegiune;
-			}
-			else {
-				dateRegiune = crow::json::wvalue{
-					{"response", "invalid"}
-				};
-				return dateRegiune;
-				//return crow::response(400);
-			}
-		}
-		else
-		{
-			crow::json::wvalue answer = {
-				{"response", "no region"}
-			};
-			return answer;
-		}
-	});
+		//if (id != -1) 
+		//{
+		//	std::shared_ptr<Region> region = map.GetRegion(id);
+		//	crow::json::wvalue dateRegiune;
+		//	if (region->HasOwner()) {
+		//		dateRegiune = crow::json::wvalue{
+		//			{ "index", region->GetID()},
+		//			//{ "color", region->GetCoord() }
+		//			{ "score", region->GetScores()}
+		//		};
+		//		return dateRegiune;
+		//	}
+		//	else {
+		//		dateRegiune = crow::json::wvalue{
+		//			{"response", "invalid"}
+		//		};
+		//		return dateRegiune;
+		//		//return crow::response(400);
+		//	}
+		//}
+		//else
+		//{
+		//	crow::json::wvalue answer = {
+		//		{"response", "no region"}
+		//	};
+		//	return answer;
+		//}
+			});
 }
 
 void Game::gameManager()
@@ -575,5 +603,7 @@ void Game::gameManager()
 	sendPlayersUsername();
 	arePlayersReady();
 	map.RouteForCoordinates(app);
+	launchNumericalQuestionAndReturnRanking();
+	getRegionStatus();
 }
 

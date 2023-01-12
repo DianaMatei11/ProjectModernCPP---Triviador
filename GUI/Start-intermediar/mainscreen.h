@@ -17,7 +17,7 @@ class MainScreen : public QMainWindow
 
 public:
     explicit MainScreen(QWidget* parent = nullptr);
-    void setUsername(std::string str);
+    void setUsername(const std::string& str);
     ~MainScreen();
 
 private:

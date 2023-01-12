@@ -29,7 +29,7 @@ MainScreen::MainScreen(QWidget* parent) :
 	ui->account->setCurrentIndex(0);
 }
 
-void MainScreen::setUsername(std::string str)
+void MainScreen::setUsername(const std::string& str)
 {
 	this->userName = str;
 }
@@ -66,10 +66,12 @@ void MainScreen::findOutStartGame()
 		else
 		{
 			launchGame = true;
+			this->hide();
 			harta.show();
 			harta.setUsername(userName);
 			harta.setColor(userColor);
 			harta.coord();
+			harta.gameManager();
 			hide();
 		}
 	}
