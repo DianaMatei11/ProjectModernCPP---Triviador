@@ -39,6 +39,7 @@ private:
 	void sendPlayersUsername();
 	void arePlayersReady();
 	void getRegionStatus();
+	void MapIsFull();
 
 public:
 	Game(Storage& storage, crow::SimpleApp& app);

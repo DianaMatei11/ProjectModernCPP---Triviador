@@ -16,6 +16,8 @@ IntrebariNumerice::IntrebariNumerice(QWidget *parent)
 
 void IntrebariNumerice::AfisareIntrebare()
 {
+    ui->raspuns_numeric->setText("");
+    QWidget::setEnabled(true);
     cpr::Response response = cpr::Get(cpr::Url{ "http://localhost:14040/numericalQuestion" });
         auto aux = crow::json::load(response.text);
 
@@ -170,6 +172,6 @@ void IntrebariNumerice::on_sendAnswer_clicked()
             {userName, (raspuns.toLocal8Bit().constData())},
             {userName + "Time", (std::to_string(time))}
         });
-    this->close();
+    QWidget::setEnabled(false);
 }
 

@@ -11,9 +11,9 @@ Harta::Harta(QWidget* parent)
 
 	ui->setupUi(this);
 	//SetActiveWindow(this);
-    //ui->game->insertWidget(1, &intrebareNumerica);
-    //ui->game->insertWidget(2, &intrebareGrila);
-    //ui->game->setCurrentIndex(0);
+	//ui->game->insertWidget(1, &intrebareNumerica);
+	//ui->game->insertWidget(2, &intrebareGrila);
+	//ui->game->setCurrentIndex(0);
 	//coord();
 	/*QTimer::singleShot(4000, this, [this]() {
 		ui->game->setCurrentIndex(1);
@@ -44,8 +44,8 @@ void Harta::mousePressEvent(QMouseEvent* ev)
 			cpr::Payload{
 
 				{"username", userName},
-				{"x", "" + static_cast<int>(ev->position().x())},
-				{"y", "" + static_cast<int>(ev->position().y())}
+				{"x", std::to_string(ev->position().x())},
+				{"y", std::to_string(ev->position().y())}
 
 			});
 	}
@@ -73,20 +73,42 @@ void Harta::coord()
 
 void Harta::gameManager()
 {
+	intrebareNumerica.setUsername(userName);
+	//ui->game->setCurrentWidget(&intrebareNumerica);
+	intrebareNumerica.show();
+	hide();
+	intrebareNumerica.AfisareIntrebare();
+	intrebareNumerica.hide();
+	show();
+	getOrder(Etapa::AlegereBaza);
 	QEventLoop loop;
 	QTimer t;
 	t.connect(&t, &QTimer::timeout, &loop, &QEventLoop::quit);
 	t.start(3000);
 	loop.exec();
-	intrebareNumerica.setUsername(userName);
-    //ui->game->setCurrentWidget(&intrebareNumerica);
-    intrebareNumerica.show();
-	hide();
-	intrebareNumerica.AfisareIntrebare();
-    intrebareNumerica.hide();
-	show();
-    //ui->game->setCurrentWidget(ui->map);
-	getOrder(Etapa::AlegereBaza);
+
+	while (true)
+	{
+		intrebareNumerica.show();
+		hide();
+		intrebareNumerica.AfisareIntrebare();
+		intrebareNumerica.hide();
+		show();
+		getOrder(Etapa::Cucerire);
+		QEventLoop loop;
+		QTimer t;
+		t.connect(&t, &QTimer::timeout, &loop, &QEventLoop::quit);
+		t.start(3000);
+		loop.exec();
+		cpr::Response response = cpr::Get(
+			cpr::Url{ "http://localhost:14040/MapIsFull" });
+		auto aux = crow::json::load(response.text);
+		if (aux["map"] == "full")
+		{
+			break;
+		}
+	}
+	//ui->game->setCurrentWidget(ui->map);
 
 	//se dicteaza principalele etape ale jocului prin apelarea repetata a getOrder cu parametrii corespunzatori - alegerea bazei, cucerirea (pana nu mai raman regiuni disponibile,
 	//duelul - pentru numarul de runde prestabilit, inainte de cucerire, mai trebuie lansata o intrebare numerica
@@ -98,8 +120,8 @@ void Harta::getOrder(Etapa etapa) //se poate folosi un parametru 0-pentru aleger
 	// i se permite sa isi aleaga o regiune
 	//QApplication::setOverrideCursor(Qt::BlankCursor);
 	QWidget::setEnabled(false);
-	
-	route:
+
+route:
 	cpr::Response response = cpr::Get(
 		cpr::Url{ "http://localhost:14040/getOrder" });
 	auto order = crow::json::load(response.text);
@@ -118,7 +140,7 @@ void Harta::getOrder(Etapa etapa) //se poate folosi un parametru 0-pentru aleger
 	}
 
 	int j = 0;
-	for (const auto& pers : order) 
+	for (const auto& pers : order)
 	{
 		switch (etapa)
 		{
@@ -137,30 +159,51 @@ void Harta::getOrder(Etapa etapa) //se poate folosi un parametru 0-pentru aleger
 				QWidget::setEnabled(false); //dupa ce jucatorul isi termina actiunea
 
 			}
-			update();
+			else
+			{
+				QEventLoop loop;
+				QTimer t;
+				t.connect(&t, &QTimer::timeout, &loop, &QEventLoop::quit);
+				t.start(10000);
+				loop.exec();
+			}
+			repaint();
 			break;
 		}
 		case Etapa::Cucerire: //cucerire
 		{
-			int nr = order.size() - j -1;
-			QString aux = QStringLiteral("%1 este la rand! Alege %2 regiuni").arg(QString::fromStdString(std::string(pers["player"].s())).arg(nr));
+			int nr = order.size() - j - 1;
+			QString aux = QStringLiteral("%1 este la rand! Alege %2 regiuni").arg(QString::fromLocal8Bit(static_cast<std::string>(pers["player"].s())));
 			ui->instructiuni->setText(aux);
 			if (std::string(pers["player"].s()) == userName)
 			{
 				QWidget::setEnabled(true);
 				for (int index = 0; index < nr; index++)
 				{ //actiunea jucatorului - cucerire regiuni
+					QEventLoop loop;
+					QTimer t;
+					t.connect(&t, &QTimer::timeout, &loop, &QEventLoop::quit);
+					t.start(5000);
+					loop.exec();
 					update(); //poate fi parte din functia de alegere a regiunii
 				}
 				QWidget::setEnabled(false); //dupa ce jucatorul isi termina actiunea
 
+			}
+			else
+			{
+				QEventLoop loop;
+				QTimer t;
+				t.connect(&t, &QTimer::timeout, &loop, &QEventLoop::quit);
+				t.start(nr*5000);
+				loop.exec();
 			}
 
 			break;
 		}
 		case Etapa::Razboi: //duel
 		{
-			QString aux = QStringLiteral("%1 este la rand! Ataca o regiune!").arg(QString::fromStdString(std::string(pers["player"].s())));
+			QString aux = QStringLiteral("%1 este la rand! Ataca o regiune!").arg(QString::fromLocal8Bit(static_cast<std::string>(pers["player"].s())));
 			ui->instructiuni->setText(aux);
 			if (std::string(pers["player"].s()) == userName)
 			{
@@ -243,11 +286,11 @@ void Harta::getScore()
 void Harta::paintEvent(QPaintEvent*)
 {
 	//QWidget::screen()->availableGeometry();
-    QPainter p(this);
+	QPainter p(this);
 	// QPainter p(ui->map);	
-    //p.begin(this);
+	//p.begin(this);
 	//p.begin(ui->map);
-	QPen pen(Qt::black,2);
+	QPen pen(Qt::black, 2);
 	//pen.setWidth(2);
 	p.setPen(pen);
 	//se apeleaza o ruta care returneaza culoarea regiunilor si daca sunt sau nu baze
@@ -284,20 +327,26 @@ void Harta::paintEvent(QPaintEvent*)
 			}
 			default: b.setColor(Qt::white);
 			}
-			//p.setBrush(b);
+
 			//verificare baza si setare pictograma corespunzatoare (base.png)       
-			if (regions[i]["isBase"].b())
-			{
-				QLabel aux;
-				QPixmap image(":/images/images/base.png");
-				aux.setPixmap(image);
-				aux.setGeometry(patrat[i]);
-				aux.show();
-			}
+
+
+			b.setStyle(Qt::SolidPattern);
 			p.setBrush(b);
 			p.drawRect(patrat[i]);
-			//p.setBrush(b);
 			//p.fillRect(patrat[i], b);
+
+			if (regions[i]["isBase"].b())
+			{
+				p.drawText(patrat[i], Qt::AlignCenter, "B");
+				//QLabel aux;
+				////aux.setFixedWidth(patrat[i].x() + (patrat[i].width() / 2.0));
+				////aux.setFixedHeight(patrat[i].y() + (patrat[i].height() / 2.0));
+				//QPixmap image(":/images/images/base.png");
+				//aux.setPixmap(image);
+				//aux.setGeometry(patrat[i]);
+				//aux.show();
+			}
 
 		}
 	}

@@ -315,6 +315,22 @@ void Game::getRegionStatus()
 		});
 }
 
+void Game::MapIsFull()
+{
+	CROW_ROUTE(app, "/MapIsFull")([&map = map]() {
+		if (map.GetUnusedRegions().size() == 0)
+		{
+			return crow::json::wvalue{
+			{"map", "full"}
+			};
+		}
+
+		return crow::json::wvalue{
+			{"map", "0"}
+		};
+		});
+}
+
 void Game::launchNumericalQuestionAndReturnRanking()
 {
 	static int index = Intrebare::GetRandomNumber(0, storage.count<IntrebareNumerica>());
@@ -325,6 +341,7 @@ void Game::launchNumericalQuestionAndReturnRanking()
 		{
 			index = Intrebare::GetRandomNumber(0, storage.count<IntrebareNumerica>());
 			quest = storage.get<IntrebareNumerica>(index).GetEnunt();
+			newQuest = false;
 		}
 
 		return crow::json::wvalue{
@@ -353,6 +370,10 @@ void Game::launchNumericalQuestionAndReturnRanking()
 			if (bodyArgs.find(user_ptr->getUserName()) == end || bodyArgs.find(user_ptr->getUserName() + "Time") == end)
 			{
 				continue;
+			}
+			if (bodyArgs[user_ptr->getUserName()] == "")
+			{
+				bodyArgs[user_ptr->getUserName()] = "0";
 			}
 			pq.push({ user_ptr->getUserName(), std::abs(std::stoi(bodyArgs[user_ptr->getUserName()]) - answer), std::stof(bodyArgs[user_ptr->getUserName() + "Time"]) });
 			break;
@@ -649,28 +670,28 @@ void Game::clickedCoordinates()
 		auto end = bodyArgs.end();
 		auto xIter = bodyArgs.find("x");
 		auto yIter = bodyArgs.find("y");
-		auto nameIter = bodyArgs.find("userName");
+		auto nameIter = bodyArgs.find("username");
 
 		if (xIter == end || yIter == end)
 		{
 			return 400;
 		}
 
-		int x = std::stoi(xIter->second);
-		int y = std::stoi(yIter->second);
+		float x = std::stof(xIter->second);
+		float y = std::stof(yIter->second);
 		int id = -1;
 
 		for (auto& regiune : regions)
 		{
 			const auto& [xR, yR, hR, wR] = regiune->GetCoord();
-			if (xR <= x && x <= xR + wR && y <= yR + hR && yR <= y)
+			if (xR < x && x <= xR + wR && yR < y && y <= yR + hR)
 			{
 				id = regiune->GetID();
 				if (!regiune->HasOwner())
 				{
 					map.PickRegion(id);
 					regiune->SetOwner(nameIter->second);
-					if (map.GetUnusedRegions().size() <= map.GetUnusedRegions().size() - players.size())
+					if (map.GetUnusedRegions().size() >= map.GetRegions().size() - players.size())
 					{
 						regiune->SetBase();
 					}
@@ -718,5 +739,7 @@ void Game::gameManager()
 	map.RouteForCoordinates(app);
 	launchNumericalQuestionAndReturnRanking();
 	getRegionStatus();
+	clickedCoordinates();
+	MapIsFull();
 }
 
