@@ -2,6 +2,7 @@
 #include "ui_harta.h"
 #include<queue>>
 #include<QLabel>
+#include <QMessageBox>
 //#include <QApplication>
 Harta::Harta(QWidget* parent)
 	: QMainWindow(parent),
@@ -9,9 +10,11 @@ Harta::Harta(QWidget* parent)
 {
 
 	ui->setupUi(this);
-	ui->game->insertWidget(1, &intrebareNumerica);
-	ui->game->insertWidget(2, &intrebareGrila);
-	ui->game->setCurrentIndex(0);
+	//SetActiveWindow(this);
+    //ui->game->insertWidget(1, &intrebareNumerica);
+    //ui->game->insertWidget(2, &intrebareGrila);
+    //ui->game->setCurrentIndex(0);
+	//coord();
 	/*QTimer::singleShot(4000, this, [this]() {
 		ui->game->setCurrentIndex(1);
 		});*/
@@ -63,7 +66,7 @@ void Harta::coord()
 		height = a["height"].d();
 		patrat.push_back(QRect(x, y, width, height));
 	}
-	update();
+	//update();
 
 }
 
@@ -76,9 +79,13 @@ void Harta::gameManager()
 	t.start(3000);
 	loop.exec();
 	intrebareNumerica.setUsername(userName);
-	ui->game->setCurrentWidget(&intrebareNumerica);
+    //ui->game->setCurrentWidget(&intrebareNumerica);
+    intrebareNumerica.show();
+	hide();
 	intrebareNumerica.AfisareIntrebare();
-	ui->game->setCurrentWidget(ui->map);
+    intrebareNumerica.hide();
+	show();
+    //ui->game->setCurrentWidget(ui->map);
 	getOrder(Etapa::AlegereBaza);
 
 	//se dicteaza principalele etape ale jocului prin apelarea repetata a getOrder cu parametrii corespunzatori - alegerea bazei, cucerirea (pana nu mai raman regiuni disponibile,
@@ -235,9 +242,13 @@ void Harta::getScore()
 
 void Harta::paintEvent(QPaintEvent*)
 {
-	QPainter p(this);
-	QPen pen;
-	pen.setWidth(2);
+	//QWidget::screen()->availableGeometry();
+    QPainter p(this);
+	// QPainter p(ui->map);	
+    //p.begin(this);
+	//p.begin(ui->map);
+	QPen pen(Qt::black,2);
+	//pen.setWidth(2);
 	p.setPen(pen);
 	//se apeleaza o ruta care returneaza culoarea regiunilor si daca sunt sau nu baze
 	cpr::Response response = cpr::Get(
@@ -283,10 +294,13 @@ void Harta::paintEvent(QPaintEvent*)
 				aux.setGeometry(patrat[i]);
 				aux.show();
 			}
+			p.setBrush(b);
 			p.drawRect(patrat[i]);
-			p.fillRect(patrat[i], b);
+			//p.setBrush(b);
+			//p.fillRect(patrat[i], b);
 
 		}
 	}
+	//p.end();
 }
 
