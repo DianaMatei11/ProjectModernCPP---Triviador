@@ -16,7 +16,7 @@ int Game::sentAGrillQuestionRoute()
 {
 	int index = Intrebare::GetRandomNumber(0, storage.count<IntrebariGrila>());
 	auto quest = storage.get<IntrebariGrila>(index);
-	CROW_ROUTE(app, "/Quiz")([&quest]() {
+	CROW_ROUTE (app, "/Quiz")([&quest]() {
 		return crow::json::wvalue{
 			{"Id", quest.GetId()},
 			{"Enunt", quest.GetEnunt()},
@@ -29,16 +29,23 @@ int Game::sentAGrillQuestionRoute()
 	return index;
 }
 
-void Game::sentUserRanking(std::string userName)
+std::vector<crow::json::wvalue> Game::sentUserRanking(std::string userName)
 {
-	std::pair<int, colors> p = usersRanking[userName];
-	CROW_ROUTE(app, "/UsersRanking")([this, p, userName]() {
-		return crow::json::wvalue{
-		{"userName", userName},
-		{"points", p.first},
-		{"color", p.second},
-		};
+	std::vector<crow::json::wvalue> aux;
+	int index = 0;
+	
+	for (auto it = usersRanking.begin(); it != usersRanking.end(); it++)
+	{
+		aux[index]["userName"] = it->first;
+		aux[index]["points"] = it->second.first;
+		aux[index]["colors"] = it->second.second;
+		index++;
+	}
+	CROW_ROUTE(app, "/UsersRanking")([aux]() {
+		return aux;
 		});
+	
+	return aux;
 }
 
 int Game::sendCorrectAnswerNQ(int answer)
