@@ -1,9 +1,94 @@
 #include "Game.h"
-
+#include <math.h>
 
 Game::Game(Storage& storage, crow::SimpleApp& app) :
 	storage{ storage }, app{ app }
 {}
+
+std::vector<int> Game::attackPriority()
+{
+	std::vector<int> aux;
+	std::vector<int> positions;
+	switch (players.size())
+	{
+	case 2:
+		aux = { -1,-1,-1,-1,-1 };
+		positions = generateMUltipleDifferentRandom(3, 5);
+		int x = Intrebare::GetRandomNumber(0, 2);
+
+		for (int i = 0; i < 3; i++)
+			aux[positions[i]] = x;
+
+		for (int i = 0; i < 5; i++)
+			if (aux[i] == -1)aux[i] = 1 - x;
+
+		return aux;
+		break;
+
+	case 3:
+		aux = { -1,-1,-1,-1 };
+		positions = generateMUltipleDifferentRandom(2, 4);
+		int x = Intrebare::GetRandomNumber(0, 3);
+
+		for (int i = 0; i < 2; i++)
+			aux[positions[i]] = x;
+		bool ok = false;
+
+		for (int i = 0; i < 4; i++)
+			if (aux[i] == -1)if (ok == false)aux[i] = fabs(x - 1);
+			else aux[i] = fabs(x - 2);
+
+		return aux;
+		break;
+	case 4:
+		aux = { -1,-1,-1,-1,-1 };
+		positions = generateMUltipleDifferentRandom(2, 5);
+		int x = Intrebare::GetRandomNumber(0, 4);
+
+		for (int i = 0; i < 2; i++)
+			aux[positions[i]] = x;
+
+		int ok0 = 0;
+		for (int i = 0; i < 5; i++)
+			if (aux[i] == -1) {
+				if (ok == 0)
+				{
+					aux[i] = fabs(x - 1);
+					ok0++;
+				}
+				else if (ok == 1)
+				{
+					aux[i] = fabs(x - 2);
+					ok0++;
+				}
+				else
+					aux[i] = fabs(x - 3);
+			}
+		return aux;
+		break;
+		default:
+			break;
+	};
+}
+
+
+bool Game::find(int x, std::vector<int> v)
+{
+	for (int i = 0; i < v.size(); i++)
+		if (v[i] == x)return true;
+	return false;
+}
+
+std::vector<int> Game::generateMUltipleDifferentRandom(int no, int upperBound)
+{
+	std::vector<int> aux;
+	while (aux.size() != no)
+	{
+		int number = Intrebare::GetRandomNumber(0, upperBound);
+		if (!find(number, aux))
+			aux.push_back(number);
+	}
+}
 
 int Game::sentANumericalQuestionRoute()
 {

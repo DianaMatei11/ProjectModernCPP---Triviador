@@ -42,6 +42,10 @@ private:
 
 public:
 	Game(Storage& storage, crow::SimpleApp& app);
+
+	std::vector<int> attackPriority();
+	bool find(int x, std::vector<int> v);
+	std::vector<int> generateMUltipleDifferentRandom(int no, int upperBound);
 	
 	void launchNumericalQuestionAndReturnRanking();
 	void getTheLeaderBoard();
