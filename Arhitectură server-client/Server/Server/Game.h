@@ -32,7 +32,7 @@ private:
 	int sendCorrectAnswerNQ(int answer);
 	int sendCorrectGrillAnswer(int answer);
 	
-	std::vector<crow::json::wvalue> sentUserRanking(std::string userName);
+	void sentUserRanking();
 	
 	void addPlayerByUsername();
 	void assignAColor();

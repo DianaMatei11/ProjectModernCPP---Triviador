@@ -78,7 +78,7 @@ void Harta::gameManager()
 	intrebareNumerica.setUsername(userName);
 	ui->game->setCurrentWidget(&intrebareNumerica);
 	intrebareNumerica.AfisareIntrebare();
-	ui->game->setCurrentWidget(this);
+	ui->game->setCurrentWidget(ui->map);
 	getOrder(Etapa::AlegereBaza);
 
 	//se dicteaza principalele etape ale jocului prin apelarea repetata a getOrder cu parametrii corespunzatori - alegerea bazei, cucerirea (pana nu mai raman regiuni disponibile,
@@ -92,18 +92,34 @@ void Harta::getOrder(Etapa etapa) //se poate folosi un parametru 0-pentru aleger
 	//QApplication::setOverrideCursor(Qt::BlankCursor);
 	QWidget::setEnabled(false);
 	
+	route:
 	cpr::Response response = cpr::Get(
 		cpr::Url{ "http://localhost:14040/getOrder" });
 	auto order = crow::json::load(response.text);
-	for (int j = 0; j < order.size(); j++) //pentru cucerire se recomanda o parcurgere indexata
+
+	while (order.key().size() == 0)
+	{
+		QEventLoop loop;
+		QTimer t;
+		t.connect(&t, &QTimer::timeout, &loop, &QEventLoop::quit);
+		t.start(1000);
+		loop.exec();
+		response = cpr::Get(
+			cpr::Url{ "http://localhost:14040/getOrder" });
+		order = crow::json::load(response.text);
+		update();
+	}
+
+	int j = 0;
+	for (const auto& pers : order) 
 	{
 		switch (etapa)
 		{
 		case Etapa::AlegereBaza: //alegerea bazei
 		{
-			QString aux = QStringLiteral("%1 este la rand! Alege baza!").arg(QString::fromStdString(std::string(order[j]["player"].s())));
+			QString aux = QStringLiteral("%1 este la rand! Alege baza!").arg(QString::fromLocal8Bit(static_cast<std::string>(pers["player"].s())));
 			ui->instructiuni->setText(aux);
-			if (std::string(order[j].s()) == userName)
+			if (std::string(pers["player"].s()) == userName)
 			{
 				QWidget::setEnabled(true);
 				QEventLoop loop;
@@ -119,10 +135,10 @@ void Harta::getOrder(Etapa etapa) //se poate folosi un parametru 0-pentru aleger
 		}
 		case Etapa::Cucerire: //cucerire
 		{
-			int nr = order.size() - j+1;
-			QString aux = QStringLiteral("%1 este la rand! Alege %2 regiuni").arg(QString::fromStdString(std::string(order[j]["player"].s())).arg(nr));
+			int nr = order.size() - j -1;
+			QString aux = QStringLiteral("%1 este la rand! Alege %2 regiuni").arg(QString::fromStdString(std::string(pers["player"].s())).arg(nr));
 			ui->instructiuni->setText(aux);
-			if (std::string(order[j].s()) == userName)
+			if (std::string(pers["player"].s()) == userName)
 			{
 				QWidget::setEnabled(true);
 				for (int index = 0; index < nr; index++)
@@ -137,9 +153,9 @@ void Harta::getOrder(Etapa etapa) //se poate folosi un parametru 0-pentru aleger
 		}
 		case Etapa::Razboi: //duel
 		{
-			QString aux = QStringLiteral("%1 este la rand! Ataca o regiune!").arg(QString::fromStdString(std::string(order[j]["player"].s())));
+			QString aux = QStringLiteral("%1 este la rand! Ataca o regiune!").arg(QString::fromStdString(std::string(pers["player"].s())));
 			ui->instructiuni->setText(aux);
-			if (std::string(order[j].s()) == userName)
+			if (std::string(pers["player"].s()) == userName)
 			{
 				QWidget::setEnabled(true);
 				//actiunea jucatorului - duel
@@ -150,7 +166,7 @@ void Harta::getOrder(Etapa etapa) //se poate folosi un parametru 0-pentru aleger
 			break;
 		}
 		}
-
+		j++;
 	}
 }
 

@@ -9,12 +9,14 @@ std::vector<int> Game::attackPriority()
 {
 	std::vector<int> aux;
 	std::vector<int> positions;
+	int x, ok0;
+	bool ok;
 	switch (players.size())
 	{
 	case 2:
 		aux = { -1,-1,-1,-1,-1 };
 		positions = generateMUltipleDifferentRandom(3, 5);
-		int x = Intrebare::GetRandomNumber(0, 2);
+		x = Intrebare::GetRandomNumber(0, 2);
 
 		for (int i = 0; i < 3; i++)
 			aux[positions[i]] = x;
@@ -28,11 +30,11 @@ std::vector<int> Game::attackPriority()
 	case 3:
 		aux = { -1,-1,-1,-1 };
 		positions = generateMUltipleDifferentRandom(2, 4);
-		int x = Intrebare::GetRandomNumber(0, 3);
+		x = Intrebare::GetRandomNumber(0, 3);
 
 		for (int i = 0; i < 2; i++)
 			aux[positions[i]] = x;
-		bool ok = false;
+		ok = false;
 
 		for (int i = 0; i < 4; i++)
 			if (aux[i] == -1)if (ok == false)aux[i] = fabs(x - 1);
@@ -43,20 +45,20 @@ std::vector<int> Game::attackPriority()
 	case 4:
 		aux = { -1,-1,-1,-1,-1 };
 		positions = generateMUltipleDifferentRandom(2, 5);
-		int x = Intrebare::GetRandomNumber(0, 4);
+		x = Intrebare::GetRandomNumber(0, 4);
 
 		for (int i = 0; i < 2; i++)
 			aux[positions[i]] = x;
 
-		int ok0 = 0;
+		ok0 = 0;
 		for (int i = 0; i < 5; i++)
 			if (aux[i] == -1) {
-				if (ok == 0)
+				if (ok0 == 0)
 				{
 					aux[i] = fabs(x - 1);
 					ok0++;
 				}
-				else if (ok == 1)
+				else if (ok0 == 1)
 				{
 					aux[i] = fabs(x - 2);
 					ok0++;
@@ -66,8 +68,8 @@ std::vector<int> Game::attackPriority()
 			}
 		return aux;
 		break;
-		default:
-			break;
+	default:
+		break;
 	};
 }
 
@@ -88,6 +90,8 @@ std::vector<int> Game::generateMUltipleDifferentRandom(int no, int upperBound)
 		if (!find(number, aux))
 			aux.push_back(number);
 	}
+
+	return aux;
 }
 
 int Game::sentANumericalQuestionRoute()
@@ -101,7 +105,7 @@ int Game::sentAGrillQuestionRoute()
 {
 	int index = Intrebare::GetRandomNumber(0, storage.count<IntrebariGrila>());
 	auto quest = storage.get<IntrebariGrila>(index);
-	CROW_ROUTE (app, "/Quiz")([&quest]() {
+	CROW_ROUTE(app, "/Quiz")([&quest]() {
 		return crow::json::wvalue{
 			{"Id", quest.GetId()},
 			{"Enunt", quest.GetEnunt()},
@@ -114,23 +118,21 @@ int Game::sentAGrillQuestionRoute()
 	return index;
 }
 
-std::vector<crow::json::wvalue> Game::sentUserRanking(std::string userName)
+void Game::sentUserRanking()
 {
-	std::vector<crow::json::wvalue> aux;
-	int index = 0;
-	
-	for (auto it = usersRanking.begin(); it != usersRanking.end(); it++)
-	{
-		aux[index]["userName"] = it->first;
-		aux[index]["points"] = it->second.first;
-		aux[index]["colors"] = it->second.second;
-		index++;
-	}
-	CROW_ROUTE(app, "/UsersRanking")([aux]() {
-		return aux;
+	CROW_ROUTE(app, "/UsersRanking")([&usersRanking = usersRanking]() {
+		std::vector<crow::json::wvalue> aux;
+		int index = 0;
+
+		for (auto it = usersRanking.begin(); it != usersRanking.end(); it++)
+		{
+			aux[index]["userName"] = it->first;
+			aux[index]["points"] = it->second.first;
+			aux[index]["colors"] = it->second.second;
+			index++;
+		}
+		return crow::json::wvalue{ aux };
 		});
-	
-	return aux;
 }
 
 int Game::sendCorrectAnswerNQ(int answer)
@@ -336,12 +338,13 @@ void Game::launchNumericalQuestionAndReturnRanking()
 		});
 
 	static std::priority_queue < std::tuple<std::string, int, float>, std::vector<std::tuple<std::string, int, float>>, decltype(comp)> pq(comp);
+	static std::vector<std::string> leaderBoard;
 
 	CROW_ROUTE(app, "/numericalQuestion/userAnswers")
 		.methods(crow::HTTPMethod::PUT)
-		([&players = players, &index = index, &pq = pq, &storage = storage](const crow::request& req) {
+		([&players = players, &index = index, &pq = pq, &storage = storage, &leaderBoard = leaderBoard](const crow::request& req) {
 		int answer = storage.get<IntrebareNumerica>(index).GetRaspuns();
-		
+
 		auto bodyArgs = parseUrlArgs(req.body);
 		auto end = bodyArgs.end();
 
@@ -351,30 +354,48 @@ void Game::launchNumericalQuestionAndReturnRanking()
 			{
 				continue;
 			}
-			pq.push({ user_ptr->getUserName(), std::abs(std::stoi(bodyArgs[user_ptr->getUserName()]) - answer), std::stof(bodyArgs[user_ptr->getUserName() + "Time"])});
+			pq.push({ user_ptr->getUserName(), std::abs(std::stoi(bodyArgs[user_ptr->getUserName()]) - answer), std::stof(bodyArgs[user_ptr->getUserName() + "Time"]) });
+			break;
+		}
+
+		if (pq.size() == players.size())
+		{
+			while (!pq.empty())
+			{
+				leaderBoard.push_back(std::get<0>(pq.top()));
+				pq.pop();
+			}
 		}
 		return 200;
 			});
 
 
-	CROW_ROUTE(app, "/getOrder")([&newQuest = newQuest, &pq = pq, &players = players]() {
-		if (pq.size() != players.size())
+	CROW_ROUTE(app, "/getOrder")([&newQuest = newQuest, &leaderBoard = leaderBoard, &players = players]() {
+
+		if (leaderBoard.size() != players.size())
 		{
-			return crow::json::wvalue{
-				{ "wait", 0 }
-			};
+			return crow::json::wvalue{};
 		}
-		newQuest = true;
-		std::vector<crow::json::wvalue> leaderBoard;
-		while (!pq.empty()) {
-			const auto& [playerName, diffrenceOfAnswer, time] = pq.top();
-			leaderBoard.push_back(crow::json::wvalue{
-				{ "player", playerName }
+		static int called = 0;
+		called++;
+		std::vector<crow::json::wvalue> leaderBoardJson;
+
+		for (int index = 0; index < leaderBoard.size(); index++)
+		{
+			leaderBoardJson.push_back(crow::json::wvalue{
+				{ "player", leaderBoard[index]}
 				});
-			pq.pop();
 		}
 
-		return crow::json::wvalue{ leaderBoard };
+		if (called == players.size())
+		{
+
+			called = 0;
+			leaderBoard.clear();
+		}
+
+		newQuest = true;
+		return crow::json::wvalue{ leaderBoardJson };
 		});
 }
 

@@ -31,6 +31,7 @@ void IntrebariNumerice::AfisareIntrebare()
         {
             on_sendAnswer_clicked();
         }
+        
 }
 
 void IntrebariNumerice::on_IntrebareNumerica_linkActivated()
@@ -169,6 +170,6 @@ void IntrebariNumerice::on_sendAnswer_clicked()
             {userName, (raspuns.toLocal8Bit().constData())},
             {userName + "Time", (std::to_string(time))}
         });
-    
+    this->close();
 }
 
