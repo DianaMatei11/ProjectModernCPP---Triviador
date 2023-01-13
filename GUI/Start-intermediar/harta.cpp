@@ -119,8 +119,8 @@ void Harta::getOrder(Etapa etapa) //se poate folosi un parametru 0-pentru aleger
 		}
 		case Etapa::Cucerire: //cucerire
 		{
-			int nr = order.size() - j;
-			QString aux = QStringLiteral("%1 este la rand! Alege %2 regiuni").arg(QString::fromStdString(std::string(order[j]["player"].s())), nr);
+			int nr = order.size() - j+1;
+			QString aux = QStringLiteral("%1 este la rand! Alege %2 regiuni").arg(QString::fromStdString(std::string(order[j]["player"].s())).arg(nr));
 			ui->instructiuni->setText(aux);
 			if (std::string(order[j].s()) == userName)
 			{
@@ -226,49 +226,51 @@ void Harta::paintEvent(QPaintEvent*)
 	//se apeleaza o ruta care returneaza culoarea regiunilor si daca sunt sau nu baze
 	cpr::Response response = cpr::Get(
 		cpr::Url{ "http://localhost:14040/getRegionsStatus" });
-	auto regions = crow::json::load(response.text);
+	if (response.status_code == 200 || response.status_code == 201)
+	{
+		auto regions = crow::json::load(response.text);
 
-	for (int i = 0; i < patrat.size(); i++)
-	{ //se pun conditii in funtie de ownership si de calitatea posibila de baza
-		QBrush b;
-		switch (regions[i]["color"].i()) //setarea culorii in functie de informatiile date de ruta
-		{
-		case 0:
-		{
-			b.setColor(Qt::red);
-			break;
-		}
-		case 1:
-		{
-			b.setColor(Qt::yellow);
-			break;
-		}
-		case 2:
-		{
-			b.setColor(Qt::blue);
-			break;
-		}
-		case 3:
-		{
-			b.setColor(Qt::green);
-			break;
-		}
-		default: b.setColor(Qt::white);
-		}
-		//p.setBrush(b);
-		//verificare baza si setare pictograma corespunzatoare (base.png)       
-		if (regions[i]["isBase"].b())
-		{
-			QLabel aux;
-			QPixmap image(":/images/images/base.png");
-			aux.setPixmap(image);
-			aux.setGeometry(patrat[i]);
-			aux.show();
-		}
-		p.drawRect(patrat[i]);
-		p.fillRect(patrat[i], b);
+		for (int i = 0; i < patrat.size(); i++)
+		{ //se pun conditii in funtie de ownership si de calitatea posibila de baza
+			QBrush b;
+			switch (regions[i]["color"].i()) //setarea culorii in functie de informatiile date de ruta
+			{
+			case 0:
+			{
+				b.setColor(Qt::red);
+				break;
+			}
+			case 1:
+			{
+				b.setColor(Qt::yellow);
+				break;
+			}
+			case 2:
+			{
+				b.setColor(Qt::blue);
+				break;
+			}
+			case 3:
+			{
+				b.setColor(Qt::green);
+				break;
+			}
+			default: b.setColor(Qt::white);
+			}
+			//p.setBrush(b);
+			//verificare baza si setare pictograma corespunzatoare (base.png)       
+			if (regions[i]["isBase"].b())
+			{
+				QLabel aux;
+				QPixmap image(":/images/images/base.png");
+				aux.setPixmap(image);
+				aux.setGeometry(patrat[i]);
+				aux.show();
+			}
+			p.drawRect(patrat[i]);
+			p.fillRect(patrat[i], b);
 
+		}
 	}
-
 }
 

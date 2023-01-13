@@ -38,7 +38,7 @@
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(156, 134, 102);</string>
+       <string notr="true">background-color: rgb(156, 134, 102); color: rgb(245, 242, 220); font-size: 15px; font: Bold; font-family:Georgia;</string>
       </property>
      </widget>
      <widget class="QTextEdit" name="player4">

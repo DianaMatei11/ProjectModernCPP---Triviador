@@ -31,6 +31,7 @@ void Form::setMode(bool m)
         ui->back->setText("If you already have an account, log in");
     else
         ui->back->setText("If you don't have an account, sign up");
+    
 }
 
 Form::~Form()
@@ -115,6 +116,7 @@ void Form::on_back_clicked()
     if(mode)
         ui->back->setText("If you don't have an account, sign up");
     else ui->back->setText("If you already have an account, log in");
+    ui->error->hide();
     update();
 }
 
