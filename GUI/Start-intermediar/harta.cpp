@@ -10,6 +10,11 @@ Harta::Harta(QWidget* parent)
 {
 
 	ui->setupUi(this);
+	QPixmap bkgnd(":/images/images/background.jpg");
+	bkgnd = bkgnd.scaled(this->size(), Qt::IgnoreAspectRatio);
+	QPalette palette;
+	palette.setBrush(QPalette::Window, bkgnd);
+	this->setPalette(palette);
 	//SetActiveWindow(this);
 	//ui->game->insertWidget(1, &intrebareNumerica);
 	//ui->game->insertWidget(2, &intrebareGrila);

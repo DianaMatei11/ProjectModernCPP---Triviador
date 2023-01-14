@@ -23,8 +23,14 @@
       <height>61</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">font-size: 20px; font: Bold; font-family:Georgia; color:rgb(97, 59, 39);background-color:rgba(255,255,255,120);</string>
+    </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string>Urmeaza prima intrebare!</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="player1">
@@ -37,7 +43,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
    </widget>
    <widget class="QLabel" name="player4">
@@ -50,7 +56,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
    </widget>
    <widget class="QLabel" name="player2">
@@ -63,7 +69,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
    </widget>
    <widget class="QLabel" name="player3">
@@ -76,7 +82,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
    </widget>
   </widget>

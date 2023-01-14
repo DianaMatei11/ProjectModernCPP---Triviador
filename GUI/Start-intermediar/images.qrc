@@ -5,6 +5,7 @@
         <file>images/AccountScreen.jpg</file>
         <file>images/back_icon.png</file>
         <file>images/base.png</file>
+        <file>images/background.jpg</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>
