@@ -90,6 +90,27 @@ void Game::sentAttackPriority()
 		});
 }
 
+std::string Game::getRegionAttacked()
+{
+	std::string idReg = "";
+	CROW_ROUTE(app, "/GetRegionAttacked")
+		.methods(crow::HTTPMethod::PUT)([&db = storage, &players = players,&idReg](const crow::request& req) {
+		std::string  indexRegion;
+
+		auto bodyArgs = parseUrlArgs(req.body);
+		auto end = bodyArgs.end();
+		auto nameIter = bodyArgs.find("IndexRegion");
+		if (nameIter != end)
+		{
+			idReg = nameIter->second;
+			return crow::response(200);
+		}
+		return crow::response(400);
+				});
+	return idReg;
+
+}
+
 
 bool Game::find(int x, std::vector<int> v)
 {

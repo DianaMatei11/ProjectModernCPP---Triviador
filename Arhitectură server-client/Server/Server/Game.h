@@ -44,6 +44,8 @@ public:
 	std::vector<int> attackPriority();
 	void sentAttackPriority();
 
+	std::string getRegionAttacked();
+
 	bool find(int x, std::vector<int> v);
 	std::vector<int> generateMUltipleDifferentRandom(int no, int upperBound);
 	
