@@ -22,13 +22,13 @@
      <rect>
       <x>120</x>
       <y>260</y>
-      <width>161</width>
+      <width>211</width>
       <height>51</height>
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(189, 158, 122);
-color: rgb(245, 242, 220); font-size: 25px; font: Bold; font-family:Georgia; border-radius:15px
+color: rgb(245, 242, 220); font-size: 20px; font: Bold; font-family:Georgia; border-radius:15px
 </string>
     </property>
     <property name="text">
@@ -40,13 +40,13 @@ color: rgb(245, 242, 220); font-size: 25px; font: Bold; font-family:Georgia; bor
      <rect>
       <x>120</x>
       <y>360</y>
-      <width>161</width>
+      <width>201</width>
       <height>51</height>
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(189, 158, 122);
-color: rgb(245, 242, 220); font-size: 25px; font: Bold; font-family:Georgia; border-radius:15px
+color: rgb(245, 242, 220); font-size: 20px; font: Bold; font-family:Georgia; border-radius:15px
 </string>
     </property>
     <property name="text">
@@ -56,15 +56,15 @@ color: rgb(245, 242, 220); font-size: 25px; font: Bold; font-family:Georgia; bor
    <widget class="QPushButton" name="varianta_c">
     <property name="geometry">
      <rect>
-      <x>490</x>
+      <x>450</x>
       <y>260</y>
-      <width>161</width>
+      <width>201</width>
       <height>51</height>
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(189, 158, 122);
-color: rgb(245, 242, 220); font-size: 25px; font: Bold; font-family:Georgia; border-radius:15px
+color: rgb(245, 242, 220); font-size: 20px; font: Bold; font-family:Georgia; border-radius:15px
 </string>
     </property>
     <property name="text">
@@ -74,15 +74,15 @@ color: rgb(245, 242, 220); font-size: 25px; font: Bold; font-family:Georgia; bor
    <widget class="QPushButton" name="varianta_d">
     <property name="geometry">
      <rect>
-      <x>490</x>
+      <x>450</x>
       <y>360</y>
-      <width>161</width>
+      <width>201</width>
       <height>51</height>
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(189, 158, 122);
-color: rgb(245, 242, 220); font-size: 25px; font: Bold; font-family:Georgia; border-radius:15px
+color: rgb(245, 242, 220); font-size: 20px; font: Bold; font-family:Georgia; border-radius:15px
 </string>
     </property>
     <property name="text">
@@ -92,10 +92,10 @@ color: rgb(245, 242, 220); font-size: 25px; font: Bold; font-family:Georgia; bor
    <widget class="QLabel" name="intrebare_grila">
     <property name="geometry">
      <rect>
-      <x>130</x>
-      <y>110</y>
-      <width>531</width>
-      <height>61</height>
+      <x>90</x>
+      <y>90</y>
+      <width>591</width>
+      <height>81</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -112,8 +112,8 @@ color: rgb(245, 242, 220); font-size: 15px; font: Bold; font-family:Georgia; bor
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>580</x>
-      <y>480</y>
+      <x>610</x>
+      <y>500</y>
       <width>161</width>
       <height>29</height>
      </rect>

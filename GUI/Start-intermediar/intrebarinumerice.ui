@@ -59,8 +59,8 @@ color: rgb(245, 242, 220); font-size: 25px; font: Bold; font-family:Georgia; bor
    <widget class="QPushButton" name="avantaj4_rasp">
     <property name="geometry">
      <rect>
-      <x>480</x>
-      <y>490</y>
+      <x>470</x>
+      <y>460</y>
       <width>121</width>
       <height>29</height>
      </rect>
@@ -77,8 +77,8 @@ color: rgb(245, 242, 220); font-size: 16px; font: Bold; font-family:Georgia; bor
    <widget class="QPushButton" name="avantaj1_rasp">
     <property name="geometry">
      <rect>
-      <x>640</x>
-      <y>490</y>
+      <x>620</x>
+      <y>460</y>
       <width>121</width>
       <height>29</height>
      </rect>
@@ -96,8 +96,8 @@ color: rgb(245, 242, 220); font-size: 16px; font: Bold; font-family:Georgia; bor
    <widget class="QTextBrowser" name="textBrowser_2">
     <property name="geometry">
      <rect>
-      <x>490</x>
-      <y>440</y>
+      <x>480</x>
+      <y>500</y>
       <width>256</width>
       <height>41</height>
      </rect>
@@ -119,8 +119,8 @@ hr { height: 1px; border-width: 0; }
    <widget class="QPushButton" name="av0">
     <property name="geometry">
      <rect>
-      <x>130</x>
-      <y>290</y>
+      <x>610</x>
+      <y>310</y>
       <width>161</width>
       <height>51</height>
      </rect>
@@ -137,8 +137,8 @@ color: rgb(245, 242, 220); font-size: 25px; font: Bold; font-family:Georgia; bor
    <widget class="QPushButton" name="av1">
     <property name="geometry">
      <rect>
-      <x>130</x>
-      <y>360</y>
+      <x>610</x>
+      <y>380</y>
       <width>161</width>
       <height>51</height>
      </rect>
@@ -155,9 +155,9 @@ color: rgb(245, 242, 220); font-size: 25px; font: Bold; font-family:Georgia; bor
    <widget class="QPushButton" name="av2">
     <property name="geometry">
      <rect>
-      <x>490</x>
-      <y>290</y>
-      <width>151</width>
+      <x>430</x>
+      <y>310</y>
+      <width>161</width>
       <height>51</height>
      </rect>
     </property>
@@ -173,9 +173,9 @@ color: rgb(245, 242, 220); font-size: 25px; font: Bold; font-family:Georgia; bor
    <widget class="QPushButton" name="av3">
     <property name="geometry">
      <rect>
-      <x>490</x>
-      <y>360</y>
-      <width>151</width>
+      <x>430</x>
+      <y>380</y>
+      <width>161</width>
       <height>51</height>
      </rect>
     </property>
