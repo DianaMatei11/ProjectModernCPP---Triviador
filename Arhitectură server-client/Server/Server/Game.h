@@ -45,6 +45,8 @@ public:
 	Game(Storage& storage, crow::SimpleApp& app);
 
 	std::vector<int> attackPriority();
+	void sentAttackPriority();
+
 	bool find(int x, std::vector<int> v);
 	std::vector<int> generateMUltipleDifferentRandom(int no, int upperBound);
 	

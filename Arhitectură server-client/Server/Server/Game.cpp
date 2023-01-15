@@ -73,6 +73,23 @@ std::vector<int> Game::attackPriority()
 	};
 }
 
+void Game::sentAttackPriority()
+{
+	std::vector<int> priority = attackPriority();
+	
+	CROW_ROUTE(app, "/AttackPriority")([&priority]() {
+	std::vector<crow::json::wvalue> aux;
+	int index = 0;
+
+	for (auto it = priority.begin(); it != priority.end(); it++)
+	{
+		aux[index]["whoUserAttack"] = *it;
+		index++;
+	}
+	return crow::json::wvalue{ aux };
+		});
+}
+
 
 bool Game::find(int x, std::vector<int> v)
 {
@@ -96,7 +113,7 @@ std::vector<int> Game::generateMUltipleDifferentRandom(int no, int upperBound)
 
 int Game::sentANumericalQuestionRoute()
 {
-
+	
 
 	return 0;
 }
