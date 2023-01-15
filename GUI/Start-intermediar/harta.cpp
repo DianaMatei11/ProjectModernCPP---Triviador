@@ -49,10 +49,19 @@ void Harta::mousePressEvent(QMouseEvent* ev)
 			cpr::Payload{
 
 				{"username", userName},
-				{"x", std::to_string(ev->position().x())},
-				{"y", std::to_string(ev->position().y())}
+				{"x", std::to_string(ev->x())},
+				{"y", std::to_string(ev->y())}
 
 			});
+		if (response.status_code == 400)
+		{
+			ui->instructiuni->setText("Regiune Invalida");
+		}
+		else
+		{
+			ui->instructiuni->setText("Regiune valida");
+			QWidget::setEnabled(false);
+		}
 	}
 }
 
@@ -71,7 +80,6 @@ void Harta::coord()
 		height = a["height"].d();
 		patrat.push_back(QRect(x, y, width, height));
 	}
-	//update();
 
 }
 
@@ -101,7 +109,6 @@ void Harta::gameManager()
 		show();
 		getOrder(Etapa::Cucerire);
 		QEventLoop loop;
-		QTimer t;
 		t.connect(&t, &QTimer::timeout, &loop, &QEventLoop::quit);
 		t.start(3000);
 		loop.exec();
@@ -126,87 +133,85 @@ void Harta::getOrder(Etapa etapa) //se poate folosi un parametru 0-pentru aleger
 	//QApplication::setOverrideCursor(Qt::BlankCursor);
 	QWidget::setEnabled(false);
 
-route:
 	cpr::Response response = cpr::Get(
 		cpr::Url{ "http://localhost:14040/getOrder" });
 	auto order = crow::json::load(response.text);
 
-	while (order.key().size() == 0)
+	if (order.has("wait"))
 	{
 		QEventLoop loop;
-		QTimer t;
 		t.connect(&t, &QTimer::timeout, &loop, &QEventLoop::quit);
-		t.start(1000);
+		t.start(100);
 		loop.exec();
 		response = cpr::Get(
 			cpr::Url{ "http://localhost:14040/getOrder" });
 		order = crow::json::load(response.text);
-		update();
 	}
+	nrPlayers = order.size();
 
-	int j = 0;
+	int position = 0;
 	for (const auto& pers : order)
 	{
 		switch (etapa)
 		{
-		case Etapa::AlegereBaza: //alegerea bazei
+		case Etapa::AlegereBaza:
 		{
-			QString aux = QStringLiteral("%1 este la rand! Alege baza!").arg(QString::fromLocal8Bit(static_cast<std::string>(pers["player"].s())));
+			QString aux = QStringLiteral("%1 este la rand! Alege baza!\nAi 8 secunde").arg(QString::fromLocal8Bit(static_cast<std::string>(pers["player"].s())));
 			ui->instructiuni->setText(aux);
 			if (std::string(pers["player"].s()) == userName)
 			{
 				QWidget::setEnabled(true);
 				QEventLoop loop;
-				QTimer t;
 				t.connect(&t, &QTimer::timeout, &loop, &QEventLoop::quit);
-				t.start(10000);
+				t.start(8000);
 				loop.exec();
-				QWidget::setEnabled(false); //dupa ce jucatorul isi termina actiunea
 
 			}
 			else
 			{
 				QEventLoop loop;
-				QTimer t;
 				t.connect(&t, &QTimer::timeout, &loop, &QEventLoop::quit);
-				t.start(10000);
+				t.start(8000);
 				loop.exec();
 			}
+			getScore();
 			repaint();
+			update();
 			break;
 		}
-		case Etapa::Cucerire: //cucerire
+		case Etapa::Cucerire:
 		{
-			int nr = order.size() - j - 1;
-			QString aux = QStringLiteral("%1 este la rand! Alege %2 regiuni").arg(QString::fromLocal8Bit(static_cast<std::string>(pers["player"].s())));
-			ui->instructiuni->setText(aux);
-			if (std::string(pers["player"].s()) == userName)
+			int nr;
+			for (int regionsChosed = position; regionsChosed < order.size() - 1; regionsChosed++)
 			{
-				QWidget::setEnabled(true);
-				for (int index = 0; index < nr; index++)
-				{ //actiunea jucatorului - cucerire regiuni
+				nr = order.size() - regionsChosed - 1;
+				QString aux = QStringLiteral("%1 este la rand! Alege %2 regiuni\nAi 8 secunde/regiune").arg(QString::fromLocal8Bit(static_cast<std::string>(pers["player"].s()))).arg(nr);
+				ui->instructiuni->setText(aux);
+				if (std::string(pers["player"].s()) == userName)
+				{
+					QWidget::setEnabled(true);
+
+					QEventLoop loop;
+					t.connect(&t, &QTimer::timeout, &loop, &QEventLoop::quit);
+					t.start(8000);
+					loop.exec();
+
+				}
+				else
+				{
 					QEventLoop loop;
 					QTimer t;
 					t.connect(&t, &QTimer::timeout, &loop, &QEventLoop::quit);
-					t.start(5000);
+					t.start(8000);
 					loop.exec();
-					update(); //poate fi parte din functia de alegere a regiunii
 				}
-				QWidget::setEnabled(false); //dupa ce jucatorul isi termina actiunea
-
+				getScore();
+				repaint();
+				update();
 			}
-			else
-			{
-				QEventLoop loop;
-				QTimer t;
-				t.connect(&t, &QTimer::timeout, &loop, &QEventLoop::quit);
-				t.start(nr*5000);
-				loop.exec();
-			}
-
 			break;
 		}
-		case Etapa::Razboi: //duel
+		case Etapa::Razboi:
 		{
 			QString aux = QStringLiteral("%1 este la rand! Ataca o regiune!").arg(QString::fromLocal8Bit(static_cast<std::string>(pers["player"].s())));
 			ui->instructiuni->setText(aux);
@@ -221,83 +226,69 @@ route:
 			break;
 		}
 		}
-		j++;
+		position++;
 	}
 }
 
 void Harta::getScore()
 {
-	std::queue<QLabel> labels;
 
-	while (true)
+	std::queue<QLabel*> labels;
+	cpr::Response response = cpr::Get(
+		cpr::Url{ "http://localhost:14040/UsersRanking" }
+	);
+	auto aux = crow::json::load(response.text);
+	if (nrPlayers == 2)
 	{
-		cpr::Response response = cpr::Get(
-			cpr::Url{ "http://localhost:14040/getScore" }
-		);
-		auto aux = crow::json::load(response.text);
-		int numar_jucatori = aux.size();
-		if (numar_jucatori == 2)
+		labels.push(ui->player2);
+		labels.push(ui->player3);
+
+	}
+	else if (nrPlayers == 3)
+	{
+		labels.push(ui->player1);
+		labels.push(ui->player2);
+		labels.push(ui->player3);
+	}
+	else
+	{
+		labels.push(ui->player1);
+		labels.push(ui->player2);
+		labels.push(ui->player3);
+		labels.push(ui->player4);
+	}
+
+	for (const auto& player : aux)
+	{
+		auto& curent_label = labels.front();
+
+		switch (player["color"].i())
 		{
-			ui->player1->hide();
-			ui->player4->hide();
-			//labels.push(ui->player2);
-		   // labels.push(ui->player3);
-
+		case 0:
+			curent_label->setStyleSheet("QLabel { background-color : red }");
+			break;
+		case 1:
+			curent_label->setStyleSheet("QLabel { background-color : yellow }");
+			break;
+		case 2:
+			curent_label->setStyleSheet("QLabel { background-color : blue }");
+			break;
+		case 3:
+			curent_label->setStyleSheet("QLabel { background-color : green }");
+			break;
 		}
-		else if (numar_jucatori == 3)
-		{
-			ui->player4->hide();
-			//  labels.push(ui->player1);
-			//  labels.push(ui->player2);
-			//  labels.push(ui->player3);
-		}
-		else
-		{
-			// labels.push(ui->player1);
-			// labels.push(ui->player2);
-			// labels.push(ui->player3);
-			// labels.push(ui->player4);
-		}
-		for (const auto& player : aux)
-		{
-			const auto& curent_label = labels.front();
-
-			/*   switch (player["color"])
-			   {
-			   case 0:
-				   curent_label.setStyleSheet("QLabel { background-color : red }");
-
-				   break;
-			   case 1:
-				   curent_label.setStyleSheet("QLabel { background-color : yellow }");
-				   break;
-			   case 2:
-				   curent_label.setStyleSheet("QLabel { background-color : blue }");
-				   break;
-			   case 3:
-				   curent_label.setStyleSheet("QLabel { background-color : green }");
-				   break;
-			   }
-			   curent_label.setText(player["name"]+" - "+ player["score"]);*/
-
-			labels.pop();
-
-		}
-
-
+		curent_label->setText(QString::fromLocal8Bit(static_cast<std::string>(player["name"])) + static_cast<QString>('\n') + QString::fromLocal8Bit(static_cast<std::string>(player["score"])));
+		
+		labels.pop();
 	}
 }
 
 void Harta::paintEvent(QPaintEvent*)
 {
-	//QWidget::screen()->availableGeometry();
 	QPainter p(this);
-	// QPainter p(ui->map);	
-	//p.begin(this);
-	//p.begin(ui->map);
 	QPen pen(Qt::black, 2);
-	//pen.setWidth(2);
 	p.setPen(pen);
+
 	//se apeleaza o ruta care returneaza culoarea regiunilor si daca sunt sau nu baze
 	cpr::Response response = cpr::Get(
 		cpr::Url{ "http://localhost:14040/getRegionsStatus" });
@@ -306,7 +297,7 @@ void Harta::paintEvent(QPaintEvent*)
 		auto regions = crow::json::load(response.text);
 
 		for (int i = 0; i < patrat.size(); i++)
-		{ //se pun conditii in funtie de ownership si de calitatea posibila de baza
+		{
 			QBrush b;
 			switch (regions[i]["color"].i()) //setarea culorii in functie de informatiile date de ruta
 			{
@@ -333,28 +324,16 @@ void Harta::paintEvent(QPaintEvent*)
 			default: b.setColor(Qt::white);
 			}
 
-			//verificare baza si setare pictograma corespunzatoare (base.png)       
-
-
 			b.setStyle(Qt::SolidPattern);
 			p.setBrush(b);
 			p.drawRect(patrat[i]);
-			//p.fillRect(patrat[i], b);
 
 			if (regions[i]["isBase"].b())
 			{
 				p.drawText(patrat[i], Qt::AlignCenter, "B");
-				//QLabel aux;
-				////aux.setFixedWidth(patrat[i].x() + (patrat[i].width() / 2.0));
-				////aux.setFixedHeight(patrat[i].y() + (patrat[i].height() / 2.0));
-				//QPixmap image(":/images/images/base.png");
-				//aux.setPixmap(image);
-				//aux.setGeometry(patrat[i]);
-				//aux.show();
 			}
 
 		}
 	}
-	//p.end();
 }
 

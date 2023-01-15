@@ -37,9 +37,9 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>40</y>
-      <width>63</width>
-      <height>20</height>
+      <y>9</y>
+      <width>121</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="text">
@@ -49,10 +49,10 @@
    <widget class="QLabel" name="player4">
     <property name="geometry">
      <rect>
-      <x>690</x>
-      <y>40</y>
-      <width>63</width>
-      <height>20</height>
+      <x>642</x>
+      <y>9</y>
+      <width>111</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="text">
@@ -63,9 +63,9 @@
     <property name="geometry">
      <rect>
       <x>230</x>
-      <y>40</y>
-      <width>63</width>
-      <height>20</height>
+      <y>9</y>
+      <width>131</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="text">
@@ -75,10 +75,10 @@
    <widget class="QLabel" name="player3">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>40</y>
-      <width>63</width>
-      <height>20</height>
+      <x>440</x>
+      <y>9</y>
+      <width>131</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="text">
@@ -92,7 +92,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

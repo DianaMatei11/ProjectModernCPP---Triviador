@@ -3,11 +3,12 @@
 #include <vector>
 #include <iostream>
 #include <crow.h>
+#include <unordered_set>
 
 class Map
 {
 private:
-	std::vector<std::shared_ptr<Region>> m_unusedRegions;
+	std::unordered_set<int> m_unusedRegions;
 	std::vector<std::shared_ptr<Region>> m_regions;
 	int m_w,m_h;
 public:
@@ -15,9 +16,9 @@ public:
 	Map() = default;
 	void buildMap(int nrPlayers);
 	
-	std::shared_ptr <Region> PickRegion(int id);
+	bool PickRegion(int id);
 	std::shared_ptr <Region> GetRegion(int id);
-	std::vector<std::shared_ptr<Region>>& GetUnusedRegions();
+	std::unordered_set<int>& GetUnusedRegions();
 	std::vector<std::shared_ptr<Region>>& GetRegions();
 	void GetNeighbours(int id,std::vector<std::shared_ptr<Region>>& neigh);
 	void RouteForCoordinates(crow::SimpleApp& app);

@@ -16,6 +16,7 @@ IntrebariNumerice::IntrebariNumerice(QWidget *parent)
 
 void IntrebariNumerice::AfisareIntrebare()
 {
+    answered = false;
     ui->raspuns_numeric->setText("");
     QWidget::setEnabled(true);
     cpr::Response response = cpr::Get(cpr::Url{ "http://localhost:14040/numericalQuestion" });
@@ -164,7 +165,15 @@ void IntrebariNumerice::on_sendAnswer_clicked()
 {
     double time = timer.elapsed() / 1000.0;
     answered = true;
-    const auto& raspuns = ui->raspuns_numeric->text();
+    QString raspuns;
+    if (!ui->raspuns_numeric->text().isEmpty())
+    {
+        raspuns = ui->raspuns_numeric->text();
+    }
+    else
+    {
+        raspuns = QString("0");
+    }
     const auto& response = cpr::Put(
         cpr::Url{ "http://localhost:14040/numericalQuestion/userAnswers" },
         cpr::Payload{

@@ -47,6 +47,8 @@ private:
     QColor userColor;
     IntrebariNumerice intrebareNumerica;
     IntrebariGrila intrebareGrila;
+    QTimer t;
+    int nrPlayers;
     Ui::harta* ui;
 };
 #endif // HARTA_H

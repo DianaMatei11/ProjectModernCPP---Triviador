@@ -22,8 +22,8 @@ void Map::buildMap(int nrPlayers)
 		m_w = 6;
 		m_h = 4;
 	}
-	float w = 600 / m_w;
 	float h = 350 / m_h;
+	float w = 600 / m_w;
 	float initialh = 0;
 	float initialw = 0;
 	coord tuplu;
@@ -34,7 +34,7 @@ void Map::buildMap(int nrPlayers)
 		{
 
 			tuplu = std::make_tuple(100 + initialw, 200 + initialh, w, h);
-			m_unusedRegions.emplace_back(std::make_shared<Region>(i * m_w + j + 1, tuplu));
+			m_unusedRegions.insert(i * m_w + j + 1);
 			m_regions.emplace_back(std::make_shared<Region>(i * m_w + j + 1, tuplu));
 			initialw += w;
 		}
@@ -42,20 +42,19 @@ void Map::buildMap(int nrPlayers)
 	}
 }
 
-std::shared_ptr<Region> Map::PickRegion(int id)
+bool Map::PickRegion(int id)
 {
-	std::shared_ptr<Region>& region = m_unusedRegions[id - 1];
-	auto it = std::find(m_unusedRegions.begin(), m_unusedRegions.end(), region);
-	if (it != m_unusedRegions.end())
+	if (m_unusedRegions.find(id) != m_unusedRegions.end())
 	{
-		std::cout << "Regiunea exista!\n";
-		m_unusedRegions.erase(it);
-		return region;
+		//std::cout << "Regiunea exista!\n";
+		m_unusedRegions.erase(id);
+		return true;
 	}
 	else
 	{
+		return false;
 		//throw std::exception{ "The region was not found" };
-		std::cout << "The region was not found\n";
+		//std::cout << "The region was not found\n";
 	}
 }
 
@@ -75,7 +74,7 @@ std::shared_ptr<Region> Map::GetRegion(int id)
 }
 
 
-std::vector<std::shared_ptr<Region>>& Map::GetUnusedRegions()
+std::unordered_set<int>& Map::GetUnusedRegions()
 {
 	return m_unusedRegions;
 }

@@ -139,40 +139,18 @@ void Game::sentUserRanking()
 {
 	CROW_ROUTE(app, "/UsersRanking")([&usersRanking = usersRanking]() {
 		std::vector<crow::json::wvalue> aux;
-		int index = 0;
-
+		
 		for (auto it = usersRanking.begin(); it != usersRanking.end(); it++)
 		{
-			aux[index]["userName"] = it->first;
-			aux[index]["points"] = it->second.first;
-			aux[index]["colors"] = it->second.second;
-			index++;
+			aux.push_back( crow::json::wvalue{
+				{"name", it->first},
+				{"score", it->second.first},
+				{"color", it->second.second}
+			});
 		}
 		return crow::json::wvalue{ aux };
 		});
 }
-
-int Game::sendCorrectAnswerNQ(int answer)
-{
-	CROW_ROUTE(app, "/numericalQuestion/answer")([answer]() {
-		return  crow::json::wvalue{
-			{"CorrectAnswer", answer}
-		};
-		});
-	return 0;
-}
-
-int Game::sendCorrectGrillAnswer(int answer)
-{
-	CROW_ROUTE(app, "/Quiz/answer")([&answer]() {
-		return  crow::json::wvalue{
-			{"CorrectAnswer", answer}
-		};
-		});
-	return 0;
-}
-
-
 
 void Game::addPlayerByUsername()
 {
@@ -388,10 +366,6 @@ void Game::launchNumericalQuestionAndReturnRanking()
 			{
 				continue;
 			}
-			if (bodyArgs[user_ptr->getUserName()] == "")
-			{
-				bodyArgs[user_ptr->getUserName()] = "0";
-			}
 			pq.push({ user_ptr->getUserName(), std::abs(std::stoi(bodyArgs[user_ptr->getUserName()]) - answer), std::stof(bodyArgs[user_ptr->getUserName() + "Time"]) });
 			break;
 		}
@@ -412,7 +386,7 @@ void Game::launchNumericalQuestionAndReturnRanking()
 
 		if (leaderBoard.size() != players.size())
 		{
-			return crow::json::wvalue{};
+			return crow::json::wvalue{ {"wait", "0"} };
 		}
 		static int called = 0;
 		called++;
@@ -443,7 +417,7 @@ void Game::getTheLeaderBoard()
 
 }
 
-void Game::GetPlayersBases()
+/*void Game::GetPlayersBases()
 {
 	std::vector< std::pair<std::string, int>> baze;
 	std::vector<std::shared_ptr<Region>> regiuniBaze;
@@ -491,7 +465,7 @@ void Game::GetPlayersBases()
 
 		return crow::response(200);
 			});
-}
+}*/
 
 void Game::Duel(std::shared_ptr<User>& attacker, std::shared_ptr<User>& defender, std::shared_ptr<Region>& region)
 {
@@ -514,7 +488,7 @@ void Game::Duel(std::shared_ptr<User>& attacker, std::shared_ptr<User>& defender
 	{
 		int idGridQuestion;
 		idGridQuestion = sentAGrillQuestionRoute();
-		sendCorrectGrillAnswer(idGridQuestion);
+		//sendCorrectGrillAnswer(idGridQuestion);
 
 		int indexAnswerGQ = storage.get<IntrebariGrila>(idGridQuestion).GetIndex_Rasp_Corect();
 		std::vector<std::pair<std::shared_ptr<User>, int>> answerOfPlayers;
@@ -589,7 +563,7 @@ void Game::Duel(std::shared_ptr<User>& attacker, std::shared_ptr<User>& defender
 		//}
 
 		int idNumericalQuestion = sentANumericalQuestionRoute();
-		sendCorrectAnswerNQ(idNumericalQuestion);
+		//sendCorrectAnswerNQ(idNumericalQuestion);
 
 		auto comp = ([](std::tuple<std::string, int, float> A, std::tuple<std::string, int, float> B)
 			{
@@ -681,8 +655,8 @@ void Game::clickedCoordinates()
 {
 	CROW_ROUTE(app, "/CoordClickHarta")
 		.methods(crow::HTTPMethod::PUT)
-		([&map = map, &players = players](const crow::request& req) {
-		std::vector<std::shared_ptr<Region>> regions = map.GetRegions();
+		([&map = map, &players = players, &usersRanking = usersRanking](const crow::request& req) {
+		std::vector<std::shared_ptr<Region>>& regions = map.GetRegions();
 		auto bodyArgs = parseUrlArgs(req.body);
 		auto end = bodyArgs.end();
 		auto xIter = bodyArgs.find("x");
@@ -696,26 +670,31 @@ void Game::clickedCoordinates()
 
 		float x = std::stof(xIter->second);
 		float y = std::stof(yIter->second);
-		int id = -1;
+		int id;
 
 		for (auto& regiune : regions)
 		{
-			const auto& [xR, yR, hR, wR] = regiune->GetCoord();
+			const auto& [xR, yR, wR, hR] = regiune->GetCoord();
 			if (xR < x && x <= xR + wR && yR < y && y <= yR + hR)
 			{
 				id = regiune->GetID();
 				if (!regiune->HasOwner())
 				{
-					map.PickRegion(id);
+					if (!map.PickRegion(id))
+					{
+						return 400;
+					}
 					regiune->SetOwner(nameIter->second);
-					if (map.GetUnusedRegions().size() >= map.GetRegions().size() - players.size())
+					if (map.GetUnusedRegions().size() >= regions.size() - players.size())
 					{
 						regiune->SetBase();
 					}
+					usersRanking[nameIter->second] = { usersRanking[nameIter->second].first + regiune->GetScores(), usersRanking[nameIter->second].second };
+					return 200;
 				}
-				break;
 			}
 		}
+		return 400;
 
 		//if (id != -1) 
 		//{
@@ -758,5 +737,6 @@ void Game::gameManager()
 	getRegionStatus();
 	clickedCoordinates();
 	MapIsFull();
+	sentUserRanking();
 }
 

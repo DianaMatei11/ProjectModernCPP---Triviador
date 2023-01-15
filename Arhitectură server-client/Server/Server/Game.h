@@ -28,9 +28,6 @@ private:
 	
 	int sentANumericalQuestionRoute();
 	int sentAGrillQuestionRoute();
-
-	int sendCorrectAnswerNQ(int answer);
-	int sendCorrectGrillAnswer(int answer);
 	
 	void sentUserRanking();
 	
@@ -56,7 +53,7 @@ public:
 	void gameManager();
 
 	void Duel(std::shared_ptr<User>& attacker, std::shared_ptr<User>& defender, std::shared_ptr<Region>& region);
-
 	void clickedCoordinates();
+
 	
 };
